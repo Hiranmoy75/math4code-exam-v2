@@ -16,7 +16,7 @@ export default function ContactPage() {
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-violet-600">
-                            Get in Touch
+                            Get in Touch with Hiranmoy Mandal
                         </h1>
                         <p className="text-xl text-slate-600 max-w-2xl mx-auto">
                             Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
@@ -35,7 +35,7 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <p className="font-medium text-slate-900">Email</p>
-                                            <p className="text-slate-600">mathentics.acad@gmail.com</p>
+                                            <p className="text-slate-600">math4code.acad@gmail.com</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-4">
@@ -44,7 +44,7 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <p className="font-medium text-slate-900">Phone</p>
-                                            <p className="text-slate-600">9136373339</p>
+                                            <p className="text-slate-600">6297534924</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-4">
@@ -53,7 +53,7 @@ export default function ContactPage() {
                                         </div>
                                         <div>
                                             <p className="font-medium text-slate-900">Office</p>
-                                            <p className="text-slate-600">mathentics Academy, Madhubani, Bihar, 847227, India</p>
+                                            <p className="text-slate-600">Math4Code Academy, Madhubani, Bihar, 847227, India</p>
                                         </div>
                                     </div>
                                 </div>

@@ -9,13 +9,16 @@ import { AIMentorSection } from '@/components/landing/AIMentorSection';
 import { DemoSection } from '@/components/landing/DemoSection';
 import { Testimonials } from '@/components/landing/Testimonials';
 import { CTA } from '@/components/landing/CTA';
-import { OrganizationSchema } from '@/components/seo/StructuredData';
+import { TrustSection } from '@/components/landing/TrustSection';
+import { OrganizationSchema, PersonSchema } from '@/components/seo/StructuredData';
 
 export default function App() {
   return (
     <div className="font-sans antialiased text-slate-900 bg-[#FBFBFD]">
       <OrganizationSchema />
+      <PersonSchema />
       <Hero />
+      <TrustSection />
       <FeaturesStrip />
       <ExamSeriesSection />
       <CoursesSection />

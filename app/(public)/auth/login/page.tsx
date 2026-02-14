@@ -144,8 +144,8 @@ function LoginForm() {
       {/* LEFT PANEL: Features */}
       <div className="hidden md:flex flex-col w-[45%] bg-[#F8FAFC] p-10 lg:p-12 relative overflow-hidden border-r border-slate-100">
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute top-[-100px] right-[-100px] w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-[-100px] left-[-100px] w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />
+          <div className="absolute top-[-100px] right-[-100px] w-64 h-64 bg-green-500/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-[-100px] left-[-100px] w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl" />
         </div>
 
         <div className="flex-1 flex flex-col justify-center relative z-10 space-y-10">
@@ -155,15 +155,15 @@ function LoginForm() {
           </div>
 
           <div className="space-y-6">
-            <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:bg-white hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 border border-transparent hover:border-indigo-100 group cursor-default">
+            <div className="flex gap-4 p-4 rounded-2xl transition-all duration-300 hover:bg-white hover:shadow-xl hover:shadow-green-500/10 hover:-translate-y-1 border border-transparent hover:border-green-100 group cursor-default">
               <div className="relative shrink-0">
-                <div className="w-12 h-12 rounded-2xl bg-white border border-indigo-100 flex items-center justify-center text-indigo-600 shadow-sm group-hover:scale-110 transition-transform duration-300 z-10 relative">
+                <div className="w-12 h-12 rounded-2xl bg-white border border-green-100 flex items-center justify-center text-green-600 shadow-sm group-hover:scale-110 transition-transform duration-300 z-10 relative">
                   <BookOpen className="w-6 h-6" />
                 </div>
-                <div className="absolute top-12 left-6 w-0.5 h-12 bg-indigo-100/50" />
+                <div className="absolute top-12 left-6 w-0.5 h-12 bg-green-100/50" />
               </div>
               <div className="pt-1">
-                <h3 className="text-base font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">Comprehensive Courses</h3>
+                <h3 className="text-base font-bold text-slate-800 group-hover:text-green-600 transition-colors">Comprehensive Courses</h3>
                 <p className="text-slate-500 text-xs leading-relaxed mt-1">Deep dive into IIT JAM, CSIR NET & GATE syllabi with structured modules.</p>
               </div>
             </div>
@@ -198,9 +198,9 @@ function LoginForm() {
         <div className="relative z-10 mt-6">
           <div className="flex items-center gap-3 p-3 rounded-xl bg-white/60 backdrop-blur-sm border border-slate-100 shadow-sm">
             <div className="flex -space-x-2">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-indigo-600">JD</div>
-              <div className="w-8 h-8 rounded-full bg-pink-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-pink-600">AS</div>
-              <div className="w-8 h-8 rounded-full bg-emerald-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-emerald-600">MK</div>
+              <div className="w-8 h-8 rounded-full bg-green-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-green-600">JD</div>
+              <div className="w-8 h-8 rounded-full bg-emerald-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-emerald-600">AS</div>
+              <div className="w-8 h-8 rounded-full bg-teal-100 border-2 border-white flex items-center justify-center text-[10px] font-bold text-teal-600">MK</div>
             </div>
             <div className="text-xs font-medium text-slate-600">
               <span className="font-bold text-slate-900">1k+</span> Aspirants
@@ -243,13 +243,13 @@ function LoginForm() {
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-slate-700 ml-1">Email Address</label>
                 <div className="relative group">
-                  <Mail className="absolute left-4 top-3.5 h-4 w-4 text-slate-400 group-focus-within:text-indigo-600 transition-colors" />
+                  <Mail className="absolute left-4 top-3.5 h-4 w-4 text-slate-400 group-focus-within:text-green-600 transition-colors" />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-400 text-sm"
+                    className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/10 focus:border-green-500 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-400 text-sm"
                     placeholder="name@example.com"
                   />
                 </div>
@@ -257,16 +257,16 @@ function LoginForm() {
               <div className="space-y-1.5">
                 <div className="flex justify-between items-center ml-1">
                   <label className="text-xs font-bold text-slate-700">Password</label>
-                  <Link href="/auth/forgot-password" className="text-xs font-bold text-indigo-600 hover:text-indigo-700 hover:underline">Forgot?</Link>
+                  <Link href="/auth/forgot-password" className="text-xs font-bold text-green-600 hover:text-green-700 hover:underline">Forgot?</Link>
                 </div>
                 <div className="relative group">
-                  <Lock className="absolute left-4 top-3.5 h-4 w-4 text-slate-400 group-focus-within:text-indigo-600 transition-colors" />
+                  <Lock className="absolute left-4 top-3.5 h-4 w-4 text-slate-400 group-focus-within:text-green-600 transition-colors" />
                   <input
                     type={showPassword ? "text" : "password"}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-indigo-500/10 focus:border-indigo-500 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-400 text-sm"
+                    className="w-full pl-11 pr-11 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/10 focus:border-green-500 outline-none transition-all font-medium text-slate-900 placeholder:text-slate-400 text-sm"
                     placeholder="••••••••"
                   />
                   <button
@@ -294,7 +294,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-indigo-500/20 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-green-500/20 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : (
                 <>
@@ -306,7 +306,7 @@ function LoginForm() {
 
           <p className="mt-8 text-center text-xs font-medium text-slate-500">
             Don't have an account?{" "}
-            <Link href="/auth/sign-up" className="text-indigo-600 font-bold hover:underline">
+            <Link href="/auth/sign-up" className="text-green-600 font-bold hover:underline">
               Create an account
             </Link>
           </p>

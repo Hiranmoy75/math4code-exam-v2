@@ -134,14 +134,14 @@ export default function StudentDashboard() {
     {
       title: "Average Score",
       value: statsLoading ? "..." : `${stats?.averageScore || 0}%`,
-      icon: <TrendingUp className="w-6 h-6 text-indigo-500" />,
-      color: "from-indigo-50 to-blue-100 dark:from-slate-800 dark:to-slate-900",
+      icon: <TrendingUp className="w-6 h-6 text-green-500" />,
+      color: "from-green-50 to-teal-100 dark:from-slate-800 dark:to-slate-900",
     },
     {
       title: "Courses Enrolled",
       value: myCoursesLoading ? "..." : myCourses?.length.toString() || "0",
-      icon: <GraduationCap className="w-6 h-6 text-purple-500" />,
-      color: "from-purple-50 to-pink-100 dark:from-slate-800 dark:to-slate-900",
+      icon: <GraduationCap className="w-6 h-6 text-teal-500" />,
+      color: "from-teal-50 to-emerald-100 dark:from-slate-800 dark:to-slate-900",
     },
     {
       title: "Test Series Enrolled",
@@ -159,7 +159,7 @@ export default function StudentDashboard() {
 
   if (userLoading) {
     return (
-      <div className="p-6 md:p-10 space-y-8 bg-gradient-to-br from-sky-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 min-h-screen">
+      <div className="p-6 md:p-10 space-y-8 bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 min-h-screen transition-colors duration-700">
         {/* Welcome Skeleton */}
         <div className="rounded-3xl p-6 md:p-8 bg-white/60 dark:bg-slate-800/60 backdrop-blur-lg shadow-xl border border-slate-100 dark:border-slate-700 animate-pulse">
           <div className="h-8 w-64 bg-slate-200 dark:bg-slate-700 rounded mb-2" />
@@ -219,7 +219,7 @@ export default function StudentDashboard() {
       >
         <div>
           <h2 className="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white">
-            Welcome back, <span className="text-indigo-600 dark:text-indigo-400">{user?.fullName || "Student"}!</span>
+            Welcome back, <span className="text-green-600 dark:text-green-400">{user?.fullName || "Student"}!</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 mt-2">
             Keep up the great work! You're progressing steadily towards your goals.
@@ -272,7 +272,7 @@ export default function StudentDashboard() {
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
             className={`px-4 py-2 font-medium transition-colors whitespace-nowrap ${activeTab === tab.id
-              ? "text-indigo-600 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-400"
+              ? "text-green-600 dark:text-green-400 border-b-2 border-green-600 dark:border-green-400"
               : "text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
               }`}
           >
@@ -299,7 +299,7 @@ export default function StudentDashboard() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setActiveTab("my-courses")}
-                  className="text-indigo-600 dark:text-indigo-400"
+                  className="text-green-600 dark:text-green-400"
                 >
                   View All <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
@@ -333,7 +333,7 @@ export default function StudentDashboard() {
                     </div>
                     <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-700">
                       <div
-                        className="h-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                        className="h-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-500"
                         style={{ width: `${course.progress_percentage ? course.progress_percentage : (course.total_lessons > 0 ? course.completed_lessons / course.total_lessons * 100 : 0)}%` }}
                       />
                     </div>
@@ -368,7 +368,7 @@ export default function StudentDashboard() {
                     </div>
                     <div className="w-full h-2 rounded-full bg-slate-200 dark:bg-slate-700">
                       <div
-                        className="h-2 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500"
+                        className="h-2 rounded-full bg-gradient-to-r from-green-500 to-emerald-500"
                         style={{ width: `${test.progress ? test.progress : test.completedExams / test.totalExams * 100}%` }}
                       />
                     </div>
@@ -382,13 +382,13 @@ export default function StudentDashboard() {
               initial="hidden"
               animate="visible"
               custom={5}
-              className="rounded-3xl bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 p-12 shadow-xl border border-indigo-100 dark:border-slate-700"
+              className="rounded-3xl bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-slate-800 dark:via-slate-800 dark:to-slate-800 p-12 shadow-xl border border-green-100 dark:border-slate-700"
             >
               <div className="text-center max-w-2xl mx-auto space-y-6">
                 {/* Icon */}
                 <div className="flex justify-center">
                   <div className="relative">
-                    <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl">
+                    <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl">
                       <GraduationCap className="w-12 h-12 text-white" />
                     </div>
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
@@ -414,7 +414,7 @@ export default function StudentDashboard() {
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
                   <Button
                     onClick={() => setActiveTab("all-courses")}
-                    className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all"
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all"
                   >
                     <BookOpen className="w-5 h-5 mr-2" />
                     Browse Courses
@@ -422,7 +422,7 @@ export default function StudentDashboard() {
                   <Button
                     onClick={() => setActiveTab("all-test-series")}
                     variant="outline"
-                    className="border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 dark:border-indigo-400 dark:text-indigo-400 dark:hover:bg-slate-700 px-8 py-6 text-lg"
+                    className="border-2 border-green-600 text-green-600 hover:bg-green-50 dark:border-green-400 dark:text-green-400 dark:hover:bg-slate-700 px-8 py-6 text-lg"
                   >
                     <FileText className="w-5 h-5 mr-2" />
                     Browse Test Series
@@ -462,7 +462,7 @@ export default function StudentDashboard() {
 
           {myCoursesLoading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
+              <Loader2 className="w-6 h-6 animate-spin text-green-600" />
             </div>
           ) : myCourses && myCourses.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -508,7 +508,7 @@ export default function StudentDashboard() {
                       e.stopPropagation();
                       handleContinueCourse(course.id);
                     }}
-                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
                   >
                     Continue Learning
                   </Button>
@@ -522,7 +522,7 @@ export default function StudentDashboard() {
               <p className="text-sm mt-1">Browse available courses to get started</p>
               <Button
                 onClick={() => setActiveTab("all-courses")}
-                className="mt-4 bg-indigo-600 hover:bg-indigo-700"
+                className="mt-4 bg-green-600 hover:bg-green-700"
               >
                 Browse Courses
               </Button>
@@ -543,7 +543,7 @@ export default function StudentDashboard() {
 
           {allCoursesLoading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
+              <Loader2 className="w-6 h-6 animate-spin text-green-600" />
             </div>
           ) : allCourses && allCourses.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -567,7 +567,7 @@ export default function StudentDashboard() {
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">{course.description}</p>
                   <div className="flex justify-between items-center mb-3">
                     <span className="text-sm text-slate-500 dark:text-slate-400">All lessons</span>
-                    <span className="text-lg font-bold text-indigo-600 dark:text-indigo-400">
+                    <span className="text-lg font-bold text-green-600 dark:text-green-400">
                       {course.price === 0 ? "Free" : `₹${course.price}`}
                     </span>
                   </div>
@@ -582,7 +582,7 @@ export default function StudentDashboard() {
                     <Button
                       onClick={() => handleEnrollCourse(course.id, course.price)}
                       disabled={enrollingCourseId === course.id}
-                      className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+                      className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50"
                     >
                       {enrollingCourseId === course.id ? (
                         <>
@@ -621,7 +621,7 @@ export default function StudentDashboard() {
 
           {seriesLoading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
+              <Loader2 className="w-6 h-6 animate-spin text-green-600" />
             </div>
           ) : testSeries && testSeries.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -667,7 +667,7 @@ export default function StudentDashboard() {
                       e.stopPropagation();
                       handleContinueCourse(test.id);
                     }}
-                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
                   >
                     Continue Learning
                   </Button>
@@ -681,7 +681,7 @@ export default function StudentDashboard() {
               <p className="text-sm mt-1">Browse available test series to get started</p>
               <Button
                 onClick={() => setActiveTab("all-test-series")}
-                className="mt-4 bg-indigo-600 hover:bg-indigo-700"
+                className="mt-4 bg-green-600 hover:bg-green-700"
               >
                 Browse Test Series
               </Button>
@@ -702,7 +702,7 @@ export default function StudentDashboard() {
 
           {allTestSeriesLoading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
+              <Loader2 className="w-6 h-6 animate-spin text-green-600" />
             </div>
           ) : allTestSeries && allTestSeries.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -725,7 +725,7 @@ export default function StudentDashboard() {
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">{series.description}</p>
                   <div className="flex justify-between text-xs mb-3 text-slate-500 dark:text-slate-400">
                     <span>All exams</span>
-                    <span className="font-semibold text-indigo-600 dark:text-indigo-400">
+                    <span className="font-semibold text-green-600 dark:text-green-400">
                       {series.price === 0 ? "Free" : `₹${series.price}`}
                     </span>
                   </div>
@@ -740,7 +740,7 @@ export default function StudentDashboard() {
                     <Button
                       onClick={() => handleEnrollCourse(series.id, series.price)}
                       disabled={enrollingCourseId === series.id}
-                      className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+                      className="w-full bg-green-600 hover:bg-green-700 disabled:opacity-50"
                     >
                       {enrollingCourseId === series.id ? (
                         <>
@@ -786,7 +786,7 @@ export default function StudentDashboard() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               onClick={() => router.push("/student/achievements")}
-              className="px-4 py-2 rounded-lg bg-white text-indigo-600 font-semibold shadow-md"
+              className="px-4 py-2 rounded-lg bg-white text-green-600 font-semibold shadow-md"
             >
               View Achievements
             </motion.button>

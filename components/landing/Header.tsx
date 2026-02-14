@@ -114,33 +114,32 @@ export const Header = () => {
                     : "bg-white/80 backdrop-blur-md border-b border-transparent py-3"
                     }`}
             >
-                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                <div className="max-w-container-hero mx-auto px-6 flex items-center justify-between">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-3 group">
-                        <div className="relative h-12 w-auto transition-all group-hover:scale-105">
-                            <Image
-                                src="/mathentics-logo-new.png"
-                                alt="mathentics Academy Logo"
-                                width={500}
-                                height={100}
-                                className="h-12 w-auto object-contain"
-                                priority
-                            />
+                    <Link href="/" className="flex items-center gap-2 group">
+                        <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-green-600 to-emerald-600 shadow-lg shadow-green-500/20 group-hover:scale-105 transition-transform duration-300">
+                            <span className="text-white font-bold text-xl font-mono">M</span>
                         </div>
+                        <span className="text-2xl font-extrabold tracking-tight text-slate-900 group-hover:text-slate-800 transition-colors">
+                            Math<span className="text-green-600">4</span>Code
+                        </span>
                     </Link>
 
                     {/* Desktop Nav */}
                     <nav className="hidden md:flex items-center gap-8">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors relative group"
-                            >
-                                {link.name}
-                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full" />
-                            </Link>
-                        ))}
+                        {navLinks.map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    className={`text-sm font-medium transition-colors relative group ${isActive ? "text-green-600 font-semibold" : "text-slate-600 hover:text-green-600"}`}
+                                >
+                                    {link.name}
+                                    <span className={`absolute -bottom-1 left-0 h-0.5 bg-green-600 transition-all ${isActive ? "w-full" : "w-0 group-hover:w-full"}`} />
+                                </Link>
+                            );
+                        })}
                     </nav>
 
                     {/* Auth Buttons / Profile */}
@@ -149,7 +148,7 @@ export const Header = () => {
                             <>
                                 {/* Dashboard Button */}
                                 <Link href={getDashboardLink()}>
-                                    <Button variant="ghost" className="flex items-center gap-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50">
+                                    <Button variant="ghost" className="flex items-center gap-2 text-slate-600 hover:text-green-600 hover:bg-green-50">
                                         <LayoutDashboard className="w-4 h-4" />
                                         <span className="text-sm font-medium">Dashboard</span>
                                     </Button>
@@ -158,7 +157,7 @@ export const Header = () => {
                                 {/* Profile Dropdown */}
                                 <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="p-0 w-10 h-10 rounded-full hover:ring-2 hover:ring-indigo-200 transition-all">
+                                        <Button variant="ghost" className="p-0 w-10 h-10 rounded-full hover:ring-2 hover:ring-green-200 transition-all">
                                             {userProfile?.avatarUrl ? (
                                                 <Image
                                                     src={userProfile.avatarUrl}
@@ -169,7 +168,7 @@ export const Header = () => {
                                                     priority
                                                 />
                                             ) : (
-                                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-shadow">
+                                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-600 to-emerald-600 flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-shadow">
                                                     {userProfile?.email?.[0].toUpperCase()}
                                                 </div>
                                             )}
@@ -205,15 +204,15 @@ export const Header = () => {
 
                                         {/* Menu Items */}
                                         <DropdownMenuItem asChild>
-                                            <Link href="/student/settings" className="flex items-center gap-3 px-3 py-2.5 cursor-pointer rounded-lg hover:bg-indigo-50 transition-colors">
-                                                <User className="w-4 h-4 text-indigo-600" />
+                                            <Link href="/student/settings" className="flex items-center gap-3 px-3 py-2.5 cursor-pointer rounded-lg hover:bg-green-50 transition-colors">
+                                                <User className="w-4 h-4 text-green-600" />
                                                 <span className="text-sm font-medium text-gray-700">Profile</span>
                                             </Link>
                                         </DropdownMenuItem>
 
                                         <DropdownMenuItem asChild>
-                                            <Link href={getDashboardLink()} className="flex items-center gap-3 px-3 py-2.5 cursor-pointer rounded-lg hover:bg-indigo-50 transition-colors">
-                                                <LayoutDashboard className="w-4 h-4 text-indigo-600" />
+                                            <Link href={getDashboardLink()} className="flex items-center gap-3 px-3 py-2.5 cursor-pointer rounded-lg hover:bg-green-50 transition-colors">
+                                                <LayoutDashboard className="w-4 h-4 text-green-600" />
                                                 <span className="text-sm font-medium text-gray-700">Dashboard</span>
                                             </Link>
                                         </DropdownMenuItem>
@@ -230,12 +229,12 @@ export const Header = () => {
                         ) : (
                             <>
                                 <Link href="/auth/login">
-                                    <Button variant="ghost" className="text-slate-600 hover:text-indigo-600 hover:bg-indigo-50">
+                                    <Button variant="ghost" className="text-slate-600 hover:text-green-600 hover:bg-green-50">
                                         Log in
                                     </Button>
                                 </Link>
                                 <Link href="/auth/sign-up">
-                                    <Button className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-lg shadow-indigo-500/20 rounded-full px-6">
+                                    <Button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white shadow-lg shadow-green-500/20 rounded-full px-6">
                                         Sign up
                                     </Button>
                                 </Link>
@@ -275,22 +274,25 @@ export const Header = () => {
                             className="fixed top-[72px] left-0 right-0 bg-white z-[90] md:hidden overflow-hidden border-b border-gray-100 shadow-xl rounded-b-2xl mx-2"
                         >
                             <div className="px-6 py-6 space-y-2 max-h-[80vh] overflow-y-auto">
-                                {navLinks.map((link) => (
-                                    <Link
-                                        key={link.name}
-                                        href={link.href}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className="flex items-center justify-between p-4 rounded-xl hover:bg-slate-50 text-gray-900 font-semibold border-b border-gray-100 last:border-0 hover:text-indigo-600 transition-colors"
-                                    >
-                                        <span className="text-base">{link.name}</span>
-                                        <ChevronRight className="w-5 h-5 text-gray-400" />
-                                    </Link>
-                                ))}
+                                {navLinks.map((link) => {
+                                    const isActive = pathname === link.href;
+                                    return (
+                                        <Link
+                                            key={link.name}
+                                            href={link.href}
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className={`flex items-center justify-between p-4 rounded-xl font-semibold border-b border-gray-100 last:border-0 transition-colors ${isActive ? "bg-green-50 text-green-700" : "hover:bg-slate-50 text-gray-900 hover:text-green-600"}`}
+                                        >
+                                            <span className="text-base">{link.name}</span>
+                                            <ChevronRight className={`w-5 h-5 ${isActive ? "text-green-600" : "text-gray-400"}`} />
+                                        </Link>
+                                    );
+                                })}
                                 <div className="pt-4 border-t border-slate-100">
                                     {userProfile ? (
                                         <div className="space-y-2">
                                             <Link href={getDashboardLink()} onClick={() => setIsMobileMenuOpen(false)}>
-                                                <Button variant="outline" className="w-full justify-start gap-2 border-slate-200 text-slate-600 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600">
+                                                <Button variant="outline" className="w-full justify-start gap-2 border-slate-200 text-slate-600 hover:border-green-200 hover:bg-green-50 hover:text-green-600">
                                                     <LayoutDashboard className="w-4 h-4" />
                                                     Dashboard
                                                 </Button>
@@ -303,12 +305,12 @@ export const Header = () => {
                                     ) : (
                                         <div className="grid grid-cols-2 gap-4">
                                             <Link href="/auth/login" onClick={() => setIsMobileMenuOpen(false)}>
-                                                <Button variant="outline" className="w-full justify-center border-slate-200 text-slate-600 hover:border-indigo-200 hover:bg-indigo-50 hover:text-indigo-600">
+                                                <Button variant="outline" className="w-full justify-center border-slate-200 text-slate-600 hover:border-green-200 hover:bg-green-50 hover:text-green-600">
                                                     Log in
                                                 </Button>
                                             </Link>
                                             <Link href="/auth/sign-up" onClick={() => setIsMobileMenuOpen(false)}>
-                                                <Button className="w-full justify-center bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-lg shadow-indigo-500/20">
+                                                <Button className="w-full justify-center bg-gradient-to-r from-green-600 to-emerald-600 text-white shadow-lg shadow-green-500/20">
                                                     Sign up
                                                 </Button>
                                             </Link>

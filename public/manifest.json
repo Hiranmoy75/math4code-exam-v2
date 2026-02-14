@@ -1,7 +1,7 @@
 {
-    "name": "mathentics",
-    "short_name": "mathentics",
-    "description": "Premium online exam system for IIT JEE and IIT JAM preparation",
+    "name": "Math4Code",
+    "short_name": "Math4Code",
+    "description": "Premium mathematics learning platform by Hiranmoy Mandal for IIT-JAM, CSIR NET & GATE preparation",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",

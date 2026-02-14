@@ -225,10 +225,10 @@ export default function PrivacyPolicyPage() {
                         If you have any questions about this Policy, wish to exercise your rights, concerns about privacy or grievances, please write to us with a thorough description via email to:
                     </p>
                     <a
-                        href="mailto:hiranmoymandalucb@gmail.com"
+                        href="mailto:math4code.acad@gmail.com"
                         className="text-2xl font-bold text-indigo-400 hover:text-indigo-300 transition-colors break-all"
                     >
-                        hiranmoymandalucb@gmail.com
+                        math4code.acad@gmail.com
                     </a>
                 </section>
 

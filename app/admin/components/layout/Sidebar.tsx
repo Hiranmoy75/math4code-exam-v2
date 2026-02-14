@@ -107,13 +107,18 @@ export default function Sidebar({
         <div className={`flex items-center gap-3 mb-8 transition-all duration-500 ${sidebarCollapsed ? "justify-center" : "px-2"}`}>
           {sidebarCollapsed ? (
             <SmartLink href="/" queryKey={['route', '/']}>
-              <div className="w-10 h-10 rounded-lg overflow-hidden">
-                <img src="/mathentics-logo-new.png" alt="mathentics" className="w-full h-full object-contain" />
+              <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-green-600 to-emerald-600 shadow-lg shadow-green-500/20 hover:scale-105 transition-transform duration-300">
+                <span className="text-white font-bold text-xl font-mono">M</span>
               </div>
             </SmartLink>
           ) : (
             <SmartLink href="/" queryKey={['route', '/']} className="flex items-center gap-3">
-              <img src="/mathentics-logo-new.png" alt="mathentics Academy" className="h-10 w-auto object-contain" />
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-green-600 to-emerald-600 shadow-lg shadow-green-500/20">
+                <span className="text-white font-bold text-lg font-mono">M</span>
+              </div>
+              <span className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                Math<span className="text-green-600">4</span>Code
+              </span>
             </SmartLink>
           )}
           {!sidebarCollapsed && (
@@ -143,17 +148,17 @@ export default function Sidebar({
                   onClick={() => handleMenuItemClick(it)}
                   className={`group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 relative overflow-hidden
                   ${isActive
-                      ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shadow-sm"
+                      ? "bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 shadow-sm"
                       : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-slate-900 dark:hover:text-slate-200"
                     }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className="absolute left-0 top-0 bottom-0 w-1 bg-indigo-600 rounded-r-full"
+                      className="absolute left-0 top-0 bottom-0 w-1 bg-green-600 rounded-r-full"
                     />
                   )}
-                  <Icon className={`w-5 h-5 min-w-[1.25rem] transition-colors ${isActive ? "text-indigo-600 dark:text-indigo-400" : "text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"}`} />
+                  <Icon className={`w-5 h-5 min-w-[1.25rem] transition-colors ${isActive ? "text-green-600 dark:text-green-400" : "text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"}`} />
 
                   {!sidebarCollapsed && (
                     <motion.span
@@ -269,13 +274,13 @@ export default function Sidebar({
                       setSidebarCollapsed(mode.key === "collapsed");
                     }}
                     className={`w-full text-left px-3 py-2 rounded-lg text-sm flex items-center justify-between transition-colors ${expandMode === mode.key
-                      ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-500/20 dark:text-indigo-300"
+                      ? "bg-green-50 text-green-600 dark:bg-green-500/20 dark:text-green-300"
                       : "hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300"
                       }`}
                   >
                     {mode.label}
                     {expandMode === mode.key && (
-                      <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400" />
+                      <div className="w-1.5 h-1.5 rounded-full bg-green-600 dark:bg-green-400" />
                     )}
                   </button>
                 ))}
@@ -318,7 +323,12 @@ export default function Sidebar({
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
                 <SmartLink href="/" queryKey={['route', '/']} className="flex items-center gap-3">
-                  <img src="/mathentics-logo-new.png" alt="mathentics Academy" className="h-10 w-auto object-contain" />
+                  <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-green-600 to-emerald-600 shadow-lg shadow-green-500/20">
+                    <span className="text-white font-bold text-lg font-mono">M</span>
+                  </div>
+                  <span className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+                    Math<span className="text-green-600">4</span>Code
+                  </span>
                 </SmartLink>
 
                 <button
@@ -346,11 +356,11 @@ export default function Sidebar({
                         }}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
                         ${isActive
-                            ? "bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-medium"
+                            ? "bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 font-medium"
                             : "text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50"
                           }`}
                       >
-                        <Icon className={`w-5 h-5 ${isActive ? "text-indigo-600 dark:text-indigo-400" : "text-slate-400"}`} />
+                        <Icon className={`w-5 h-5 ${isActive ? "text-green-600 dark:text-green-400" : "text-slate-400"}`} />
                         <span className="text-sm">
                           {it.label}
                         </span>

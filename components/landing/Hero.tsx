@@ -1,296 +1,222 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Check, X, Star, Play, Trophy, ArrowRight, Sparkles, Brain, TrendingUp
-} from "lucide-react";
-import VideoPlayer from "@/components/VideoPlayer";
-import { HeroIllustration } from "./Illustrations";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
-export const Hero: React.FC = () => {
-  const [isDemoOpen, setIsDemoOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+export function Hero() {
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  const mcqOptions = [
-    { text: "sin(2x)", correct: false },
-    { text: "cos(2x)", correct: true },
-    { text: "sin²(x)", correct: false },
-    { text: "-sin(2x)", correct: false }
+  const slides = [
+    {
+      id: 1,
+      title: "Math4Code",
+      subtitle: "Mathematics by Hiranmoy Mandal",
+      description: "Data-driven learning for IIT-JAM, CSIR NET & GATE with expert teaching by Hiranmoy Mandal",
+      cta: "Start Free Trial",
+      package: "General Course",
+      bgGradient: "from-green-50 via-white to-emerald-50",
+      textColor: "text-slate-900",
+      accentColor: "text-green-600",
+      buttonBg: "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700",
+      buttonOutline: "border-green-500 text-green-600 hover:bg-green-500 hover:text-white",
+      image: "https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      id: 2,
+      title: "IIT-JAM 2026",
+      subtitle: "Complete Preparation. Expert Guidance.",
+      description: "Comprehensive course packages with full syllabus coverage",
+      cta: "Explore Courses",
+      package: "IIT-JAM Course",
+      bgGradient: "from-green-50 via-white to-emerald-50",
+      textColor: "text-slate-900",
+      accentColor: "text-green-600",
+      buttonBg: "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700",
+      buttonOutline: "border-green-500 text-green-600 hover:bg-green-500 hover:text-white",
+      badge: "1000+ Students",
+      badgeBg: "from-green-500 to-emerald-600",
+      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      id: 3,
+      title: "CSIR NET & GATE",
+      subtitle: "AIR-1 Level Test Series & Analytics",
+      description: "Smart analytics and expert mentorship for competitive success",
+      cta: "View Test Series",
+      package: "Test Series Package",
+      bgGradient: "from-emerald-50 via-white to-green-50",
+      textColor: "text-slate-900",
+      accentColor: "text-emerald-600",
+      buttonBg: "bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700",
+      buttonOutline: "border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white",
+      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800"
+    }
   ];
 
-  const handleOptionClick = (index: number) => {
-    setSelectedOption(index);
+  // Auto-scroll functionality
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   return (
-    <section className="relative min-h-[85vh] flex items-center pt-20 pb-16 lg:pt-24 lg:pb-20 overflow-hidden bg-white">
-      {/* Subtle Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/40 via-white to-purple-50/40 -z-10" />
-
-      {/* Decorative Blobs */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-blue-200/20 to-purple-200/20 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-teal-200/20 to-blue-200/20 rounded-full blur-3xl -z-10" />
-
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
-          {/* Left Content */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="space-y-8 text-center lg:text-left"
-          >
-            {/* Badge */}
+    <section className="relative w-full overflow-hidden bg-white pt-20 md:pt-24 pb-6 md:pb-8">
+      <div className="max-w-container-hero mx-auto px-6 lg:px-8">
+        {/* Banner-style Carousel Container */}
+        <div className="relative h-[320px] sm:h-[300px] md:h-[280px] lg:h-[300px]">
+          <AnimatePresence mode="wait">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 px-4 py-2.5 rounded-full text-sm font-semibold shadow-sm"
+              key={currentSlide}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className={`absolute inset-0 bg-gradient-to-r ${slides[currentSlide].bgGradient} rounded-2xl shadow-lg overflow-hidden`}
             >
-              <Sparkles className="w-4 h-4" />
-              <span>New: IIT-JAM, CSIR NET & GATE 2026 Modules</span>
-            </motion.div>
-
-            {/* Main Heading */}
-            <div className="space-y-6">
-              <h1 className="text-3xl sm:text-4xl lg:text-4xl xl:text-5xl font-extrabold leading-tight tracking-tight">
-                <span className="block text-slate-900 mb-2">Master Mathematics</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-teal-500">
-                  With Authentic Learning.
-                </span>
-              </h1>
-
-              <p className="text-base lg:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                Ace <span className="font-semibold text-blue-600">IIT-JAM</span>, <span className="font-semibold text-purple-600">CSIR NET</span> & <span className="font-semibold text-teal-600">GATE</span> with intelligent mock tests, step-by-step AI guidance, and data-driven insights.
-              </p>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-              <Link href="/auth/login">
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="group bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg shadow-blue-200 hover:shadow-xl hover:shadow-blue-300 transition-all flex items-center justify-center gap-2"
-                >
-                  Start Free Trial
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </motion.button>
-              </Link>
-
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setIsDemoOpen(true)}
-                className="bg-white border-2 border-slate-200 text-slate-700 hover:border-blue-400 hover:bg-blue-50 px-8 py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-sm hover:shadow-md"
-              >
-                <Play className="w-5 h-5" />
-                Watch Demo
-              </motion.button>
-            </div>
-
-            {/* Video Modal */}
-            <AnimatePresence>
-              {isDemoOpen && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
-                  onClick={() => setIsDemoOpen(false)}
-                >
+              <div className="h-full flex items-center relative">
+                {/* Content Container */}
+                <div className="w-full lg:w-[60%] px-6 md:px-8 lg:px-10 py-4 md:py-5 z-10">
                   <motion.div
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.9, opacity: 0 }}
-                    className="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl"
-                    onClick={(e) => e.stopPropagation()}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="space-y-3 md:space-y-4"
                   >
-                    <button
-                      onClick={() => setIsDemoOpen(false)}
-                      className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors"
-                    >
-                      <X size={24} />
-                    </button>
-                    <VideoPlayer url="https://youtu.be/fdPXD2yvT90?si=Kav31xbSJcKOn1m8" />
-                  </motion.div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-8 pt-4 pb-12"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 border-2 border-white shadow-md overflow-hidden">
-                      <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i * 13}`} alt="Student" className="w-full h-full" />
+                    {/* Text Content */}
+                    <div className="space-y-4 md:space-y-2 text-center lg:text-left">
+                      <h1 className={`text-2xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-4xl font-bold ${slides[currentSlide].textColor} leading-tight`}>
+                        {slides[currentSlide].title}
+                      </h1>
+                      <h2 className={`text-base sm:text-lg md:text-lg lg:text-xl font-semibold ${slides[currentSlide].accentColor}`}>
+                        {slides[currentSlide].subtitle}
+                      </h2>
+                      <p className="text-slate-600 text-sm sm:text-base md:text-base max-w-xl mx-auto lg:mx-0">
+                        {slides[currentSlide].description}
+                      </p>
                     </div>
-                  ))}
-                </div>
-                <div className="text-left">
-                  <div className="text-sm font-bold text-slate-900">1000+ Students</div>
-                  <div className="flex items-center gap-1">
-                    {[1, 2, 3, 4, 5].map(i => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                    ))}
-                    <span className="text-xs text-slate-600 ml-1">4.9/5</span>
-                  </div>
-                </div>
-              </div>
 
-              <div className="flex items-center gap-2 bg-green-50 border border-green-200 px-4 py-2 rounded-lg">
-                <TrendingUp className="w-5 h-5 text-green-600" />
-                <span className="text-sm font-semibold text-green-700">99% Success Rate</span>
-              </div>
-            </motion.div>
-          </motion.div>
+                    {/* Buttons and Badge */}
+                    <div className="flex flex-col sm:flex-row gap-3 items-center justify-center lg:justify-start flex-wrap w-full mt-2">
+                      {/* Badge if exists - Mobile Optimized */}
+                      {slides[currentSlide].badge && (
+                        <div className="bg-white p-1 rounded-full shadow-lg border border-white mb-2 sm:mb-0">
+                          <div className={`bg-gradient-to-br ${slides[currentSlide].badgeBg || 'from-green-500 to-green-600'} text-white w-12 h-12 rounded-full flex flex-col items-center justify-center text-center font-bold leading-none shadow-md`}>
+                            <span className="text-lg">1K+</span>
+                            <span className="text-[8px] font-normal opacity-90">Students</span>
+                          </div>
+                        </div>
+                      )}
 
-          {/* Right Visual - Interactive Demo Card */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="relative perspective-1000"
-          >
-            {/* Main Demo Card */}
-            <div className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 p-6 lg:p-8 max-w-md mx-auto transform lg:rotate-2 hover:rotate-0 transition-all duration-500 ease-out">
-              {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg">
-                    <Brain className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-slate-900">AI Practice Mode</div>
-                    <div className="text-xs text-slate-500">Calculus • Derivatives</div>
-                  </div>
-                </div>
-                <div className="flex gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-400" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                  <div className="w-3 h-3 rounded-full bg-green-400" />
-                </div>
-              </div>
-
-              {/* Question */}
-              <div className="space-y-5">
-                <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-                  <p className="font-semibold text-slate-800 text-base lg:text-lg">
-                    What is the derivative of f(x) = sin(x) · cos(x)?
-                  </p>
-                </div>
-
-                {/* Options */}
-                <div className="space-y-3">
-                  {mcqOptions.map((option, idx) => {
-                    const isSelected = selectedOption === idx;
-                    const isCorrect = option.correct;
-
-                    let buttonClass = "w-full text-left p-3.5 rounded-lg border-2 font-medium transition-all duration-200 flex justify-between items-center ";
-
-                    if (isSelected) {
-                      if (isCorrect) {
-                        buttonClass += "bg-green-50 border-green-400 text-green-800";
-                      } else {
-                        buttonClass += "bg-red-50 border-red-400 text-red-800";
-                      }
-                    } else {
-                      buttonClass += "bg-white border-slate-200 text-slate-700 hover:border-blue-300 hover:bg-blue-50";
-                    }
-
-                    return (
-                      <motion.button
-                        key={idx}
-                        whileHover={{ scale: isSelected ? 1 : 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => handleOptionClick(idx)}
-                        className={buttonClass}
-                      >
-                        <span className="flex items-center gap-3">
-                          <span className={`w-7 h-7 rounded-lg flex items-center justify-center text-sm font-bold ${isSelected ? (isCorrect ? 'bg-green-200 text-green-900' : 'bg-red-200 text-red-900') : 'bg-slate-100 text-slate-600'}`}>
-                            {String.fromCharCode(65 + idx)}
-                          </span>
-                          <span className="text-sm lg:text-base">{option.text}</span>
-                        </span>
-
-                        {isSelected && (
-                          <motion.span
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
+                      <div className="flex gap-2 w-full sm:w-auto justify-center">
+                        <Link href="/auth/login" className="flex-1 sm:flex-initial">
+                          <Button
+                            className={`w-full ${slides[currentSlide].buttonBg} text-white font-semibold text-xs sm:text-sm md:text-base px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 border-0 truncate`}
                           >
-                            {isCorrect ? (
-                              <Check className="w-5 h-5 text-green-600" />
-                            ) : (
-                              <X className="w-5 h-5 text-red-600" />
-                            )}
-                          </motion.span>
-                        )}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              </div>
+                            {slides[currentSlide].cta}
+                          </Button>
+                        </Link>
+                        <Link href="/courses" className="flex-1 sm:flex-initial">
+                          <Button
+                            variant="outline"
+                            className={`w-full inline-flex bg-white border-2 ${slides[currentSlide].buttonOutline} font-semibold text-xs text-sm px-4 py-2 rounded-full transition-all hover:shadow-md truncate`}
+                          >
+                            View Details
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
 
-              {/* AI Hint */}
-              {selectedOption !== null && (
+                    {/* Trust Indicators */}
+                    <div className="hidden md:flex flex-wrap items-center gap-3 lg:gap-4 text-[10px] lg:text-xs font-medium text-slate-600">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                        Expert Faculty
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                        Smart Analytics
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Right Image - Desktop Only */}
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-5 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 border border-blue-200 mb-6"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="hidden lg:block absolute right-8 xl:right-12 top-1/2 -translate-y-1/2 z-0"
                 >
-                  <div className="flex items-start gap-3">
-                    <Sparkles className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
-                    <div>
-                      <div className="text-xs font-bold text-purple-900 uppercase tracking-wide mb-1">AI Hint</div>
-                      <p className="text-sm text-slate-700">Use the product rule: (uv)' = u'v + uv'</p>
+                  <div className="relative">
+                    {/* Image Container */}
+                    <div className="relative rounded-2xl overflow-hidden w-[240px] xl:w-[280px] h-[240px] xl:h-[280px] shadow-xl border-4 border-white/60">
+                      <img
+                        src={slides[currentSlide].image}
+                        alt={slides[currentSlide].title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                    </div>
+
+                    {/* Floating Trust Badge */}
+                    <div className="absolute -right-2 top-1/4 bg-white px-2.5 py-2 rounded-lg shadow-lg border border-slate-100">
+                      <div className="text-center">
+                        <div className="text-lg xl:text-xl font-bold text-primary">4.9★</div>
+                        <div className="text-[9px] xl:text-[10px] text-slate-500 font-medium">Rating</div>
+                      </div>
                     </div>
                   </div>
                 </motion.div>
-              )}
-            </div>
-
-
-            {/* Floating Badge - Top Right */}
-            <motion.div
-              animate={{ y: [0, -8, 0] }}
-              transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-              className="absolute -top-4 -right-4 bg-white rounded-xl shadow-lg border border-slate-200 p-3 z-20"
-            >
-              <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
-                <div>
-                  <div className="text-xs font-bold text-slate-900">Top 5%</div>
-                  <div className="text-[10px] text-slate-500">Rank</div>
-                </div>
               </div>
             </motion.div>
+          </AnimatePresence>
 
-            {/* Floating Badge - Bottom Left */}
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1 }}
-              className="absolute -bottom-4 -left-4 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl shadow-lg p-3 z-20"
-            >
-              <div className="flex items-center gap-2 text-white">
-                <Star className="w-5 h-5 fill-yellow-300 text-yellow-300" />
-                <div>
-                  <div className="text-xs font-bold">4.9 Rating</div>
-                  <div className="text-[10px] opacity-90">1000+ Reviews</div>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-2 sm:left-3 md:left-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 backdrop-blur-sm hover:bg-white p-1.5 sm:p-2 rounded-full shadow-md transition-all hover:scale-110 border border-slate-200"
+            aria-label="Previous slide"
+          >
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-2 sm:right-3 md:right-4 top-1/2 -translate-y-1/2 z-20 bg-white/90 backdrop-blur-sm hover:bg-white p-1.5 sm:p-2 rounded-full shadow-md transition-all hover:scale-110 border border-slate-200"
+            aria-label="Next slide"
+          >
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-700" />
+          </button>
+
+          {/* Dot Indicators */}
+          <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-1.5 bg-white/80 backdrop-blur-sm px-2.5 sm:px-3 py-1.5 rounded-full shadow-md border border-slate-200">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`transition-all rounded-full ${index === currentSlide
+                  ? "w-5 sm:w-6 h-2 bg-primary"
+                  : "w-2 h-2 bg-slate-300 hover:bg-slate-400"
+                  }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
-};
+}

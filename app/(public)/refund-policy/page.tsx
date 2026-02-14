@@ -24,8 +24,8 @@ export default function RefundPolicyPage() {
                         If you have any questions about our Returns and Refunds Policy, please contact us at:
                     </p>
                     <p className="mt-2">
-                        <a href="mailto:hiranmoymandalucb@gmail.com" className="text-blue-600 hover:underline">
-                            hiranmoymandalucb@gmail.com
+                        <a href="mailto:math4code.acad@gmail.com" className="text-blue-600 hover:underline">
+                            math4code.acad@gmail.com
                         </a>
                     </p>
                 </section>

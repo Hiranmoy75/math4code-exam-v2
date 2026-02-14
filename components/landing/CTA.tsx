@@ -11,16 +11,16 @@ export const CTA: React.FC = () => {
         <section className="relative py-20 lg:py-24 px-6 lg:px-8 overflow-hidden">
             {/* Background decorations */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-50 to-white -z-10" />
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full blur-3xl opacity-20 -z-10" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-teal-100 to-blue-100 rounded-full blur-3xl opacity-20 -z-10" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full blur-3xl opacity-20 -z-10" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-teal-100 to-emerald-100 rounded-full blur-3xl opacity-20 -z-10" />
 
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-container-narrow mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.6 }}
-                    className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 rounded-3xl lg:rounded-[2rem] p-10 lg:p-16 overflow-hidden shadow-2xl"
+                    className="relative bg-gradient-to-br from-green-600 via-emerald-600 to-green-700 rounded-3xl lg:rounded-[2rem] p-10 lg:p-16 overflow-hidden shadow-2xl"
                 >
                     {/* Animated background pattern */}
                     <div className="absolute inset-0 opacity-10">
@@ -40,7 +40,7 @@ export const CTA: React.FC = () => {
                     <motion.div
                         animate={{ y: [0, -15, 0], rotate: [0, -5, 0] }}
                         transition={{ repeat: Infinity, duration: 4, ease: "easeInOut", delay: 1 }}
-                        className="absolute bottom-8 left-8 text-teal-300"
+                        className="absolute bottom-8 left-8 text-emerald-300"
                     >
                         <Sparkles className="w-6 h-6" />
                     </motion.div>
@@ -63,9 +63,9 @@ export const CTA: React.FC = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: 0.3 }}
-                                className="text-lg lg:text-xl text-blue-50 leading-relaxed max-w-xl"
+                                className="text-lg lg:text-xl text-green-50 leading-relaxed max-w-xl"
                             >
-                                Join thousands of students using <span className="font-bold text-white">mathentics</span> for authentic learning and data-driven progress. No credit card required for the trial.
+                                Join thousands of students using <span className="font-bold text-white">Math4Code</span> for authentic learning and data-driven progress. No credit card required for the trial.
                             </motion.p>
 
                             <motion.div
@@ -78,7 +78,7 @@ export const CTA: React.FC = () => {
                                     <motion.button
                                         whileHover={{ scale: 1.05, y: -2 }}
                                         whileTap={{ scale: 0.95 }}
-                                        className="group bg-white text-blue-700 px-10 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-white/20 transition-all flex items-center gap-3 mx-auto lg:mx-0"
+                                        className="group bg-white text-green-700 px-10 py-5 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-white/20 transition-all flex items-center gap-3 mx-auto lg:mx-0"
                                     >
                                         Start Learning Now
                                         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -96,15 +96,15 @@ export const CTA: React.FC = () => {
                             >
                                 <div className="text-center lg:text-left">
                                     <div className="text-3xl font-bold text-white mb-1">1000+</div>
-                                    <div className="text-sm text-blue-100">Active Students</div>
+                                    <div className="text-sm text-green-100">Active Students</div>
                                 </div>
                                 <div className="text-center lg:text-left">
                                     <div className="text-3xl font-bold text-white mb-1">50K+</div>
-                                    <div className="text-sm text-blue-100">Questions Solved</div>
+                                    <div className="text-sm text-green-100">Questions Solved</div>
                                 </div>
                                 <div className="text-center lg:text-left">
                                     <div className="text-3xl font-bold text-white mb-1">4.9★</div>
-                                    <div className="text-sm text-blue-100">Average Rating</div>
+                                    <div className="text-sm text-green-100">Average Rating</div>
                                 </div>
                             </motion.div>
                         </div>

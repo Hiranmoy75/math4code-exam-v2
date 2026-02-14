@@ -99,7 +99,7 @@ export default function Header({
           <input
             type="text"
             placeholder="Search..."
-            className="h-10 pl-10 pr-4 rounded-full bg-slate-100 dark:bg-slate-800 border-none focus:ring-2 focus:ring-indigo-500/20 w-64 text-sm transition-all"
+            className="h-10 pl-10 pr-4 rounded-full bg-slate-100 dark:bg-slate-800 border-none focus:ring-2 focus:ring-green-500/20 w-64 text-sm transition-all"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
             <span className="text-[10px] font-medium text-slate-400 border border-slate-300 dark:border-slate-600 rounded px-1.5 py-0.5">⌘K</span>
@@ -150,7 +150,7 @@ export default function Header({
                   {unreadCount > 0 && (
                     <button
                       onClick={() => markAllAsRead()}
-                      className="text-xs text-indigo-600 dark:text-indigo-400 font-medium hover:underline"
+                      className="text-xs text-green-600 dark:text-green-400 font-medium hover:underline"
                     >
                       Mark all as read
                     </button>
@@ -168,7 +168,7 @@ export default function Header({
                         key={notif.id}
                         onClick={() => handleNotificationClick(notif.id, notif.is_read)}
                         className={`p-4 border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer
-                          ${!notif.is_read ? 'bg-indigo-50/30 dark:bg-indigo-900/10' : ''}`}
+                          ${!notif.is_read ? 'bg-green-50/30 dark:bg-green-900/10' : ''}`}
                       >
                         <div className="flex gap-3">
                           <div className={`mt-1 w-8 h-8 rounded-full flex items-center justify-center shrink-0 
@@ -200,7 +200,7 @@ export default function Header({
 
                               {/* Show 'Show less' if expanded, or nothing if collapsed (implicit 'Show more' via truncation) */}
                               {expandedNotifId === notif.id && (
-                                <span className="text-[10px] text-indigo-500 font-medium mt-1 block">
+                                <span className="text-[10px] text-green-500 font-medium mt-1 block">
                                   Show less
                                 </span>
                               )}
@@ -213,7 +213,7 @@ export default function Header({
                                   router.push(notif.link!);
                                   setOpenNotif(false);
                                 }}
-                                className="mt-2 text-xs bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-1 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-colors"
+                                className="mt-2 text-xs bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-2 py-1 rounded hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
                               >
                                 View Details →
                               </button>
@@ -225,7 +225,7 @@ export default function Header({
                   )}
                 </div>
                 <div className="p-3 border-t border-slate-100 dark:border-slate-800 text-center">
-                  <button className="text-sm text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium transition-colors">
+                  <button className="text-sm text-slate-600 dark:text-slate-400 hover:text-green-600 dark:hover:text-green-400 font-medium transition-colors">
                     View All Notifications
                   </button>
                 </div>
@@ -250,7 +250,7 @@ export default function Header({
                 priority
               />
             ) : (
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold shadow-md">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white text-sm font-bold shadow-md">
                 {profile?.fullName?.[0] || "A"}
               </div>
             )}

@@ -36,7 +36,7 @@ export const MagicSection: React.FC = () => {
                         <FaCrown /> Premium Experience
                     </div>
                     <h3 className="text-3xl font-bold text-slate-900">Built for serious aspirants — simple for beginners</h3>
-                    <p className="text-slate-600">From auto exam creation to powerful topic analytics and a gamified journey — mathentics blends efficiency with delight. Everything is tailored to keep you practicing and improving.</p>
+                    <p className="text-slate-600">From auto exam creation to powerful topic analytics and a gamified journey — Math4Code blends efficiency with delight. Everything is tailored to keep you practicing and improving.</p>
 
                     <ul className="mt-4 grid gap-3">
                         <li className="flex items-start gap-3">

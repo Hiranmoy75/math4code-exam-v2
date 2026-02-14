@@ -78,7 +78,7 @@ export default function StudentClientLayout({ children }: { children: React.Reac
     if (isLoading && !profile) {
         return (
             <div className="flex flex-col items-center justify-center h-screen bg-white">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mb-4"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mb-4"></div>
                 <p className="text-sm font-medium text-slate-600 animate-pulse">
                     Verifying secure access...
                 </p>

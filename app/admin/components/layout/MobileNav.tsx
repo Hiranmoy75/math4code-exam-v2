@@ -92,20 +92,20 @@ export default function MobileNav({
               <div className="relative">
                 <Icon
                   className={`w-6 h-6 transition-all duration-300 ${isActive || (isCommunity && false) // Community doesn't have active route usually
-                    ? "text-indigo-600 dark:text-indigo-400"
+                    ? "text-green-600 dark:text-green-400"
                     : "text-slate-500 dark:text-slate-400"
                     }`}
                 />
                 {isActive && (
                   <motion.div
                     layoutId="mobileNavDot"
-                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-indigo-600 rounded-full"
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-green-600 rounded-full"
                   />
                 )}
               </div>
               <span
                 className={`text-[10px] font-medium transition-colors duration-300 ${isActive
-                  ? "text-indigo-600 dark:text-indigo-400"
+                  ? "text-green-600 dark:text-green-400"
                   : "text-slate-500 dark:text-slate-400"
                   }`}
               >

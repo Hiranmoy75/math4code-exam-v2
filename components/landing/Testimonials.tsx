@@ -17,7 +17,7 @@ const TESTIMONIALS = [
         id: 2,
         name: 'Sarah L.',
         role: 'IIT-JAM Student',
-        text: "mathentics bridges the gap between theory and practice. The analytics-driven insights helped me identify my weak areas instantly.",
+        text: "Math4Code bridges the gap between theory and practice. The analytics-driven insights helped me identify my weak areas instantly.",
         score: 'AIR 127',
         avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah'
     },
@@ -44,10 +44,10 @@ export const Testimonials: React.FC = () => {
     return (
         <section className="relative py-24 lg:py-32 bg-gradient-to-br from-slate-50 to-white overflow-hidden">
             {/* Background decorations */}
-            <div className="absolute top-20 left-0 w-72 h-72 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full blur-3xl opacity-20" />
-            <div className="absolute bottom-20 right-0 w-72 h-72 bg-gradient-to-br from-teal-100 to-blue-100 rounded-full blur-3xl opacity-20" />
+            <div className="absolute top-20 left-0 w-72 h-72 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full blur-3xl opacity-20" />
+            <div className="absolute bottom-20 right-0 w-72 h-72 bg-gradient-to-br from-emerald-100 to-green-100 rounded-full blur-3xl opacity-20" />
 
-            <div className="relative max-w-5xl mx-auto px-6 lg:px-8">
+            <div className="relative max-w-container-narrow mx-auto px-6 lg:px-8">
                 {/* Section Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -59,7 +59,7 @@ export const Testimonials: React.FC = () => {
                         Success Stories
                     </h2>
                     <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-                        See how students are achieving their dreams with mathentics
+                        See how students are achieving their dreams with Math4Code
                     </p>
                 </motion.div>
 
@@ -76,7 +76,7 @@ export const Testimonials: React.FC = () => {
                         >
                             <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 lg:p-12 max-w-3xl mx-auto relative">
                                 {/* Quote icon */}
-                                <div className="absolute -top-6 left-8 bg-gradient-to-br from-blue-600 to-purple-600 p-4 rounded-2xl shadow-lg">
+                                <div className="absolute -top-6 left-8 bg-gradient-to-br from-green-600 to-emerald-600 p-4 rounded-2xl shadow-lg">
                                     <Quote className="w-6 h-6 text-white" />
                                 </div>
 
@@ -103,7 +103,7 @@ export const Testimonials: React.FC = () => {
 
                                 {/* Author Info */}
                                 <div className="flex flex-col items-center gap-4">
-                                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-100 to-purple-100 border-4 border-white shadow-lg overflow-hidden">
+                                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 border-4 border-white shadow-lg overflow-hidden">
                                         <img
                                             src={TESTIMONIALS[index].avatar}
                                             alt={TESTIMONIALS[index].name}
@@ -118,7 +118,7 @@ export const Testimonials: React.FC = () => {
                                         <div className="text-slate-600 text-sm mb-3">
                                             {TESTIMONIALS[index].role}
                                         </div>
-                                        <div className="inline-block px-4 py-2 bg-gradient-to-r from-green-50 to-teal-50 border border-green-200 text-green-700 rounded-full text-sm font-bold uppercase tracking-wider shadow-sm">
+                                        <div className="inline-block px-4 py-2 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 text-green-700 rounded-full text-sm font-bold uppercase tracking-wider shadow-sm">
                                             {TESTIMONIALS[index].score}
                                         </div>
                                     </div>
@@ -135,7 +135,7 @@ export const Testimonials: React.FC = () => {
                             key={i}
                             onClick={() => setIndex(i)}
                             className={`transition-all duration-300 rounded-full ${i === index
-                                ? 'w-12 h-3 bg-gradient-to-r from-blue-600 to-purple-600'
+                                ? 'w-12 h-3 bg-gradient-to-r from-green-600 to-emerald-600'
                                 : 'w-3 h-3 bg-slate-300 hover:bg-slate-400'
                                 }`}
                             aria-label={`Go to testimonial ${i + 1}`}

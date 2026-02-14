@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const supabase = await createClient()
-    const baseUrl = 'https://www.mathentics.com'
+    const baseUrl = 'https://www.math4code.com'
 
     // Static pages
     const staticPages: MetadataRoute.Sitemap = [

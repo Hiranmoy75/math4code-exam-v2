@@ -10,7 +10,7 @@ export interface PhonePeConfig {
 }
 
 // Default Domain for redirects
-const DEFAULT_DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || "https://www.mathentics.com";
+const DEFAULT_DOMAIN = process.env.NEXT_PUBLIC_DOMAIN || "https://www.math4code.com";
 
 /**
  * Get OAuth Token for Standard Checkout v2

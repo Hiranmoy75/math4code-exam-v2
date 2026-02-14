@@ -66,7 +66,7 @@ export default function Error({
                 {/* Support */}
                 <p className="text-xs text-slate-500">
                     If this problem persists, please{' '}
-                    <a href="mailto:support@mathentics.com" className="text-indigo-600 hover:underline font-semibold">
+                    <a href="mailto:math4code.acad@gmail.com" className="text-indigo-600 hover:underline font-semibold">
                         contact support
                     </a>
                 </p>

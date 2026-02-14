@@ -37,10 +37,10 @@ export async function generateMetadata({ params }: { params: Promise<{ courseId:
         description,
         keywords: keywords.join(', '),
         openGraph: {
-            title: `${course.title} | mathentics`,
+            title: `${course.title} | Math4Code`,
             description,
             type: 'website',
-            url: `https://www.mathentics.com/courses/${courseId}`,
+            url: `https://www.math4code.com/courses/${courseId}`,
             images: course.thumbnail_url ? [
                 {
                     url: course.thumbnail_url,

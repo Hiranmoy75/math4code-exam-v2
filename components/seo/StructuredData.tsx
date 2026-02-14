@@ -8,9 +8,9 @@ interface OrganizationSchemaProps {
 }
 
 export function OrganizationSchema({
-    name = 'mathentics',
-    url = 'https://www.mathentics.com',
-    logo = 'https://www.mathentics.com/mathentics-logo-new.png',
+    name = 'Math4Code',
+    url = 'https://www.math4code.com',
+    logo = 'https://www.math4code.com/mathentics-logo-new.png',
     description = 'Online learning platform for mathematics and competitive exam preparation'
 }: OrganizationSchemaProps) {
     const schema = {
@@ -24,8 +24,45 @@ export function OrganizationSchema({
             '@type': 'PostalAddress',
             addressCountry: 'IN'
         },
+        founder: {
+            '@type': 'Person',
+            name: 'Hiranmoy Mandal',
+            jobTitle: 'Founder & Mathematics Educator',
+            url: 'https://www.math4code.com'
+        },
         sameAs: [
-            // Add social media links here when available
+            "https://www.youtube.com/@MathForCode",
+            "https://www.linkedin.com/in/hiranmoy-mandal-574031235",
+            "https://www.facebook.com/hiranmoy.mandal.3781/",
+            "https://www.instagram.com/Hiranmoy804/"
+        ]
+    }
+
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+    )
+}
+
+export function PersonSchema() {
+    const schema = {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: 'Hiranmoy Mandal',
+        jobTitle: 'Mathematics Educator',
+        url: 'https://www.math4code.com',
+        description: 'Founder of Math4Code, specializing in IIT-JAM, CSIR NET & GATE Mathematics coaching.',
+        worksFor: {
+            '@type': 'Organization',
+            name: 'Math4Code'
+        },
+        sameAs: [
+            "https://www.youtube.com/@MathForCode",
+            "https://www.linkedin.com/in/hiranmoy-mandal-574031235",
+            "https://www.facebook.com/hiranmoy.mandal.3781/",
+            "https://www.instagram.com/Hiranmoy804/"
         ]
     }
 
@@ -51,7 +88,7 @@ interface CourseSchemaProps {
 export function CourseSchema({
     name,
     description,
-    provider = 'mathentics',
+    provider = 'Math4Code',
     instructor,
     price,
     currency = 'INR',

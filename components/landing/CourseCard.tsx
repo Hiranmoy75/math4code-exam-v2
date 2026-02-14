@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { Users } from "lucide-react";
+import Link from "next/link";
+import { User, Star, ChevronRight } from "lucide-react";
 import { CourseThumbnail } from "@/components/ui/CourseThumbnail";
 
 export interface PublicCourse {
@@ -20,50 +20,70 @@ export interface PublicCourse {
     };
 }
 
-export const CourseCard: React.FC<{ course: PublicCourse }> = ({ course }) => {
-    const colors = {
-        'University': 'bg-blue-100 text-blue-800',
-        'Beginner': 'bg-teal-100 text-teal-800',
-        'High School': 'bg-orange-100 text-orange-800',
-        'Advanced': 'bg-purple-100 text-purple-800'
-    };
-    const badgeColor = colors[course.category as keyof typeof colors] || 'bg-gray-100 text-gray-800';
-
+export const CourseCard: React.FC<{ course: PublicCourse; index?: number }> = ({ course, index = 0 }) => {
     return (
-        <motion.div
-            whileHover={{ y: -5 }}
-            className="min-w-[300px] md:min-w-[340px] bg-white rounded-2xl shadow-lg border border-gray-100 p-6 snap-center cursor-pointer group flex flex-col h-full"
-        >
-            <div className="flex justify-between items-start mb-4">
-                <div className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${badgeColor}`}>
-                    {course.category || 'Course'}
-                </div>
-                <div className="w-10 h-10 rounded-lg overflow-hidden">
+        <Link href={`/courses/${course.id}`} className="h-full block">
+            <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:border-green-100 transition-all duration-300 h-full flex flex-col overflow-hidden transform hover:-translate-y-1 group">
+                {/* Thumbnail */}
+                <div className="relative h-44 bg-slate-50 overflow-hidden">
                     <CourseThumbnail
                         src={course.thumbnail_url}
                         title={course.title}
                         category={course.category || "Course"}
-                        className="w-full h-full"
+                        className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                     />
+                    <div className="absolute top-3 right-3 bg-white/90 backdrop-blur text-slate-700 px-2.5 py-0.5 rounded-full text-[10px] font-bold shadow-sm border border-white/20">
+                        Course
+                    </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-4 flex flex-col flex-grow">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="text-[10px] font-bold bg-green-50 text-green-600 px-2 py-0.5 rounded uppercase tracking-wider">
+                            {course.category || "Course"}
+                        </span>
+                    </div>
+
+                    <h3 className="font-bold text-base text-slate-900 mb-1.5 line-clamp-2 leading-tight group-hover:text-green-600 transition-colors">
+                        {course.title}
+                    </h3>
+
+                    <p className="text-slate-500 text-xs line-clamp-2 mb-3 flex-grow leading-relaxed">
+                        {course.description}
+                    </p>
+
+                    {/* Meta Info */}
+                    <div className="flex items-center gap-3 text-xs text-slate-500 mb-4 pt-3 border-t border-slate-50">
+                        <div className="flex items-center gap-1.5">
+                            <User className="w-3.5 h-3.5 text-slate-400" />
+                            <span className="truncate max-w-[100px] font-medium">{(course.profiles as any)?.full_name || "Expert Faculty"}</span>
+                        </div>
+                        <div className="w-1 h-1 rounded-full bg-slate-300"></div>
+                        <div className="flex items-center gap-1.5">
+                            <Star className="w-3.5 h-3.5 text-amber-400 fill-current" />
+                            <span className="font-medium text-slate-700">4.8</span>
+                        </div>
+                    </div>
+
+                    {/* Price & Action */}
+                    <div className="flex items-center justify-between mt-auto">
+                        <div className="flex flex-col">
+                            <div className="flex items-baseline gap-1">
+                                <span className="text-lg font-bold text-slate-900">
+                                    {course.price > 0 ? `₹${course.price}` : "Free"}
+                                </span>
+                                {course.price > 0 && (
+                                    <span className="text-xs text-slate-400 line-through">₹{Math.round(course.price * 1.5)}</span>
+                                )}
+                            </div>
+                        </div>
+                        <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-green-600 group-hover:text-white transition-all shadow-sm">
+                            <ChevronRight className="w-5 h-5" />
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#1F2A6B] transition-colors">{course.title}</h3>
-            <p className="text-sm text-slate-500 mb-4 line-clamp-2 flex-1">{course.description}</p>
-
-            <div className="w-full bg-gray-100 rounded-full h-1.5 mb-4 overflow-hidden">
-                <div className="bg-[#14B8A6] h-full rounded-full" style={{ width: '0%' }}></div>
-            </div>
-
-            <div className="flex justify-between items-center text-sm pt-4 border-t border-gray-50">
-                <div className="flex items-center gap-2 text-slate-600">
-                    <Users size={16} />
-                    <span>{course.profiles?.full_name || 'Instructor'}</span>
-                </div>
-                <div className="font-bold text-[#1F2A6B] text-lg">
-                    ₹ {course.price}
-                </div>
-            </div>
-        </motion.div>
+        </Link>
     );
 };

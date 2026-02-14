@@ -54,7 +54,7 @@ export async function addStudent(data: {
 
             // Construct redirect URL: Use provided one, or env var, or fallback
             // Ensure we append the callback path if not present
-            let redirectUrl = data.redirectTo || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.mathentics.com';
+            let redirectUrl = data.redirectTo || process.env.NEXT_PUBLIC_SITE_URL || 'https://www.math4code.com';
             if (!redirectUrl.includes('/auth/callback')) {
                 redirectUrl = `${redirectUrl.replace(/\/$/, '')}/auth/callback`;
             }

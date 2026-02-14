@@ -526,7 +526,7 @@ export default function VideoPlayer({ url, className = "", thumbUrl }: VideoPlay
                         <div className={`absolute top-0 left-0 right-0 h-24 bg-linear-to-b from-black/90 via-black/40 to-transparent z-20 pointer-events-none transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'} `} />
                         <div className={`absolute top-4 left-4 z-30 pointer-events-none flex items-center gap-2 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'} `}>
                             <div className="bg-blue-600 w-2 h-6 rounded-full"></div>
-                            <span className="text-white font-bold tracking-wider text-sm shadow-black drop-shadow-md">mathentics</span>
+                            <span className="text-white font-bold tracking-wider text-sm shadow-black drop-shadow-md">Math4Code</span>
                         </div>
                         <div className={`absolute top-4 right-4 z-30 pointer-events-none transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'} `}>
                             <div className="bg-white/10 p-2 rounded-full backdrop-blur-md"><Info size={20} className="text-white/80" /></div>

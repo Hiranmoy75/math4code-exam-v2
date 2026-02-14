@@ -20,19 +20,19 @@ export const FeaturesGrid: React.FC = () => {
     ];
     return (
         <section id="features" className="py-20 bg-linear-to-b from-slate-50 to-white">
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="max-w-container mx-auto px-6 lg:px-8">
                 <motion.h2 initial="hidden" animate="show" variants={fadeUp} className="text-3xl font-bold text-slate-900">
-                    Why students choose mathentics
+                    Why students choose Math4Code
                 </motion.h2>
                 <p className="mt-2 text-slate-600 max-w-2xl">Premium features built for focused math practice — designed by exam coaches and coders.</p>
 
                 <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {items.map((it, i) => (
                         <motion.div key={i} className="p-6 rounded-2xl bg-white shadow-sm border border-slate-100" whileHover={{ y: -6 }}>
-                            <div className="w-12 h-12 rounded-lg bg-linear-to-tr from-indigo-500 to-violet-500 text-white flex items-center justify-center shadow">{it.icon}</div>
+                            <div className="w-12 h-12 rounded-lg bg-linear-to-tr from-blue-500 to-teal-500 text-white flex items-center justify-center shadow">{it.icon}</div>
                             <div className="mt-4 text-lg font-semibold text-slate-900">{it.title}</div>
                             <div className="mt-2 text-slate-600 text-sm">{it.desc}</div>
-                            <div className="mt-4 flex items-center gap-2 text-indigo-600 font-medium">Learn more <FiChevronRight /></div>
+                            <div className="mt-4 flex items-center gap-2 text-blue-600 font-medium">Learn more <FiChevronRight /></div>
                         </motion.div>
                     ))}
                 </div>

@@ -272,7 +272,7 @@ function AIMentorContent() {
             }
 
             const systemPrompt = `
-                You are mathentics Ai expert, an expert AI tutor for mathentics platform.
+                You are Math4Code Ai expert, an expert AI tutor for Math4Code platform.
                 
                 KNOWLEDGE BASE: ${knowledgeBase}
                 
@@ -439,7 +439,7 @@ function AIMentorContent() {
                                 <div className="w-6 h-6 rounded-full bg-linear-to-tr from-pink-500 to-orange-400 flex items-center justify-center text-white text-xs font-bold shadow-sm">
                                     <Bot size={14} />
                                 </div>
-                                <span className="font-semibold text-gray-800 text-sm">mathentics Ai</span>
+                                <span className="font-semibold text-gray-800 text-sm">Math4Code Ai</span>
                             </div>
 
                             <div className="flex items-center gap-1">

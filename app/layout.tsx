@@ -42,17 +42,21 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.mathentics.com"),
+  metadataBase: new URL("https://www.math4code.com"),
   title: {
-    default: "mathentics - Master IIT-JAM, CSIR NET & GATE Mathematics | By Hiranmoy Mandal",
-    template: "%s | mathentics",
+    default: "Math4Code - Master IIT-JAM, CSIR NET & GATE Mathematics | By Hiranmoy Mandal",
+    template: "%s | Math4Code",
   },
   description: "Premium online mathematics learning platform by Hiranmoy Mandal. Expert-curated courses, AI-powered tutoring, practice tests, and personalized learning paths for IIT-JAM, CSIR NET & GATE Mathematics preparation. Join thousands of successful students.",
   keywords: [
     // Brand & Creator
-    "mathentics",
+    "Math4Code",
     "Hiranmoy Mandal",
     "Hiranmoy",
+    "Mathematics by Hiranmoy",
+    "Maths by Hiranmoy Mandal",
+    "Math4Code by Hiranmoy",
+    "Matheamtics", // Common typo
     "mathematics online courses",
     "math learning platform",
 
@@ -93,11 +97,11 @@ export const metadata: Metadata = {
     "study material",
     "mathematics tutor"
   ],
-  authors: [{ name: "Hiranmoy Mandal", url: "https://www.mathentics.com" }],
+  authors: [{ name: "Hiranmoy Mandal", url: "https://www.math4code.com" }],
   creator: "Hiranmoy Mandal",
-  publisher: "mathentics",
+  publisher: "Math4Code",
   generator: "Next.js",
-  applicationName: "mathentics",
+  applicationName: "Math4Code",
   referrer: "origin-when-cross-origin",
   formatDetection: {
     email: false,
@@ -108,7 +112,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "mathentics",
+    title: "Math4Code",
   },
   icons: {
     icon: "/favicon.ico",
@@ -117,24 +121,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.mathentics.com",
-    title: "mathentics - Master IIT-JAM, CSIR NET & GATE Mathematics | By Hiranmoy Mandal",
+    url: "https://www.math4code.com",
+    title: "Math4Code - Master IIT-JAM, CSIR NET & GATE Mathematics | By Hiranmoy Mandal",
     description: "Premium mathematics learning platform by Hiranmoy Mandal. AI-powered tutoring, expert courses, and comprehensive test series for IIT-JAM, CSIR NET & GATE Mathematics.",
-    siteName: "mathentics",
+    siteName: "Math4Code",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "mathentics - Mathematics Learning Platform",
+        alt: "Math4Code - Mathematics Learning Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "mathentics - Master IIT-JAM, CSIR NET & GATE Mathematics",
+    title: "Math4Code - Master IIT-JAM, CSIR NET & GATE Mathematics",
     description: "Premium mathematics learning platform by Hiranmoy Mandal. AI-powered tutoring and expert courses for competitive exam preparation.",
-    creator: "@mathentics",
+    creator: "@math4code",
     images: ["/og-image.png"],
   },
   robots: {
@@ -151,7 +155,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://www.mathentics.com",
+    canonical: "https://www.math4code.com",
   },
   category: "Education",
 }

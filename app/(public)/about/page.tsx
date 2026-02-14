@@ -3,6 +3,7 @@
 import React from "react";
 import { Header } from "@/components/landing/Header";
 import { CheckCircle2, Users, Trophy, Target } from "lucide-react";
+import { PersonSchema } from "@/components/seo/StructuredData";
 
 export default function AboutPage() {
     return (
@@ -16,7 +17,7 @@ export default function AboutPage() {
                         Empowering the Next Generation of Developers
                     </h1>
                     <p className="text-xl text-slate-600">
-                        mathentics is a premium learning platform designed to help students master mathematics and coding concepts through interactive exams and comprehensive courses.
+                        Math4Code is a premium learning platform designed to help students master mathematics and coding concepts through interactive exams and comprehensive courses.
                     </p>
                 </div>
             </div>
@@ -63,6 +64,28 @@ export default function AboutPage() {
                 </div>
             </div>
 
+            {/* Founder Section */}
+            <div className="py-20 px-6 bg-slate-50">
+                <div className="max-w-4xl mx-auto text-center">
+                    <h2 className="text-3xl font-bold mb-8 text-slate-900">Meet the Founder</h2>
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden group hover:shadow-md transition-all duration-300">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-violet-600"></div>
+                        <div className="w-24 h-24 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-full mx-auto mb-6 flex items-center justify-center text-white text-3xl font-bold shadow-lg group-hover:scale-105 transition-transform">
+                            HM
+                        </div>
+                        <h3 className="text-2xl font-bold text-slate-900 mb-1">Hiranmoy Mandal</h3>
+                        <p className="text-indigo-600 font-medium mb-6">Mathematics Educator & Founder of Math4Code</p>
+                        <p className="text-slate-600 leading-relaxed max-w-2xl mx-auto italic">
+                            &quot;Mathematics is not just about solving equations, but about understanding the logical structure of the universe.&quot;
+                        </p>
+                        <p className="text-slate-600 leading-relaxed max-w-2xl mx-auto mt-4">
+                            With years of experience in coaching students for competitive exams like IIT-JAM, CSIR NET, and GATE, Hiranmoy Mandal founded Math4Code to make high-quality mathematics education accessible to everyone. His unique teaching methodology simplifies complex concepts, helping thousands of students achieve their dreams.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <PersonSchema />
         </main>
     );
 }

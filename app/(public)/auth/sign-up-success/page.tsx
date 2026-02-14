@@ -8,7 +8,7 @@ export default function SignUpSuccessPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Thankyou for signing up!</CardTitle>
-          <CardDescription>Welcome to mathentics</CardDescription>
+          <CardDescription>Welcome to Math4Code</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">

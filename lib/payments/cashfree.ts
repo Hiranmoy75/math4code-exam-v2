@@ -221,8 +221,8 @@ export class CashfreePayment {
                     customer_phone: '6297534924',
                 },
                 order_meta: {
-                    return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.mathentics.com'}/payment/verifymock`,
-                    notify_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.mathentics.com'}/api/payments/callbackmock`,
+                    return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.math4code.com'}/payment/verifymock`,
+                    notify_url: `${process.env.NEXT_PUBLIC_APP_URL || 'https://www.math4code.com'}/api/payments/callbackmock`,
                 },
             };
 

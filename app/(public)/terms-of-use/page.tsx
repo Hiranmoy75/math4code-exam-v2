@@ -8,13 +8,13 @@ export default function TermsOfUsePage() {
             <div className="prose prose-slate prose-lg max-w-none text-slate-600 space-y-12">
                 <section>
                     <p className="leading-relaxed">
-                        These Terms of Use set out the terms and conditions for use of this Deepak unacademy ( “Website”) and any content, Public Forums, or services offered on or through the Website and/or through any mobile application(s) ( “Application”) (collectively referred to as the “Platform”).
+                        These Terms of Use set out the terms and conditions for use of this Math4Code ( “Website”) and any content, Public Forums, or services offered on or through the Website and/or through any mobile application(s) ( “Application”) (collectively referred to as the “Platform”).
                     </p>
                     <p className="mt-4 leading-relaxed">
                         These Terms of Use apply to end users of the Website (referred to as “Learners”, “You”, “Your”). These Terms of Use, including the Privacy Policy and any other terms and conditions published on the Platform or communicated to you from time to time (collectively referred to as the “Agreement”), define the relationship and responsibilities between You and Creator (as defined herein) in using the Platform. Your access to the Platform is subject to Your acceptance of this Agreement. Hence, please take Your time to read this Agreement.
                     </p>
                     <p className="mt-4 leading-relaxed">
-                        When we speak of “Creator”, ‘we’, ‘us’, and ‘our’, we collectively mean Deepak unacademy being the creator of this Platform and the content/materials/services contained therein.
+                        When we speak of “Creator”, ‘we’, ‘us’, and ‘our’, we collectively mean Math4Code being the creator of this Platform and the content/materials/services contained therein.
                     </p>
                     <p className="mt-4 leading-relaxed">
                         By accessing this Platform, You are agreeing to be bound by the terms of this Agreement, all applicable laws and regulations. From time-to-time, versions of the above-mentioned policies and terms are made available on the Platform for Your reference and to understand how we handle Your personal information. By using or visiting the Platform and services provided to You on, from, or through the Platform, You are expressly agreeing to the terms of the Agreement and any other terms that are updated from time to time.
@@ -212,10 +212,10 @@ export default function TermsOfUsePage() {
                         If You’ve have concerns or queries regarding this Agreement, You may write to us by email at:
                     </p>
                     <a
-                        href="mailto:hiranmoymandalucb@gmail.com"
+                        href="mailto:math4code.acad@gmail.com"
                         className="text-3xl font-bold text-indigo-400 hover:text-indigo-300 transition-all border-b-2 border-transparent hover:border-indigo-300 pb-1"
                     >
-                        hiranmoymandalucb@gmail.com
+                        math4code.acad@gmail.com
                     </a>
                 </section>
             </div>

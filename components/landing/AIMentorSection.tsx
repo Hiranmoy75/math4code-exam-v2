@@ -7,12 +7,12 @@ import { ArrowRight, Check, Sparkles, MessageCircle, Brain } from "lucide-react"
 
 export const AIMentorSection: React.FC = () => {
     return (
-        <section className="py-20 lg:py-24 bg-gradient-to-br from-emerald-50 via-teal-50 to-purple-100 relative overflow-hidden">
+        <section className="py-20 lg:py-24 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 relative overflow-hidden">
             {/* Background Decorations */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-emerald-200/20 to-teal-200/20 rounded-full blur-3xl -z-10" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-purple-200/20 to-pink-200/20 rounded-full blur-3xl -z-10" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-green-200/20 to-emerald-200/20 rounded-full blur-3xl -z-10" />
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-emerald-200/20 to-teal-200/20 rounded-full blur-3xl -z-10" />
 
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="max-w-container mx-auto px-6 lg:px-8">
                 <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                     {/* Left Content */}
                     <motion.div
@@ -25,7 +25,7 @@ export const AIMentorSection: React.FC = () => {
                         {/* Heading */}
                         <div>
                             <h2 className="text-4xl lg:text-5xl font-extrabold text-slate-900 mb-3">
-                                Meet Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-blue-600 to-purple-600">AI Mentor</span>
+                                Meet Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600">AI Mentor</span>
                             </h2>
                             <p className="text-lg text-slate-600">
                                 First human-quality AI math tutor designed to help you master mathematics.
@@ -35,7 +35,7 @@ export const AIMentorSection: React.FC = () => {
                         {/* Features List */}
                         <div className="space-y-4">
                             <div className="flex items-start gap-3">
-                                <div className="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <Check className="w-4 h-4 text-white" />
                                 </div>
                                 <p className="text-slate-700 leading-relaxed">
@@ -43,7 +43,7 @@ export const AIMentorSection: React.FC = () => {
                                 </p>
                             </div>
                             <div className="flex items-start gap-3">
-                                <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <Check className="w-4 h-4 text-white" />
                                 </div>
                                 <p className="text-slate-700 leading-relaxed">
@@ -51,7 +51,7 @@ export const AIMentorSection: React.FC = () => {
                                 </p>
                             </div>
                             <div className="flex items-start gap-3">
-                                <div className="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div className="w-6 h-6 rounded-full bg-teal-500 flex items-center justify-center flex-shrink-0 mt-0.5">
                                     <Check className="w-4 h-4 text-white" />
                                 </div>
                                 <p className="text-slate-700 leading-relaxed">
@@ -66,7 +66,7 @@ export const AIMentorSection: React.FC = () => {
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="group bg-gradient-to-r from-teal-600 to-blue-600 hover:from-teal-700 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
+                                    className="group bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center gap-2"
                                 >
                                     <Sparkles className="w-5 h-5" />
                                     <span>Try AI Mentor Now</span>
@@ -74,7 +74,7 @@ export const AIMentorSection: React.FC = () => {
                                 </motion.button>
                             </Link>
                             <Link href="/about">
-                                <button className="text-slate-700 hover:text-blue-600 font-semibold flex items-center gap-2 transition-colors">
+                                <button className="text-slate-700 hover:text-green-600 font-semibold flex items-center gap-2 transition-colors">
                                     Learn more
                                     <ArrowRight className="w-4 h-4" />
                                 </button>
@@ -94,7 +94,7 @@ export const AIMentorSection: React.FC = () => {
                         <div className="relative bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 max-w-md mx-auto">
                             {/* Header */}
                             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-200">
-                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-blue-500 flex items-center justify-center">
+                                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
                                     <Brain className="w-6 h-6 text-white" />
                                 </div>
                                 <div>
@@ -113,19 +113,19 @@ export const AIMentorSection: React.FC = () => {
                                         I want to learn calculus and build strong foundations for IIT-JAM.
                                     </p>
                                 </div>
-                                <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-200">
+                                <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-4 border border-green-200">
                                     <div className="flex items-start gap-2 mb-2">
-                                        <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                                        <Sparkles className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
                                         <div>
-                                            <p className="text-sm font-semibold text-blue-900 mb-1">AI Mentor</p>
+                                            <p className="text-sm font-semibold text-green-900 mb-1">AI Mentor</p>
                                             <p className="text-sm text-slate-700">
-                                                Great! Let's start with <span className="font-semibold text-blue-600">Limits & Continuity</span>. I'll create a personalized learning path for you.
+                                                Great! Let's start with <span className="font-semibold text-green-600">Limits & Continuity</span>. I'll create a personalized learning path for you.
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="mt-3 pt-3 border-t border-blue-200">
-                                        <div className="text-xs font-semibold text-blue-700 mb-2">Recommended:</div>
-                                        <div className="bg-white rounded-lg p-2 border border-blue-200">
+                                    <div className="mt-3 pt-3 border-t border-green-200">
+                                        <div className="text-xs font-semibold text-green-700 mb-2">Recommended:</div>
+                                        <div className="bg-white rounded-lg p-2 border border-green-200">
                                             <div className="text-xs font-bold text-slate-900">Calculus Fundamentals</div>
                                             <div className="text-[10px] text-slate-500">24 lessons • 12 hours</div>
                                         </div>
@@ -142,7 +142,7 @@ export const AIMentorSection: React.FC = () => {
                                     className="flex-1 bg-transparent text-sm text-slate-600 placeholder-slate-400 outline-none"
                                     disabled
                                 />
-                                <button className="w-8 h-8 rounded-lg bg-gradient-to-r from-teal-600 to-blue-600 flex items-center justify-center">
+                                <button className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 flex items-center justify-center">
                                     <ArrowRight className="w-4 h-4 text-white" />
                                 </button>
                             </div>
