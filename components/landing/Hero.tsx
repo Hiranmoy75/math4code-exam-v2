@@ -22,7 +22,7 @@ export function Hero() {
       accentColor: "text-green-600",
       buttonBg: "bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700",
       buttonOutline: "border-green-500 text-green-600 hover:bg-green-500 hover:text-white",
-      image: "https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?auto=format&fit=crop&q=80&w=800"
+      image: "/hero-images/hero1.png"
     },
     {
       id: 2,
@@ -38,7 +38,7 @@ export function Hero() {
       buttonOutline: "border-green-500 text-green-600 hover:bg-green-500 hover:text-white",
       badge: "1000+ Students",
       badgeBg: "from-green-500 to-emerald-600",
-      image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800"
+      image: "/hero-images/hero2.png"
     },
     {
       id: 3,
@@ -52,7 +52,7 @@ export function Hero() {
       accentColor: "text-emerald-600",
       buttonBg: "bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700",
       buttonOutline: "border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white",
-      image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&q=80&w=800"
+      image: "/hero-images/hero3.png"
     }
   ];
 
