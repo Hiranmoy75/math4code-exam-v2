@@ -151,7 +151,14 @@ function SignUpForm() {
     const supabase = createClient();
     setIsLoading(true);
     try {
-      const redirectTo = new URL(`${window.location.origin}/auth/callback`);
+      // DYNAMIC REDIRECT: Use current window origin + /auth/callback
+      // This ensures if user is on math4code.com, they return to math4code.com
+      // If user is on mathentics.com, they return to mathentics.com
+      const origin = window.location.origin;
+      const callbackUrl = `${origin}/auth/callback`;
+
+      const redirectTo = new URL(callbackUrl);
+
       if (next) {
         redirectTo.searchParams.set("next", next);
       }
@@ -178,6 +185,7 @@ function SignUpForm() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
+          // Explicitly set the redirect URL to override Supabase default Site URL
           redirectTo: redirectTo.toString(),
           queryParams: {
             access_type: 'offline',
