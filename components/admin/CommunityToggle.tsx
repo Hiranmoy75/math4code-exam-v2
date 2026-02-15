@@ -13,16 +13,17 @@ interface CommunityToggleProps {
     initialEnabled: boolean;
     className?: string;
     onToggle?: (enabled: boolean) => void;
+    showLabel?: boolean;
 }
 
-export function CommunityToggle({ courseId, initialEnabled, className, onToggle }: CommunityToggleProps) {
+export function CommunityToggle({ courseId, initialEnabled, className, onToggle, showLabel = true }: CommunityToggleProps) {
     const [enabled, setEnabled] = useState(initialEnabled);
     const { mutate: toggleCommunity, isPending } = useToggleCommunity();
-    const router = useRouter(); // Need to import useRouter
+    const router = useRouter();
 
     const handleToggle = (checked: boolean) => {
         setEnabled(checked);
-        onToggle?.(checked); // Optimistic update parent
+        onToggle?.(checked);
 
         toggleCommunity(
             { courseId, enabled: checked },
@@ -31,7 +32,6 @@ export function CommunityToggle({ courseId, initialEnabled, className, onToggle 
                     router.refresh();
                 },
                 onError: () => {
-                    // Revert on error
                     setEnabled(!checked);
                     onToggle?.(!checked);
                 }
@@ -46,15 +46,17 @@ export function CommunityToggle({ courseId, initialEnabled, className, onToggle 
                     "w-4 h-4 transition-colors",
                     enabled ? "text-emerald-600 dark:text-emerald-400" : "text-slate-400 dark:text-slate-600"
                 )} />
-                <Label
-                    htmlFor={`community-${courseId}`}
-                    className={cn(
-                        "text-sm font-medium cursor-pointer transition-colors",
-                        enabled ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"
-                    )}
-                >
-                    Community
-                </Label>
+                {showLabel && (
+                    <Label
+                        htmlFor={`community-${courseId}`}
+                        className={cn(
+                            "text-sm font-medium cursor-pointer transition-colors",
+                            enabled ? "text-slate-900 dark:text-slate-100" : "text-slate-600 dark:text-slate-400"
+                        )}
+                    >
+                        Community
+                    </Label>
+                )}
             </div>
             <div className="relative">
                 {isPending && (

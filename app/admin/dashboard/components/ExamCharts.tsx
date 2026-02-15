@@ -83,7 +83,7 @@ export default function ExamCharts({ userId }: Props) {
                 />
                 <Bar
                   dataKey="attempts"
-                  fill="#6366f1"
+                  fill="#059669"
                   radius={[4, 4, 0, 0]}
                   barSize={32}
                 />

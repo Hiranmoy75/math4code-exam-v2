@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
@@ -20,6 +22,7 @@ export function CourseThumbnail({
     priority = false,
     variant = "default",
 }: CourseThumbnailProps) {
+    const [imageError, setImageError] = React.useState(false);
     const isCard = variant === "card";
 
     // Base classes that apply to both
@@ -33,28 +36,6 @@ export function CourseThumbnail({
 
     // Check if we have a valid thumbnail URL (not null, empty, or the string "NULL")
     const hasValidThumbnail = src && src !== 'NULL' && src !== 'null' && src.trim() !== '';
-
-    // If valid thumbnail exists, show it normally
-    if (hasValidThumbnail) {
-        return (
-            <div
-                className={cn(
-                    baseClasses,
-                    isCard ? cardClasses : defaultClasses,
-                    className
-                )}
-            >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <Image
-                    src={src}
-                    alt={title}
-                    fill
-                    className="object-cover transition-transform duration-300 hover:scale-105"
-                    priority={priority}
-                />
-            </div>
-        );
-    }
 
     // Gradient Based on Title Hash
     const gradients = [
@@ -70,7 +51,8 @@ export function CourseThumbnail({
     const gradientIndex = hash % gradients.length;
     const selectedGradient = gradients[gradientIndex];
 
-    return (
+    // Render Gradient Fallback
+    const renderGradient = () => (
         <div
             className={cn(
                 "relative overflow-hidden bg-gradient-to-br",
@@ -137,4 +119,29 @@ export function CourseThumbnail({
             </div>
         </div>
     );
+
+    // If valid thumbnail exists and didn't error, show it normally
+    if (hasValidThumbnail && !imageError) {
+        return (
+            <div
+                className={cn(
+                    baseClasses,
+                    isCard ? cardClasses : defaultClasses,
+                    className
+                )}
+            >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <Image
+                    src={src}
+                    alt={title}
+                    fill
+                    className="object-cover transition-transform duration-300 hover:scale-105"
+                    priority={priority}
+                    onError={() => setImageError(true)}
+                />
+            </div>
+        );
+    }
+
+    return renderGradient();
 }

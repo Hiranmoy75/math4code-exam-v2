@@ -67,8 +67,8 @@ export default function ExamsTable() {
         <div className="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 border-b border-slate-200 dark:border-slate-700">
           <CardHeader>
             <div className="flex items-center gap-3 mb-2">
-              <div className="p-2 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-                <FileText className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+              <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg">
+                <FileText className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
               <div>
                 <CardTitle className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -99,7 +99,7 @@ export default function ExamsTable() {
                       variant={statusFilter === status ? "default" : "outline"}
                       size="sm"
                       onClick={() => setStatusFilter(status)}
-                      className={statusFilter === status ? "bg-indigo-600" : ""}
+                      className={statusFilter === status ? "bg-green-600" : ""}
                     >
                       {status.charAt(0).toUpperCase() + status.slice(1)}
                       <Badge
@@ -120,7 +120,7 @@ export default function ExamsTable() {
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
-                <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mx-auto mb-3" />
+                <Loader2 className="w-8 h-8 animate-spin text-green-600 mx-auto mb-3" />
                 <p className="text-sm text-slate-500">Loading exams...</p>
               </div>
             </div>

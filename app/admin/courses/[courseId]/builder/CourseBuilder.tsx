@@ -380,7 +380,7 @@ export default function CourseBuilder({ course, initialModules }: CourseBuilderP
                             className={cn(
                                 isPublished
                                     ? "bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50"
-                                    : "bg-blue-600 hover:bg-blue-700 text-white"
+                                    : "bg-green-600 hover:bg-green-700 text-white"
                             )}
                         >
                             {isPublished ? "Published" : "Publish"}
@@ -425,14 +425,14 @@ export default function CourseBuilder({ course, initialModules }: CourseBuilderP
                             <div className="space-y-2">
                                 <Button
                                     variant="ghost"
-                                    className="w-full justify-start text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:text-blue-300 dark:hover:bg-blue-500/10"
+                                    className="w-full justify-start text-green-600 hover:text-green-700 hover:bg-green-50 dark:text-green-400 dark:hover:text-green-300 dark:hover:bg-green-500/10"
                                     onClick={() => setIsCreatingModule(true)}
                                 >
                                     <Plus className="h-4 w-4 mr-2" /> Add new chapter
                                 </Button>
                                 <Button
                                     variant="ghost"
-                                    className="w-full justify-start text-purple-600 hover:text-purple-700 hover:bg-purple-50 dark:text-purple-400 dark:hover:text-purple-300 dark:hover:bg-purple-500/10"
+                                    className="w-full justify-start text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:text-emerald-300 dark:hover:bg-emerald-500/10"
                                     onClick={handleGenerateOutline}
                                     disabled={isGenerating}
                                 >
@@ -499,7 +499,7 @@ export default function CourseBuilder({ course, initialModules }: CourseBuilderP
 
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setShowOutlinePreview(false)} className="dark:bg-transparent dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-800">Cancel</Button>
-                        <Button onClick={handleApplyOutline} disabled={isGenerating} className="bg-purple-600 hover:bg-purple-700 text-white">
+                        <Button onClick={handleApplyOutline} disabled={isGenerating} className="bg-emerald-600 hover:bg-emerald-700 text-white">
                             {isGenerating ? "Creating..." : "Apply Outline"}
                         </Button>
                     </DialogFooter>

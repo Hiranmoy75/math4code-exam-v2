@@ -15,7 +15,7 @@ export default function ContactPage() {
             <div className="pt-32 pb-20 px-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
-                        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-violet-600">
+                        <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
                             Get in Touch with Hiranmoy Mandal
                         </h1>
                         <p className="text-xl text-slate-600 max-w-2xl mx-auto">
@@ -30,16 +30,16 @@ export default function ContactPage() {
                                 <h3 className="text-xl font-bold mb-6">Contact Information</h3>
                                 <div className="space-y-6">
                                     <div className="flex items-start gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+                                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
                                             <Mail className="w-5 h-5" />
                                         </div>
                                         <div>
                                             <p className="font-medium text-slate-900">Email</p>
-                                            <p className="text-slate-600">math4code.acad@gmail.com</p>
+                                            <p className="text-slate-600">math4codes@gmail.com</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+                                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
                                             <Phone className="w-5 h-5" />
                                         </div>
                                         <div>
@@ -48,12 +48,12 @@ export default function ContactPage() {
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-4">
-                                        <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+                                        <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 shrink-0">
                                             <MapPin className="w-5 h-5" />
                                         </div>
                                         <div>
                                             <p className="font-medium text-slate-900">Office</p>
-                                            <p className="text-slate-600">Math4Code Academy, Madhubani, Bihar, 847227, India</p>
+                                            <p className="text-slate-600">Math4Code, Kolkata, West Bengal, 700049, India</p>
                                         </div>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@ export default function ContactPage() {
                                     <label className="text-sm font-medium text-slate-700">Message</label>
                                     <Textarea placeholder="How can we help you?" className="min-h-[150px]" />
                                 </div>
-                                <Button className="w-full bg-linear-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500">
+                                <Button className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500">
                                     Send Message <Send className="w-4 h-4 ml-2" />
                                 </Button>
                             </form>

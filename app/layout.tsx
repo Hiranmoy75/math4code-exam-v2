@@ -185,8 +185,8 @@ export default function RootLayout({
         <ReactQueryProviders>
           <ThemeProvider
             attribute="class"
-            defaultTheme="light"
-            enableSystem={false}
+            defaultTheme="system"
+            enableSystem
             disableTransitionOnChange
           >
             <MathJaxContext version={3} config={config}>

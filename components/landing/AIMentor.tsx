@@ -326,7 +326,7 @@ function AIMentorContent() {
         const boldChunks = text.split(/(\*\*.*?\*\*)/g);
         return boldChunks.map((chunk, i) => {
             if (chunk.startsWith('**') && chunk.endsWith('**')) {
-                return <strong key={`bold-${i}`} className="font-bold text-[#1F2A6B]">{chunk.slice(2, -2)}</strong>;
+                return <strong key={`bold-${i}`} className="font-bold text-emerald-800">{chunk.slice(2, -2)}</strong>;
             }
             const mathChunks = chunk.split(/(\$[^\$]+\$)/g);
             return mathChunks.map((subChunk, j) => {
@@ -368,7 +368,7 @@ function AIMentorContent() {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 key={`${product!.id}-${idx}`}
-                                className="min-w-[240px] w-[240px] bg-white rounded-xl border border-indigo-100 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden shrink-0"
+                                className="min-w-[240px] w-[240px] bg-white rounded-xl border border-emerald-100 shadow-sm hover:shadow-md transition-all flex flex-col overflow-hidden shrink-0"
                             >
                                 {/* Thumbnail Image */}
                                 <div className="h-32 w-full bg-gray-100 relative overflow-hidden">
@@ -379,18 +379,18 @@ function AIMentorContent() {
                                             className="w-full h-full object-cover"
                                         />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-indigo-50 to-purple-50 text-indigo-200">
+                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-emerald-50 to-teal-50 text-emerald-200">
                                             <Bot size={40} />
                                         </div>
                                     )}
-                                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-md text-[10px] font-bold text-indigo-600 shadow-sm">
+                                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-2 py-0.5 rounded-md text-[10px] font-bold text-emerald-600 shadow-sm">
                                         ₹{product!.price}
                                     </div>
                                 </div>
 
                                 {/* Content */}
                                 <div className="p-3 flex flex-col flex-1">
-                                    <div className="text-[10px] uppercase font-bold text-indigo-500 tracking-wider mb-1">
+                                    <div className="text-[10px] uppercase font-bold text-emerald-500 tracking-wider mb-1">
                                         {(product as any).category || 'Course'}
                                     </div>
                                     <h4 className="font-bold text-gray-800 text-sm leading-tight mb-1 line-clamp-2" title={product!.title}>
@@ -402,7 +402,7 @@ function AIMentorContent() {
 
                                     <button
                                         onClick={() => handleBuy(product!.id)}
-                                        className="w-full bg-[#1F2A6B] hover:bg-indigo-800 active:scale-95 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-2 transition-all mt-auto"
+                                        className="w-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-2 transition-all mt-auto"
                                     >
                                         <ShoppingCart size={14} /> View Details
                                     </button>
@@ -436,7 +436,7 @@ function AIMentorContent() {
                             </button>
 
                             <div className="flex items-center gap-2">
-                                <div className="w-6 h-6 rounded-full bg-linear-to-tr from-pink-500 to-orange-400 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                                <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
                                     <Bot size={14} />
                                 </div>
                                 <span className="font-semibold text-gray-800 text-sm">Math4Code Ai</span>
@@ -492,7 +492,7 @@ function AIMentorContent() {
                                                         onClick={() => loadSession(hist.id)}
                                                         className={`w-full text-left p-3 rounded-xl text-sm truncate transition-all duration-200
                                                         ${currentSessionId === hist.id
-                                                                ? 'bg-indigo-50 text-[#1F2A6B] font-medium shadow-sm'
+                                                                ? 'bg-emerald-50 text-emerald-700 font-medium shadow-sm'
                                                                 : 'hover:bg-gray-50 text-gray-600'
                                                             }`}
                                                     >
@@ -511,7 +511,7 @@ function AIMentorContent() {
 
                                     {!messages && !isMessagesLoading && (
                                         <div className="h-full flex flex-col items-center justify-center p-4">
-                                            <div className="w-16 h-16 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center mb-6 shadow-xl shadow-indigo-100 animate-bounce">
+                                            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center mb-6 shadow-xl shadow-emerald-100 animate-bounce">
                                                 <Bot size={32} className="text-white" />
                                             </div>
                                             <h2 className="text-xl font-bold text-gray-800">Hi! I'm your Math Mentor</h2>
@@ -525,7 +525,7 @@ function AIMentorContent() {
                                                     <button
                                                         key={i}
                                                         onClick={() => handleSuggestedQuestion(q)}
-                                                        className="w-full text-left p-3 rounded-xl bg-gray-50 hover:bg-indigo-50 hover:text-indigo-700 transition-all text-xs text-gray-600 border border-gray-100 flex items-center group"
+                                                        className="w-full text-left p-3 rounded-xl bg-gray-50 hover:bg-emerald-50 hover:text-emerald-700 transition-all text-xs text-gray-600 border border-gray-100 flex items-center group"
                                                     >
                                                         <span className="flex-1">{q}</span>
                                                         <Send size={12} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
@@ -550,14 +550,14 @@ function AIMentorContent() {
                                             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                                         >
                                             {msg.role === 'ai' && (
-                                                <div className="w-8 h-8 rounded-full bg-linear-to-tr from-indigo-500 to-purple-500 flex items-center justify-center mr-2 shrink-0 mt-1 shadow-sm border border-white">
+                                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-500 flex items-center justify-center mr-2 shrink-0 mt-1 shadow-sm border border-white">
                                                     <Bot size={16} className="text-white" />
                                                 </div>
                                             )}
                                             <div
                                                 className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-6 shadow-sm relative group/msg transition-all duration-300
                                                 ${msg.role === 'user'
-                                                        ? 'bg-[#1F2A6B] text-white rounded-tr-sm'
+                                                        ? 'bg-emerald-600 text-white rounded-tr-sm'
                                                         : msg.content.includes("Sorry, I'm having trouble")
                                                             ? 'bg-red-50 border border-red-100 text-red-700'
                                                             : 'bg-white border border-gray-100 text-gray-700'
@@ -584,7 +584,7 @@ function AIMentorContent() {
 
                                     {isGenerating && (
                                         <div className="flex items-center gap-2 pl-2 animate-pulse">
-                                            <div className="w-8 h-8 rounded-full bg-linear-to-tr from-pink-500 to-orange-400 flex items-center justify-center shadow-sm">
+                                            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-500 flex items-center justify-center shadow-sm">
                                                 <Bot size={16} className="text-white" />
                                             </div>
                                             <div className="bg-gray-100 rounded-full px-4 py-2 text-xs text-gray-500 flex items-center gap-2">
@@ -598,7 +598,7 @@ function AIMentorContent() {
                                 {/* --- FOOTER INPUT --- */}
                                 <div className="p-4 bg-white z-10 border-t border-gray-50">
                                     <div className="relative group">
-                                        <div className={`absolute -inset-px rounded-[24px] bg-linear-to-r from-cyan-400 via-purple-400 to-pink-400 opacity-30 transition-opacity duration-300 ${query ? 'opacity-100' : 'group-hover:opacity-60 opacity-0'}`} />
+                                        <div className={`absolute -inset-px rounded-[24px] bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 opacity-30 transition-opacity duration-300 ${query ? 'opacity-100' : 'group-hover:opacity-60 opacity-0'}`} />
 
                                         <div className="relative flex items-center bg-white border border-gray-200 rounded-[22px] px-4 py-2 shadow-sm focus-within:border-transparent">
                                             <button className="text-gray-400 hover:text-gray-600 transition-colors p-1" title="Attach file (Demo)">
@@ -649,7 +649,7 @@ function AIMentorContent() {
 
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-6 right-6 z-9998 bg-[#1F2A6B] text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-300"
+                className="fixed bottom-6 right-6 z-9998 bg-gradient-to-r from-green-600 to-emerald-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl hover:scale-110 active:scale-95 transition-all duration-300"
             >
                 {isOpen ? <X size={24} /> : <MessageSquare size={24} />}
             </button>

@@ -20,7 +20,7 @@ export function QuestionBankHeader({
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-8 shadow-xl"
+            className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 p-8 shadow-xl"
         >
             {/* Animated background elements */}
             <div className="absolute inset-0 bg-grid-white/10 [mask-image:radial-gradient(white,transparent_85%)]" />
@@ -69,7 +69,7 @@ export function QuestionBankHeader({
                     <Button
                         size="lg"
                         onClick={onCreateClick}
-                        className="bg-white text-indigo-600 hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                        className="bg-white text-green-600 hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                     >
                         <Plus className="mr-2 h-5 w-5" />
                         Create Question

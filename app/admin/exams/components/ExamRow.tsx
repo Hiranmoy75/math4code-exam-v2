@@ -27,7 +27,7 @@ export default function ExamRow({
   return (
     <div className="group relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 hover:shadow-lg transition-all duration-300">
       {/* Decorative gradient on hover */}
-      <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       <div className="relative flex items-start justify-between gap-4">
         <div className="flex-1 min-w-0">
@@ -50,9 +50,9 @@ export default function ExamRow({
 
           {/* Metadata */}
           <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-800">
-              <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-800">
+              <Clock className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+              <span className="text-sm font-medium text-teal-700 dark:text-teal-300">
                 {exam.duration_minutes} min
               </span>
             </div>
@@ -83,10 +83,11 @@ export default function ExamRow({
             <Trash2 className="w-4 h-4" />
           </Button>
           <Link href={`/admin/exams/${exam.id}/results`}>
+
             <Button
               variant="outline"
               size="sm"
-              className="border-blue-200 dark:border-blue-800 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+              className="border-teal-200 dark:border-teal-800 text-teal-600 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-900/20"
             >
               <Trophy className="w-4 h-4 mr-2" />
               Results
@@ -95,7 +96,7 @@ export default function ExamRow({
           <Link href={`/admin/exams/${exam.id}`}>
             <Button
               size="sm"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white"
+              className="bg-green-600 hover:bg-green-700 text-white"
             >
               Manage
               <ArrowRight className="w-4 h-4 ml-2" />

@@ -102,7 +102,7 @@ export default function StatsCards({ userId }: Props) {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium shadow-lg shadow-indigo-500/20 transition-all"
+              className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-xl font-medium shadow-lg shadow-green-500/20 transition-all"
             >
               <FolderPlus className="w-5 h-5" />
               <span>Create New Exam</span>
@@ -111,8 +111,8 @@ export default function StatsCards({ userId }: Props) {
         </div>
 
         {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-green-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl" />
       </motion.div>
 
       {/* Statistics Grid */}

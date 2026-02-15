@@ -49,7 +49,7 @@ export const Footer: React.FC = () => (
             </div>
         </div>
         <div className="max-w-container mx-auto px-6 mt-12 pt-8 border-t border-slate-200 text-center text-xs text-slate-500">
-            © 2025 Hiranmoy Mandal. All rights reserved. | Mathematics by Hiranmoy Mandal
+            © 2026 Hiranmoy Mandal. All rights reserved. | Mathematics by Hiranmoy Mandal
         </div>
     </footer>
 );

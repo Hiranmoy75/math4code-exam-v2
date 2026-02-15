@@ -155,7 +155,7 @@ export const AIMentorSection: React.FC = () => {
                             className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl border border-slate-200 p-3 z-10"
                         >
                             <div className="flex items-center gap-2">
-                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+                                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
                                     <Sparkles className="w-5 h-5 text-white" />
                                 </div>
                                 <div>

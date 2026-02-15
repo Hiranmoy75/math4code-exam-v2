@@ -129,7 +129,7 @@ export default function CoursesList({ initialCourses }: CoursesListProps) {
                         <button
                             onClick={() => setViewMode("grid")}
                             className={`p-2 rounded-md transition-all ${viewMode === "grid"
-                                ? "bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400"
+                                ? "bg-white dark:bg-slate-700 shadow-sm text-green-600 dark:text-green-400"
                                 : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                                 }`}
                         >
@@ -138,7 +138,7 @@ export default function CoursesList({ initialCourses }: CoursesListProps) {
                         <button
                             onClick={() => setViewMode("list")}
                             className={`p-2 rounded-md transition-all ${viewMode === "list"
-                                ? "bg-white dark:bg-slate-700 shadow-sm text-blue-600 dark:text-blue-400"
+                                ? "bg-white dark:bg-slate-700 shadow-sm text-green-600 dark:text-green-400"
                                 : "text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
                                 }`}
                         >
@@ -147,7 +147,7 @@ export default function CoursesList({ initialCourses }: CoursesListProps) {
                     </div>
 
                     <SmartLink href="/admin/courses/create">
-                        <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20">
+                        <Button className="bg-green-600 hover:bg-green-700 text-white shadow-lg shadow-green-500/20">
                             <Plus className="mr-2 h-4 w-4" /> Create Course
                         </Button>
                     </SmartLink>
@@ -174,7 +174,7 @@ export default function CoursesList({ initialCourses }: CoursesListProps) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
                     >
                         {filteredCourses.map((course, index) => (
                             <CourseCard
@@ -240,130 +240,130 @@ export default function CoursesList({ initialCourses }: CoursesListProps) {
 
 function CourseCard({ course, index, onDelete, onToggle }: { course: Course; index: number; onDelete: () => void; onToggle: (enabled: boolean) => void }) {
     const { openCommunity } = useCommunityModal();
+    const isNew = new Date(course.created_at).getTime() > Date.now() - 7 * 24 * 60 * 60 * 1000;
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
+            className="h-full"
         >
-            <Card className="group h-full flex flex-col border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
-                <div className="relative aspect-video bg-slate-100 dark:bg-slate-800 overflow-hidden">
+            <Card className="group h-full flex flex-col border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-xl hover:shadow-green-500/10 hover:-translate-y-1 transition-all duration-300 rounded-2xl overflow-hidden relative">
+                <div className="relative aspect-[16/9] bg-slate-100 dark:bg-slate-800 overflow-hidden">
                     <CourseThumbnail
                         src={course.thumbnail_url}
                         title={course.title}
                         category={course.category || "Course"}
-                        className="w-full h-full"
+                        className="w-full h-full transition-transform duration-700 group-hover:scale-105"
                         variant="card"
                     />
-                    <div className="absolute top-3 right-3 flex gap-2">
+
+                    {/* Top Left Badges */}
+                    <div className="absolute top-2 left-2 flex flex-wrap gap-1.5">
+                        {isNew && (
+                            <Badge className="bg-green-500 text-white border-0 shadow-sm text-[10px] px-1.5 h-5">
+                                New
+                            </Badge>
+                        )}
                         <Badge
-                            variant="outline"
-                            className={course.course_type === "test_series"
-                                ? "bg-purple-500 hover:bg-purple-600 text-white border-purple-600 shadow-lg shadow-purple-500/20"
-                                : "bg-blue-500 hover:bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-500/20"}
+                            variant="secondary"
+                            className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-slate-800 dark:text-slate-200 border-0 shadow-sm font-medium text-[10px] px-1.5 h-5"
                         >
-                            {course.course_type === "test_series" ? "Test Series" : "Course"}
+                            {course.level || "General"}
                         </Badge>
+                    </div>
+
+                    {/* Top Right Status */}
+                    <div className="absolute top-2 right-2 flex flex-col gap-1.5 items-end">
                         <Badge
-                            variant={course.is_published ? "default" : "secondary"}
-                            className={course.is_published
-                                ? "bg-green-500 hover:bg-green-600 shadow-lg shadow-green-500/20"
-                                : "bg-slate-500 hover:bg-slate-600 shadow-lg shadow-slate-500/20 text-white"}
+                            className={`border-0 shadow-sm backdrop-blur-md text-[10px] px-1.5 h-5 ${course.is_published
+                                ? "bg-emerald-500/90 hover:bg-emerald-600 text-white"
+                                : "bg-slate-500/90 hover:bg-slate-600 text-white"}`}
                         >
                             {course.is_published ? "Published" : "Draft"}
                         </Badge>
                     </div>
                 </div>
 
-                <CardHeader className="p-4 pb-2">
-                    <div className="flex justify-between items-start gap-2">
-                        <div className="space-y-1">
-                            <h3 className="font-bold text-lg line-clamp-1 text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                {course.title}
-                            </h3>
-                            <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
-                                <span className="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
-                                    {course.category || "General"}
-                                </span>
-                                <span>•</span>
-                                <span>{course.level || "All Levels"}</span>
-                            </div>
+                <CardContent className="p-3 flex-grow flex flex-col gap-2">
+                    {/* Header: Category & Price */}
+                    <div className="flex items-center justify-between">
+                        <div className="text-[10px] font-bold tracking-wider text-emerald-600 dark:text-emerald-400 uppercase truncate max-w-[60%]">
+                            {course.category || "Uncategorized"}
+                        </div>
+                        <div className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-900 dark:text-white">
+                            {course.price > 0 ? `₹${course.price}` : "Free"}
                         </div>
                     </div>
-                </CardHeader>
 
-                <CardContent className="p-4 pt-2 flex-grow">
-                    <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mb-4">
+                    {/* Title */}
+                    <h3 className="font-bold text-base leading-snug text-slate-900 dark:text-white line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                        {course.title}
+                    </h3>
+
+                    {/* Description */}
+                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-1">
                         {course.description || "No description provided."}
                     </p>
-                    <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center text-slate-500 dark:text-slate-400">
-                            <Clock className="h-3.5 w-3.5 mr-1" />
-                            {formatDistanceToNow(new Date(course.created_at), { addSuffix: true })}
+
+                    {/* Meta Row */}
+                    <div className="mt-auto pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+                        <div className="flex items-center gap-1.5">
+                            <Clock className="w-3 h-3" />
+                            <span>{formatDistanceToNow(new Date(course.created_at), { addSuffix: true })}</span>
                         </div>
-                        <div className="font-semibold text-slate-900 dark:text-white flex items-center">
-                            {course.price > 0 ? (
-                                <>
-                                    <DollarSign className="h-3.5 w-3.5" />
-                                    {course.price}
-                                </>
-                            ) : (
-                                <span className="text-green-600 dark:text-green-400">Free</span>
+                        <div className="flex items-center gap-1.5">
+                            {course.course_type === 'test_series' && (
+                                <Badge variant="outline" className="text-[10px] h-5 px-1.5 border-purple-200 text-purple-600 bg-purple-50 dark:bg-purple-900/10 dark:text-purple-300 dark:border-purple-800">
+                                    Test Series
+                                </Badge>
                             )}
                         </div>
                     </div>
                 </CardContent>
 
-                <CardFooter className="p-4 pt-0 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex flex-col gap-3 mt-auto">
-                    {/* Community Toggle */}
-                    <CommunityToggle
-                        courseId={course.id}
-                        initialEnabled={course.community_enabled || false}
-                        onToggle={onToggle}
-                    />
+                <CardFooter className="p-3 pt-0 flex flex-col gap-2">
+                    <div className="w-full flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 rounded-lg p-1.5 border border-slate-100 dark:border-slate-800">
+                        <CommunityToggle
+                            courseId={course.id}
+                            initialEnabled={course.community_enabled || false}
+                            onToggle={onToggle}
+                            showLabel={false}
+                        />
+                        <div className="flex items-center gap-0.5">
+                            <div className="scale-90">
+                                <CourseLearnersDialog courseId={course.id} courseTitle={course.title} />
+                            </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex items-center justify-between gap-2 w-full">
-                        <div className="flex items-center gap-1">
-                            <CourseLearnersDialog courseId={course.id} courseTitle={course.title} />
-                        </div>
-                        <div className="flex items-center gap-2">
-                            {course.community_enabled && (
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    className="hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400 border-slate-200 dark:border-slate-700"
-                                    onClick={() => openCommunity({ courseId: course.id, isAdmin: true })}
-                                >
-                                    <MessageSquare className="h-4 w-4 mr-2" /> Community
-                                </Button>
-                            )}
-                            <SmartLink href={`/admin/courses/${course.id}`}>
-                                <Button variant="outline" size="sm" className="hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20 dark:hover:text-blue-400 border-slate-200 dark:border-slate-700">
-                                    <Edit className="h-4 w-4 mr-2" /> Manage
-                                </Button>
-                            </SmartLink>
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                        <MoreVertical className="h-4 w-4" />
+                                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0 text-slate-400 hover:text-slate-600 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg">
+                                        <MoreVertical className="h-3.5 w-3.5" />
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                    <SmartLink href={`/admin/courses/${course.id}/analytics`}>
-                                        <DropdownMenuItem className="cursor-pointer">
-                                            <BarChart className="mr-2 h-4 w-4" /> Analytics
-                                        </DropdownMenuItem>
-                                    </SmartLink>
-                                    <DropdownMenuItem
-                                        className="text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-900/20"
-                                        onClick={onDelete}
-                                    >
-                                        <Trash className="mr-2 h-4 w-4" /> Delete
+                                    <DropdownMenuItem onClick={() => onDelete()} className="text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer">
+                                        <Trash className="mr-2 h-4 w-4" /> Delete Course
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 w-full">
+                        <SmartLink href={`/admin/courses/${course.id}/analytics`} className="w-full">
+                            <Button variant="outline" size="sm" className="w-full h-8 text-xs border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300">
+                                <BarChart className="mr-2 h-3.5 w-3.5" />
+                                Analytics
+                            </Button>
+                        </SmartLink>
+                        <SmartLink href={`/admin/courses/${course.id}`} className="w-full">
+                            <Button size="sm" className="w-full h-8 text-xs bg-slate-900 hover:bg-emerald-600 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-emerald-500 shadow-sm hover:shadow-md transition-all">
+                                <Edit className="mr-2 h-3.5 w-3.5" />
+                                Manage
+                            </Button>
+                        </SmartLink>
                     </div>
                 </CardFooter>
             </Card>
@@ -378,9 +378,9 @@ function CourseRow({ course, index, onDelete, onToggle }: { course: Course; inde
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.03 }}
-            className="group flex items-center gap-4 p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+            className="group flex items-center gap-4 p-4 hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-all border-b border-slate-100 dark:border-slate-800 last:border-0"
         >
-            <div className="h-12 w-12 rounded-lg bg-slate-100 dark:bg-slate-800 overflow-hidden flex-shrink-0">
+            <div className="h-16 w-28 rounded-xl bg-slate-100 dark:bg-slate-800 overflow-hidden flex-shrink-0 shadow-sm">
                 <CourseThumbnail
                     src={course.thumbnail_url}
                     title={course.title}
@@ -390,66 +390,77 @@ function CourseRow({ course, index, onDelete, onToggle }: { course: Course; inde
                 />
             </div>
 
-            <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-medium text-slate-900 dark:text-white truncate group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                        {course.title}
-                    </h3>
-                    <Badge
-                        variant="outline"
-                        className={course.is_published
-                            ? "text-green-600 border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-800"
-                            : "text-slate-500 border-slate-200 bg-slate-50 dark:bg-slate-800 dark:border-slate-700"}
-                    >
-                        {course.is_published ? "Published" : "Draft"}
+            <div className="flex-1 min-w-0 flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-[10px] px-1.5 py-0 h-5 border-slate-200 text-slate-500 bg-slate-50 dark:bg-slate-800 dark:border-slate-700">
+                        {course.category || "General"}
                     </Badge>
+                    {course.is_published ? (
+                        <div className="flex items-center gap-1 text-[10px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-1.5 py-0.5 rounded-full">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            Published
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-1 text-[10px] font-medium text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded-full">
+                            Draft
+                        </div>
+                    )}
                 </div>
-                <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+
+                <h3 className="font-bold text-slate-900 dark:text-white truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    {course.title}
+                </h3>
+
+                <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
                     <span className="flex items-center gap-1">
-                        <BarChart className="h-3.5 w-3.5" />
+                        <BarChart className="h-3 w-3" />
                         {course.level || "All Levels"}
                     </span>
                     <span className="flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5" />
+                        <Clock className="h-3 w-3" />
                         {formatDistanceToNow(new Date(course.created_at), { addSuffix: true })}
                     </span>
                 </div>
             </div>
 
             <div className="flex items-center gap-6">
-                <div className="text-right">
-                    <div className="font-semibold text-slate-900 dark:text-white">
-                        {course.price > 0 ? `$${course.price}` : "Free"}
+                <div className="flex flex-col items-end min-w-[80px]">
+                    <div className="font-bold text-slate-900 dark:text-white">
+                        {course.price > 0 ? `₹${course.price}` : "Free"}
                     </div>
-                    <div className="text-xs text-slate-500">Price</div>
                 </div>
 
                 <div className="flex items-center gap-2">
+                    <CommunityToggle
+                        courseId={course.id}
+                        initialEnabled={course.community_enabled || false}
+                        onToggle={onToggle}
+                        className="scale-90"
+                    />
+                    <div className="h-8 w-px bg-slate-200 dark:bg-slate-800 mx-2" />
+
                     <CourseLearnersDialog courseId={course.id} courseTitle={course.title} />
+
                     <SmartLink href={`/admin/courses/${course.id}`}>
-                        <Button variant="outline" size="sm" className="hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-blue-900/20 dark:hover:text-blue-400">
+                        <Button size="sm" className="bg-slate-900 hover:bg-emerald-600 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-emerald-500 shadow-sm transition-all">
                             Manage
                         </Button>
                     </SmartLink>
-                    {course.community_enabled && (
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="hover:bg-emerald-50 hover:text-emerald-600 dark:hover:bg-emerald-900/20 dark:hover:text-emerald-400"
-                            onClick={() => openCommunity({ courseId: course.id, isAdmin: true })}
-                        >
-                            <MessageSquare className="h-4 w-4 mr-2" /> Community
-                        </Button>
-                    )}
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-slate-600">
                                 <MoreVertical className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                            <SmartLink href={`/admin/courses/${course.id}/analytics`}>
+                                <DropdownMenuItem>
+                                    <BarChart className="mr-2 h-4 w-4" /> Analytics
+                                </DropdownMenuItem>
+                            </SmartLink>
                             <DropdownMenuItem
-                                className="text-red-600 cursor-pointer focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-900/20"
+                                className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-900/20"
                                 onClick={onDelete}
                             >
                                 <Trash className="mr-2 h-4 w-4" /> Delete

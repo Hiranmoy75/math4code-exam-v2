@@ -88,7 +88,7 @@ export default function StudentManagementClient({ courses, testSeries }: any) {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
                         <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-3">
-                            <div className="p-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-200 dark:shadow-none">
+                            <div className="p-2 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 shadow-lg shadow-green-200 dark:shadow-none">
                                 <Users className="w-6 h-6 text-white" />
                             </div>
                             Student Management
@@ -99,7 +99,7 @@ export default function StudentManagementClient({ courses, testSeries }: any) {
                     <div className="flex gap-3">
                         <Button
                             onClick={() => setAddStudentOpen(true)}
-                            className="bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 shadow-lg shadow-violet-200 dark:shadow-none"
+                            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-lg shadow-green-200 dark:shadow-none"
                         >
                             <UserPlus className="w-4 h-4 mr-2" />
                             Add Student
@@ -118,8 +118,8 @@ export default function StudentManagementClient({ courses, testSeries }: any) {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <Card className="p-5 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-lg">
                         <div className="flex items-center gap-4">
-                            <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-500/10 border border-blue-100 dark:border-blue-500/20">
-                                <Users className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                            <div className="p-3 rounded-xl bg-teal-50 dark:bg-teal-500/10 border border-teal-100 dark:border-teal-500/20">
+                                <Users className="w-6 h-6 text-teal-600 dark:text-teal-400" />
                             </div>
                             <div>
                                 <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Total Students</p>
@@ -218,7 +218,7 @@ export default function StudentManagementClient({ courses, testSeries }: any) {
                                                 <div className="flex items-center gap-3">
                                                     <Avatar className="w-10 h-10 border-2 border-slate-200 dark:border-slate-700">
                                                         <AvatarImage src={student.avatar_url} />
-                                                        <AvatarFallback className="bg-gradient-to-br from-violet-500 to-purple-600 text-white font-bold">
+                                                        <AvatarFallback className="bg-gradient-to-br from-green-500 to-emerald-600 text-white font-bold">
                                                             {student.full_name?.charAt(0) || student.email.charAt(0).toUpperCase()}
                                                         </AvatarFallback>
                                                     </Avatar>
@@ -316,7 +316,7 @@ export default function StudentManagementClient({ courses, testSeries }: any) {
                                     of <span className="font-semibold text-slate-900 dark:text-white">{pagination.total}</span> students
                                     {meta && meta.crossTenant > 0 && (
                                         <span className="ml-2 text-xs">
-                                            (<span className="text-blue-600 dark:text-blue-400 font-semibold">{meta.crossTenant} cross-tenant</span>)
+                                            (<span className="text-emerald-600 dark:text-emerald-400 font-semibold">{meta.crossTenant} cross-tenant</span>)
                                         </span>
                                     )}
                                 </div>
@@ -364,7 +364,7 @@ export default function StudentManagementClient({ courses, testSeries }: any) {
                                                     onClick={() => setCurrentPage(pageNum)}
                                                     className={cn(
                                                         "h-9 w-9",
-                                                        currentPage === pageNum && "bg-gradient-to-r from-blue-600 to-indigo-600 text-white"
+                                                        currentPage === pageNum && "bg-gradient-to-r from-green-600 to-emerald-600 text-white"
                                                     )}
                                                 >
                                                     {pageNum}

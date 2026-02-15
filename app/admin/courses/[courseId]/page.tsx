@@ -35,16 +35,16 @@ function CourseDashboardContent() {
         {
             title: "Course Builder",
             description: "Edit curriculum, add lessons, and organize modules.",
-            icon: <BookOpen className="w-6 h-6 text-blue-500" />,
+            icon: <BookOpen className="w-6 h-6 text-green-500" />,
             href: `/admin/courses/${courseId}/builder`,
-            color: "blue"
+            color: "green"
         },
         {
             title: "Performance Analytics",
             description: "View enrollment trends, revenue, and student progress.",
-            icon: <BarChart3 className="w-6 h-6 text-indigo-500" />,
+            icon: <BarChart3 className="w-6 h-6 text-teal-500" />,
             href: `/admin/courses/${courseId}/analytics`,
-            color: "indigo"
+            color: "teal"
         },
         {
             title: "Learner Management",
@@ -70,8 +70,8 @@ function CourseDashboardContent() {
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
 
                 {/* Floating Blobs */}
-                <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-400/5 dark:bg-blue-600/5 rounded-full blur-3xl" />
-                <div className="absolute top-1/3 -left-40 w-80 h-80 bg-indigo-400/5 dark:bg-indigo-600/5 rounded-full blur-3xl" />
+                <div className="absolute -top-40 -right-40 w-96 h-96 bg-green-400/5 dark:bg-green-600/5 rounded-full blur-3xl" />
+                <div className="absolute top-1/3 -left-40 w-80 h-80 bg-teal-400/5 dark:bg-teal-600/5 rounded-full blur-3xl" />
                 <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-emerald-400/4 dark:bg-emerald-600/4 rounded-full blur-3xl" />
             </div>
 
@@ -79,7 +79,7 @@ function CourseDashboardContent() {
                 {/* Header Section with Gradient Background */}
                 <div className="relative mb-2 -mx-6 md:-mx-8 lg:-mx-10 px-6 md:px-8 lg:px-10 py-8 bg-gradient-to-r from-slate-50/80 via-white/50 to-slate-50/80 dark:from-slate-900/50 dark:via-slate-800/30 dark:to-slate-900/50 backdrop-blur-sm border-b border-slate-200/50 dark:border-slate-800/50">
                     {/* Decorative Math SVG in corner */}
-                    <svg className="absolute top-4 right-8 w-24 h-24 text-blue-500/5 dark:text-blue-400/5" viewBox="0 0 100 100" fill="none">
+                    <svg className="absolute top-4 right-8 w-24 h-24 text-green-500/5 dark:text-green-400/5" viewBox="0 0 100 100" fill="none">
                         <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="0.5" />
                         <circle cx="50" cy="50" r="30" stroke="currentColor" strokeWidth="0.5" />
                         <circle cx="50" cy="50" r="20" stroke="currentColor" strokeWidth="0.5" />
@@ -108,10 +108,10 @@ function CourseDashboardContent() {
                 {/* Quick Stats Banner with Enhanced Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                     {/* Total Students Card */}
-                    <Card className="relative bg-gradient-to-br from-white via-blue-50/30 to-white dark:from-slate-900 dark:via-blue-950/20 dark:to-slate-900 border border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
+                    <Card className="relative bg-gradient-to-br from-white via-teal-50/30 to-white dark:from-slate-900 dark:via-teal-950/20 dark:to-slate-900 border border-slate-200/60 dark:border-slate-800/60 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
                         {/* Decorative Pattern */}
                         <div className="absolute top-0 right-0 w-32 h-32 opacity-[0.03] dark:opacity-[0.05]">
-                            <svg viewBox="0 0 100 100" className="w-full h-full text-blue-600">
+                            <svg viewBox="0 0 100 100" className="w-full h-full text-teal-600">
                                 <circle cx="20" cy="20" r="2" fill="currentColor" />
                                 <circle cx="40" cy="20" r="2" fill="currentColor" />
                                 <circle cx="60" cy="20" r="2" fill="currentColor" />
@@ -132,8 +132,8 @@ function CourseDashboardContent() {
                                         {stats?.totalLearners}
                                     </h3>
                                 </div>
-                                <div className="p-3.5 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-500/10 dark:to-blue-600/5 shadow-inner">
-                                    <Users className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+                                <div className="p-3.5 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100/50 dark:from-teal-500/10 dark:to-teal-600/5 shadow-inner">
+                                    <Users className="w-7 h-7 text-teal-600 dark:text-teal-400" />
                                 </div>
                             </div>
                         </CardContent>
@@ -210,10 +210,10 @@ function CourseDashboardContent() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         {quickActions.map((action, i) => (
                             <Link key={i} href={action.href} prefetch={true}>
-                                <Card className="relative group h-full border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-xl hover:shadow-blue-500/10 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer overflow-hidden active:scale-[0.99]">
+                                <Card className="relative group h-full border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 hover:border-green-300 dark:hover:border-green-700 hover:shadow-xl hover:shadow-green-500/10 hover:-translate-y-0.5 transition-all duration-150 cursor-pointer overflow-hidden active:scale-[0.99]">
                                     {/* Background Graphic */}
                                     <div className="absolute top-0 right-0 w-40 h-40 opacity-0 group-hover:opacity-[0.03] dark:group-hover:opacity-[0.05] transition-opacity duration-200">
-                                        <svg viewBox="0 0 100 100" className="w-full h-full text-blue-600">
+                                        <svg viewBox="0 0 100 100" className="w-full h-full text-green-600">
                                             <circle cx="50" cy="50" r="40" fill="currentColor" />
                                             <circle cx="50" cy="50" r="25" fill="white" />
                                         </svg>
@@ -221,17 +221,17 @@ function CourseDashboardContent() {
 
                                     <CardContent className="p-6 relative z-10">
                                         <div className="flex items-start gap-4">
-                                            <div className="relative p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800 group-hover:bg-gradient-to-br group-hover:from-blue-50 group-hover:to-blue-100/50 dark:group-hover:from-blue-500/10 dark:group-hover:to-blue-600/5 transition-all duration-150 shrink-0 shadow-sm">
+                                            <div className="relative p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800 group-hover:bg-gradient-to-br group-hover:from-green-50 group-hover:to-green-100/50 dark:group-hover:from-green-500/10 dark:group-hover:to-green-600/5 transition-all duration-150 shrink-0 shadow-sm">
                                                 {action.icon}
                                                 {/* Icon background glow */}
-                                                <div className="absolute inset-0 rounded-xl bg-blue-500/0 group-hover:bg-blue-500/5 blur-xl transition-all duration-150" />
+                                                <div className="absolute inset-0 rounded-xl bg-green-500/0 group-hover:bg-green-500/5 blur-xl transition-all duration-150" />
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center justify-between gap-2 mb-1.5">
-                                                    <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-150">
+                                                    <h3 className="font-semibold text-base text-slate-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-150">
                                                         {action.title}
                                                     </h3>
-                                                    <ChevronRight className="w-5 h-5 text-slate-300 dark:text-slate-600 group-hover:text-blue-500 dark:group-hover:text-blue-400 group-hover:translate-x-1 transition-all duration-150 shrink-0" />
+                                                    <ChevronRight className="w-5 h-5 text-slate-300 dark:text-slate-600 group-hover:text-green-500 dark:group-hover:text-green-400 group-hover:translate-x-1 transition-all duration-150 shrink-0" />
                                                 </div>
                                                 <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                                                     {action.description}
@@ -250,8 +250,8 @@ function CourseDashboardContent() {
                     <Card className="border border-slate-200/60 dark:border-slate-800/60 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-shadow">
                         <CardHeader className="pb-4">
                             <CardTitle className="text-base font-semibold flex items-center gap-2.5">
-                                <div className="p-1.5 rounded-lg bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-500/10 dark:to-blue-600/5">
-                                    <PlayCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                                <div className="p-1.5 rounded-lg bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-500/10 dark:to-green-600/5">
+                                    <PlayCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
                                 </div>
                                 Curriculum Status
                             </CardTitle>
@@ -264,9 +264,9 @@ function CourseDashboardContent() {
                                 </span>
                             </div>
                             <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
-                                <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-full w-full shadow-sm"></div>
+                                <div className="bg-gradient-to-r from-green-500 to-green-600 h-full w-full shadow-sm"></div>
                             </div>
-                            <Button variant="outline" className="w-full h-10 mt-2 hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:border-blue-300 dark:hover:border-blue-700 transition-all" asChild>
+                            <Button variant="outline" className="w-full h-10 mt-2 hover:bg-green-50 dark:hover:bg-green-950/30 hover:border-green-300 dark:hover:border-green-700 transition-all" asChild>
                                 <Link href={`/admin/courses/${courseId}/builder`}>Manage Curriculum</Link>
                             </Button>
                         </CardContent>
@@ -288,7 +288,7 @@ function CourseDashboardContent() {
                             <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
                                 Join Student Management to see live activity logs
                             </p>
-                            <Button variant="link" size="sm" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300" asChild>
+                            <Button variant="link" size="sm" className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300" asChild>
                                 <Link href="/admin/students">Go to Students</Link>
                             </Button>
                         </CardContent>

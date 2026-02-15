@@ -89,7 +89,7 @@ export default function RecentAttemptsCard({ userId }: Props) {
                 <div className="flex items-center gap-4">
                   <Avatar className="h-10 w-10 border border-slate-200 dark:border-slate-700">
                     <AvatarImage src={a.profiles?.avatar_url} />
-                    <AvatarFallback className="bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400">
+                    <AvatarFallback className="bg-green-100 text-green-600 dark:bg-green-900/50 dark:text-green-400">
                       {getInitials(a.profiles?.full_name, a.profiles?.email)}
                     </AvatarFallback>
                   </Avatar>

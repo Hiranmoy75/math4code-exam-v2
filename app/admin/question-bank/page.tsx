@@ -142,14 +142,14 @@ export default function QuestionBankPage() {
             <div className="space-y-4">
               {/* Bulk Actions Bar */}
               {selectedIds.length > 0 && (
-                <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
+                <div className="flex items-center justify-between p-3 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg border border-emerald-200 dark:border-emerald-800">
+                  <span className="text-sm font-medium text-emerald-900 dark:text-emerald-100">
                     {selectedIds.length} question{selectedIds.length > 1 ? 's' : ''} selected
                   </span>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setSelectedIds([])}
-                      className="px-3 py-1.5 text-sm text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-md transition-colors"
+                      className="px-3 py-1.5 text-sm text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 rounded-md transition-colors"
                     >
                       Clear Selection
                     </button>
