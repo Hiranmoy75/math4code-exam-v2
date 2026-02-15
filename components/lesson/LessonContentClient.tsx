@@ -81,7 +81,7 @@ export default function LessonContentClient({
     if (isVideo) {
         // Live Class Check
         if (lesson.is_live && lesson.meeting_url) {
-            return <LiveClassView lesson={lesson} author={author} />;
+            return <LiveClassView lesson={lesson} author={author} user={user} />;
         }
 
         // Regular Video Lesson
@@ -363,7 +363,7 @@ export default function LessonContentClient({
 }
 
 // Live Class View Component with Countdown Timer
-function LiveClassView({ lesson, author }: { lesson: any; author: any }) {
+function LiveClassView({ lesson, author, user }: { lesson: any; author: any; user: any }) {
     const [timeLeft, setTimeLeft] = React.useState<{
         days: number;
         hours: number;
@@ -412,6 +412,32 @@ function LiveClassView({ lesson, author }: { lesson: any; author: any }) {
         return () => clearInterval(timer);
     }, [lesson.meeting_date]);
 
+    // Extract Zoom Details
+    const zoomDetails = React.useMemo(() => {
+        if (!lesson.meeting_url || !lesson.meeting_url.includes('zoom.us')) return null;
+
+        try {
+            const urlObj = new URL(lesson.meeting_url);
+            // Support /j/MEETING_ID format
+            const pathParts = urlObj.pathname.split('/');
+            const jIndex = pathParts.indexOf('j');
+            let meetingId = null;
+
+            if (jIndex !== -1 && pathParts[jIndex + 1]) {
+                meetingId = pathParts[jIndex + 1];
+            }
+
+            const password = urlObj.searchParams.get('pwd');
+
+            if (meetingId) {
+                return { meetingId, password };
+            }
+        } catch (e) {
+            console.error("Zoom URL parse error", e);
+        }
+        return null;
+    }, [lesson.meeting_url]);
+
     const handleJoinMeeting = () => {
         if (!timeLeft.hasEnded && lesson.meeting_url) {
             window.open(lesson.meeting_url, '_blank', 'noopener,noreferrer');
@@ -429,19 +455,18 @@ function LiveClassView({ lesson, author }: { lesson: any; author: any }) {
         <div className="flex-1 flex flex-col min-h-0 overflow-y-auto bg-gradient-to-br from-background via-background to-muted/20 animate-in fade-in slide-in-from-right-4 duration-500">
             <div className="flex-1 flex items-center justify-center p-4 md:p-8">
                 <div className="w-full max-w-4xl space-y-6">
-                    {/* Main Live Class Card */}
-                    <div className="relative overflow-hidden rounded-3xl border border-border bg-card shadow-2xl">
-                        {/* Animated Background Gradient */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-pink-500/5 dark:from-blue-500/10 dark:via-purple-500/10 dark:to-pink-500/10" />
-                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500" />
+                    {/* Main Live Class Card - Professional Design */}
+                    <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-xl shadow-emerald-900/5">
+                        {/* Subtle Professional Header Gradient */}
+                        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-emerald-600 via-teal-500 to-emerald-600" />
 
                         <div className="relative p-8 md:p-12 space-y-8">
                             {/* Header */}
                             <div className="text-center space-y-4">
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 dark:border-blue-500/30">
-                                    <div className={`w-2 h-2 rounded-full ${timeLeft.isLive ? 'bg-red-500 animate-pulse' : timeLeft.hasEnded ? 'bg-slate-500' : 'bg-blue-500'}`} />
-                                    <span className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                                        {timeLeft.isLive ? 'LIVE NOW' : timeLeft.hasEnded ? 'ENDED' : 'UPCOMING'}
+                                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800">
+                                    <div className={`w-2 h-2 rounded-full ${timeLeft.isLive ? 'bg-red-500 animate-pulse' : timeLeft.hasEnded ? 'bg-slate-400' : 'bg-emerald-600'}`} />
+                                    <span className={`text-xs font-bold tracking-wide ${timeLeft.isLive ? 'text-red-600 dark:text-red-400' : timeLeft.hasEnded ? 'text-slate-500' : 'text-emerald-700 dark:text-emerald-400'}`}>
+                                        {timeLeft.isLive ? 'LIVE NOW' : timeLeft.hasEnded ? 'SESSION ENDED' : 'UPCOMING SESSION'}
                                     </span>
                                 </div>
 
@@ -520,9 +545,9 @@ function LiveClassView({ lesson, author }: { lesson: any; author: any }) {
 
                                 {/* Date/Time Card */}
                                 {lesson.meeting_date && (
-                                    <div className="flex items-center gap-3 p-4 rounded-xl bg-muted/50 border border-border/50">
-                                        <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center">
-                                            <Clock className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                                    <div className="flex items-center gap-4 p-5 rounded-xl bg-muted/30 border border-border/60 hover:bg-muted/50 transition-colors">
+                                        <div className="h-12 w-12 rounded-full bg-emerald-100 dark:bg-emerald-900/20 flex items-center justify-center shrink-0">
+                                            <Clock className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
                                         </div>
                                         <div>
                                             <p className="text-sm font-medium text-foreground">
@@ -545,30 +570,33 @@ function LiveClassView({ lesson, author }: { lesson: any; author: any }) {
 
                             {/* Action Buttons */}
                             <div className="flex flex-col sm:flex-row gap-3">
+                                {/* Regular Join (App) */}
                                 <button
                                     onClick={handleJoinMeeting}
                                     disabled={timeLeft.hasEnded || (!timeLeft.isLive && timeLeft.days > 0)}
                                     className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-semibold text-white shadow-lg transition-all duration-200 ${timeLeft.hasEnded
                                         ? 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500 shadow-none cursor-not-allowed border border-slate-200 dark:border-slate-700'
                                         : timeLeft.isLive
-                                            ? 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 shadow-red-500/50 hover:shadow-red-500/70 hover:scale-105'
+                                            ? 'bg-red-600 hover:bg-red-700 text-white shadow-lg shadow-red-500/20 hover:shadow-red-500/30 hover:scale-[1.02]'
                                             : timeLeft.days > 0
-                                                ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                                                : 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 shadow-blue-500/50 hover:shadow-blue-500/70 hover:scale-105'
+                                                ? 'bg-muted text-muted-foreground cursor-not-allowed border border-border'
+                                                : 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:scale-[1.02]'
                                         }`}
                                 >
                                     <PlayCircle className="h-5 w-5" />
-                                    {timeLeft.hasEnded ? 'Class Ended' : timeLeft.isLive ? 'Join Live Class' : 'Join Meeting'}
+                                    {timeLeft.hasEnded ? 'Class Ended' : timeLeft.isLive ? 'Join Live Class' : 'Join Live Class'}
                                 </button>
+
                                 <button
                                     onClick={handleCopyLink}
                                     disabled={timeLeft.hasEnded}
-                                    className={`px-6 py-4 rounded-xl font-semibold border-2 transition-all duration-200 ${timeLeft.hasEnded
+                                    className={`px-4 py-4 rounded-xl font-semibold border-2 transition-all duration-200 ${timeLeft.hasEnded
                                         ? 'border-slate-200 text-slate-300 dark:border-slate-700 dark:text-slate-600 cursor-not-allowed bg-transparent'
                                         : 'border-border hover:bg-muted hover:scale-105'
                                         }`}
+                                    title="Copy Link"
                                 >
-                                    Copy Link
+                                    <Sparkles className="h-5 w-5" />
                                 </button>
                             </div>
                         </div>

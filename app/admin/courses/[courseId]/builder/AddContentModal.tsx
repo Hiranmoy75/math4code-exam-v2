@@ -4,10 +4,11 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Lesson } from "@/lib/types";
 import { Button } from "@/components/ui/button";
+import { createZoomMeetingAction } from "@/actions/zoom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Video, FileText, File, HelpCircle, Plus } from "lucide-react";
+import { Video, FileText, File, HelpCircle, Plus, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface AddContentModalProps {
@@ -27,6 +28,7 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
     const [availableExams, setAvailableExams] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoadingExams, setIsLoadingExams] = useState(false);
+    const [isCreatingZoom, setIsCreatingZoom] = useState(false);
     const [isFreePreview, setIsFreePreview] = useState(false);
     // Live class fields
     const [meetingUrl, setMeetingUrl] = useState("");
@@ -36,7 +38,8 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
 
     const contentOptions = [
         { id: "video", label: "Video", icon: Video, description: "Add YouTube or Vimeo video" },
-        { id: "live", label: "Live Class", icon: Video, description: "Schedule live class (Google Meet/Zoom)" },
+        { id: "live", label: "Live Class", icon: Video, description: "Schedule live class (Google Meet/Teams)" },
+        { id: "zoom", label: "Zoom Live Class", icon: Video, description: "Schedule a Zoom meeting (Free 40 min)" },
         { id: "text", label: "Text", icon: FileText, description: "Add text content" },
         { id: "pdf", label: "PDF", icon: File, description: "Upload PDF file" },
         { id: "quiz", label: "Quiz/Exam", icon: HelpCircle, description: "Add quiz or exam" },
@@ -45,6 +48,12 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
     const handleTypeSelect = async (typeId: string) => {
         setSelectedType(typeId);
         setStep("details");
+
+        if (typeId === "zoom") {
+            setMeetingPlatform("zoom");
+        } else if (typeId === "live") {
+            setMeetingPlatform("google_meet");
+        }
 
         // Load available exams if quiz is selected
         if (typeId === "quiz") {
@@ -65,6 +74,36 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
                 setIsLoadingExams(false);
             }
         }
+    }
+
+
+    const handleCreateZoomMeeting = async () => {
+        if (!title) {
+            toast.error("Please enter a title first");
+            return;
+        }
+        if (!meetingDate) {
+            toast.error("Please select a date and time");
+            return;
+        }
+
+        setIsCreatingZoom(true);
+        try {
+            // Ensure date is valid ISO
+            const date = new Date(meetingDate).toISOString();
+            const res = await createZoomMeetingAction(title, date, 60);
+
+            if (res.error) {
+                toast.error(res.error);
+            } else {
+                setMeetingUrl(res.meetingUrl);
+                toast.success("Zoom meeting created successfully!");
+            }
+        } catch (error) {
+            toast.error("Failed to create meeting");
+        } finally {
+            setIsCreatingZoom(false);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -75,7 +114,7 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
         // Admin can add exam later when ready
 
         // Validation for live class
-        if (selectedType === "live") {
+        if (selectedType === "live" || selectedType === "zoom") {
             if (!meetingUrl) {
                 toast.error("Please enter a meeting URL");
                 return;
@@ -106,18 +145,18 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
             const lessonData: any = {
                 module_id: moduleId,
                 title,
-                content_type: selectedType === "live" ? "video" : selectedType,
+                content_type: (selectedType === "live" || selectedType === "zoom") ? "video" : selectedType,
                 content_url: contentUrl,
                 lesson_order: lessonCount + 1,
                 is_free_preview: isFreePreview
             };
 
             // Add live class specific fields
-            if (selectedType === "live") {
+            if (selectedType === "live" || selectedType === "zoom") {
                 lessonData.is_live = true;
                 lessonData.meeting_url = meetingUrl;
                 lessonData.meeting_date = new Date(meetingDate).toISOString();
-                lessonData.meeting_platform = meetingPlatform;
+                lessonData.meeting_platform = selectedType === "zoom" ? "zoom" : meetingPlatform;
             }
 
             // Add exam_id for quiz type (only if exam is selected)
@@ -219,19 +258,43 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
                             />
                         </div>
 
-                        {selectedType === "live" && (
+                        {(selectedType === "live" || selectedType === "zoom") && (
                             <>
+                                {selectedType === "zoom" && (
+                                    <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-md border border-blue-100 dark:border-blue-800 text-sm space-y-2">
+                                        <div className="flex justify-between items-center">
+                                            <h4 className="font-semibold text-blue-800 dark:text-blue-300">Zoom Integration</h4>
+                                            <Button
+                                                type="button"
+                                                size="sm"
+                                                variant="outline"
+                                                onClick={handleCreateZoomMeeting}
+                                                disabled={isCreatingZoom || !title || !meetingDate}
+                                                className="bg-white dark:bg-slate-800 h-8 text-xs"
+                                            >
+                                                {isCreatingZoom ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : <Video className="h-3 w-3 mr-1" />}
+                                                Auto-Create Meeting
+                                            </Button>
+                                        </div>
+                                        <ul className="list-disc pl-4 space-y-1 text-blue-700 dark:text-blue-400 text-xs">
+                                            <li>Free Zoom accounts have a <strong>40-minute limit</strong> per group meeting.</li>
+                                            <li>Auto-create uses your connected Zoom account credentials.</li>
+                                            <li>If you don't have API credentials set up, please configure them in settings.</li>
+                                        </ul>
+                                    </div>
+                                )}
+
                                 <div className="space-y-2">
                                     <Label className="dark:text-slate-300">Meeting URL</Label>
                                     <Input
                                         value={meetingUrl}
                                         onChange={(e) => setMeetingUrl(e.target.value)}
-                                        placeholder="https://meet.google.com/abc-defg-hij"
+                                        placeholder={selectedType === "zoom" ? "https://zoom.us/j/123456789" : "https://meet.google.com/abc-defg-hij"}
                                         required
                                         className="dark:bg-slate-900 dark:border-slate-700 dark:text-white"
                                     />
                                     <p className="text-xs text-slate-500 dark:text-slate-400">
-                                        Paste your Google Meet, Zoom, or Teams link here
+                                        Paste your {selectedType === "zoom" ? "Zoom" : ""} meeting link here
                                     </p>
                                 </div>
 
@@ -249,19 +312,20 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
                                     </p>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <Label className="dark:text-slate-300">Platform</Label>
-                                    <select
-                                        className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 dark:bg-slate-900 dark:border-slate-700 dark:text-white"
-                                        value={meetingPlatform}
-                                        onChange={(e) => setMeetingPlatform(e.target.value)}
-                                    >
-                                        <option value="google_meet">Google Meet</option>
-                                        <option value="zoom">Zoom</option>
-                                        <option value="teams">Microsoft Teams</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
+                                {selectedType === "live" && (
+                                    <div className="space-y-2">
+                                        <Label className="dark:text-slate-300">Platform</Label>
+                                        <select
+                                            className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+                                            value={meetingPlatform}
+                                            onChange={(e) => setMeetingPlatform(e.target.value)}
+                                        >
+                                            <option value="google_meet">Google Meet</option>
+                                            <option value="teams">Microsoft Teams</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                )}
                             </>
                         )}
 

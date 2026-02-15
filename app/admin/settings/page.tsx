@@ -16,6 +16,14 @@ export default function SettingsPage() {
             bgColor: 'bg-orange-100 dark:bg-orange-900/20'
         },
         {
+            title: 'Zoom Integration',
+            description: 'Configure Zoom API credentials for automatic class creation',
+            icon: Video,
+            href: '/admin/settings/zoom',
+            color: 'text-blue-600',
+            bgColor: 'bg-blue-100 dark:bg-blue-900/20'
+        },
+        {
             title: 'API Keys',
             description: 'Manage API keys and integrations',
             icon: Key,
