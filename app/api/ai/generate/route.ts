@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
     try {
-        const { prompt, systemInstruction } = await req.json();
+        const { prompt, systemInstruction, format } = await req.json();
 
         if (!prompt) {
             return NextResponse.json(
@@ -24,15 +24,47 @@ export async function POST(req: NextRequest) {
 
         const genAI = new GoogleGenerativeAI(apiKey);
 
-        // Using gemini-1.5-flash for speed and efficiency
-        const model = genAI.getGenerativeModel({
-            model: "gemini-2.5-flash",
-            systemInstruction: systemInstruction ? { role: 'system', parts: [{ text: systemInstruction }] } : undefined
-        });
+        const defaultSystemInstruction = format === 'json_blocks'
+            ? "You are a professional blog architect. You only output valid JSON arrays of block objects. Each block must have 'type' and properties like 'content', 'level', 'url', 'cards', etc. Block types: heading, paragraph, image, button, cardGrid, cta, faq, divider, table. For 'cta', if it is a promo, use variant: 'simple-green' and include a 'features' array of strings."
+            : "You are a helpful assistant.";
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        const generateWithModel = async (modelName: string) => {
+            const model = genAI.getGenerativeModel({
+                model: modelName,
+                systemInstruction: { role: 'system', parts: [{ text: systemInstruction || defaultSystemInstruction }] }
+            });
+            const result = await model.generateContent(prompt);
+            return result.response.text();
+        };
+
+        let text: string;
+        try {
+            text = await generateWithModel("gemini-2.5-flash");
+        } catch (error: any) {
+            // If quota error, try fallback to 1.5-flash
+            if (error.message?.includes("quota") || error.message?.includes("429")) {
+                console.warn(`Gemini 2.0-flash quota hit, falling back to 1.5-flash...`);
+                try {
+                    text = await generateWithModel("gemini-1.5-flash");
+                } catch (fallbackError: any) {
+                    throw fallbackError; // Re-throw if fallback also fails
+                }
+            } else {
+                throw error;
+            }
+        }
+
+        if (format === 'json_blocks') {
+            try {
+                // Remove markdown code blocks if AI included them
+                const cleanJson = text.replace(/```json\n?|\n?```/g, '').trim();
+                const blocks = JSON.parse(cleanJson);
+                return NextResponse.json({ success: true, blocks });
+            } catch (e) {
+                console.error("Failed to parse AI-generated JSON:", text);
+                return NextResponse.json({ success: false, error: "AI generated invalid JSON format" }, { status: 500 });
+            }
+        }
 
         return NextResponse.json({ success: true, text });
 
@@ -40,9 +72,13 @@ export async function POST(req: NextRequest) {
         console.error("AI Generation Error:", error);
 
         // Handle Gemini Safety/Quota errors gracefully
-        const errorMessage = error.message?.includes("quota")
-            ? "Usage limit exceeded. Please try again later."
-            : error.message || "Failed to generate content";
+        let errorMessage = error.message || "Failed to generate content";
+
+        if (errorMessage.includes("quota") || errorMessage.includes("429")) {
+            errorMessage = "Free tier limit reached. Please wait a minute before trying again.";
+        } else if (errorMessage.includes("safety")) {
+            errorMessage = "The prompt was flagged by AI safety filters. Please try rephrasing.";
+        }
 
         return NextResponse.json(
             { success: false, error: errorMessage },

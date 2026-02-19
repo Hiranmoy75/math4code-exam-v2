@@ -11,6 +11,7 @@ import { notFound } from "next/navigation";
 import { useEffect } from "react";
 
 import { BlogPost } from "@/lib/blog";
+import { BlockRenderer } from "@/components/blog-builder/BlockRenderer";
 
 export function ClientBlogDetail({ slug, initialPost }: { slug: string; initialPost?: BlogPost }) {
     const { data: post, isLoading, error } = useBlogPost(slug, initialPost);
@@ -132,7 +133,17 @@ export function ClientBlogDetail({ slug, initialPost }: { slug: string; initialP
 
                 {/* Main Content */}
                 <div className="prose prose-lg prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-green-600 prose-a:no-underline hover:prose-a:underline prose-img:rounded-2xl text-slate-600 prose-img:shadow-lg prose-strong:text-slate-900">
-                    {post && <div dangerouslySetInnerHTML={{ __html: post.content }} />}
+                    {post && (() => {
+                        try {
+                            if (post.content && post.content.trim().startsWith('[')) {
+                                const blocks = JSON.parse(post.content);
+                                return <BlockRenderer blocks={blocks} />;
+                            }
+                            return <div dangerouslySetInnerHTML={{ __html: post.content }} />;
+                        } catch (e) {
+                            return <div dangerouslySetInnerHTML={{ __html: post.content }} />;
+                        }
+                    })()}
                 </div>
 
                 {/* Mid-Content CTA */}
