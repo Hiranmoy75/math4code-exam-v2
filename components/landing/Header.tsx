@@ -90,6 +90,7 @@ const EXAMS = [
 const NAV_LINKS = [
     { title: "Courses", href: "/courses" },
     { title: "Test Series", href: "/test-series" },
+    { title: "Blogs", href: "/blog" },
     { title: "Free Resources", href: "/free-resources" }
 ];
 

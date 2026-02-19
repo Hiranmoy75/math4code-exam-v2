@@ -21,7 +21,6 @@ export default function CSIRNETPYQPage() {
                 ctaHref="#"
                 secondaryCtaText="View Solutions"
                 secondaryCtaHref="/csir-net/course"
-                background="bg-slate-50"
                 features={["10+ Years Papers", "Answer Keys", "Video Solutions"]}
             />
 

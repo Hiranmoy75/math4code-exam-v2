@@ -20,7 +20,6 @@ export default function IITJAMPYQPage() {
                 ctaHref="#"
                 secondaryCtaText="View Solutions"
                 secondaryCtaHref="/iit-jam/course"
-                background="bg-slate-50"
                 features={["10+ Years Papers", "Topic-wise Analysis", "Video Solutions"]}
             />
 

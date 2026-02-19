@@ -20,7 +20,6 @@ export default function GATEPYQPage() {
                 ctaHref="#"
                 secondaryCtaText="View Solutions"
                 secondaryCtaHref="/gate/course"
-                background="bg-slate-50"
                 features={["10+ Years Papers", "Category-wise Weights", "Video Solutions"]}
             />
 
