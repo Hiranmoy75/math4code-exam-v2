@@ -11,6 +11,7 @@ import { Testimonials } from '@/components/landing/Testimonials';
 import { CTA } from '@/components/landing/CTA';
 import { TrustSection } from '@/components/landing/TrustSection';
 import { OrganizationSchema, PersonSchema } from '@/components/seo/StructuredData';
+import { AppDownloadSection } from '@/components/AppDownloadSection';
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
       <AIMentorSection />
       <DemoSection />
       <Testimonials />
+      <AppDownloadSection />
       <CTA />
     </div>
   );

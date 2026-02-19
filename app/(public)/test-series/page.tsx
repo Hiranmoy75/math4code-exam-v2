@@ -8,6 +8,7 @@ import { Header } from "@/components/landing/Header";
 import { Footer } from "@/components/landing/Footer";
 import { CourseThumbnail } from "@/components/ui/CourseThumbnail";
 import { getTenantId } from "@/lib/tenant";
+import { AppDownloadSection } from "@/components/AppDownloadSection";
 
 export { metadata } from './metadata';
 
@@ -251,6 +252,8 @@ export default async function TestSeriesPage({
                     </div>
                 </div>
             </main>
+
+            <AppDownloadSection />
         </div>
     );
 }
