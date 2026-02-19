@@ -40,7 +40,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, className 
 const RenderIndividualBlock: React.FC<{ block: Block }> = ({ block }) => {
     switch (block.type) {
         case 'heading':
-            const HeadingTag = `h${block.level}` as keyof JSX.IntrinsicElements;
+            const HeadingTag = `h${block.level}` as 'h1' | 'h2' | 'h3';
             return (
                 <HeadingTag className={cn(
                     "font-black text-slate-900 tracking-tight leading-tight",
