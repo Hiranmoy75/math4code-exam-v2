@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 
 import { getBlogPostBySlug, getRelatedPosts, BlogPost } from "@/lib/blog";
 import { notFound } from "next/navigation";
@@ -9,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { Calendar, Clock, User, ArrowLeft, Facebook, Twitter, Linkedin, Share2, CheckCircle2 } from "lucide-react";
 import { Metadata } from "next";
+
+export const runtime = 'edge';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
