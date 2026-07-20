@@ -13,6 +13,22 @@ import { CommunityButton } from "@/components/CommunityButton";
 import { QuizSkeleton, VideoSkeleton, TextSkeleton } from "@/components/skeletons/LessonSkeletons";
 import React from "react";
 import { toast } from "sonner";
+import dynamic from "next/dynamic";
+
+// Lazy-load MathPreviewRenderer (it pulls in MathJax, avoid SSR issues)
+const MathPreviewRenderer = dynamic(
+    () => import("@/components/MathPreviewRenderer").then((m) => ({ default: m.MathPreviewRenderer })),
+    { ssr: false, loading: () => <div className="animate-pulse h-40 bg-muted/30 rounded-xl" /> }
+);
+
+/** Smart content renderer — auto-detects legacy HTML vs new markdown format */
+function LessonTextContent({ content, className = "" }: { content: string; className?: string }) {
+    const isLegacyHtml = content.trimStart().startsWith("<");
+    if (isLegacyHtml) {
+        return <div dangerouslySetInnerHTML={{ __html: content }} className={`rich-text-content prose dark:prose-invert max-w-none ${className}`} />;
+    }
+    return <MathPreviewRenderer content={content} className={className} />;
+}
 
 export default function LessonContentClient({
     lessonId,
@@ -145,10 +161,7 @@ export default function LessonContentClient({
                                         {lesson.content_text && (
                                             <div className="mt-8 pt-8 border-t border-border">
                                                 <h3 className="text-lg font-semibold mb-4">Lesson Transcript / Notes</h3>
-                                                <div
-                                                    dangerouslySetInnerHTML={{ __html: lesson.content_text }}
-                                                    className="rich-text-content prose dark:prose-invert max-w-none text-sm text-muted-foreground"
-                                                />
+                                                <LessonTextContent content={lesson.content_text} className="text-sm" />
                                             </div>
                                         )}
                                     </div>
@@ -327,20 +340,9 @@ export default function LessonContentClient({
                     )}
 
                     {lesson.content_type === "text" && (
-                        <div className="prose dark:prose-invert max-w-none prose-lg">
+                        <div>
                             {lesson.content_text ? (
-                                <>
-                                    <style>{`
-                                        .rich-text-content { font-size: 1.125rem; line-height: 1.8; }
-                                        .rich-text-content h1, .rich-text-content h2 { color: var(--foreground); margin-top: 2em; margin-bottom: 1em; }
-                                        .rich-text-content p { margin-bottom: 1.5em; color: var(--muted-foreground); }
-                                        .rich-text-content strong { color: var(--foreground); font-weight: 700; }
-                                        .rich-text-content ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1.5em; }
-                                        .rich-text-content blockquote { border-left: 4px solid var(--primary); padding-left: 1em; font-style: italic; color: var(--muted-foreground); }
-                                        .rich-text-content code { background: var(--muted); padding: 0.2em 0.4em; rounded: 0.25em; font-size: 0.9em; }
-                                    `}</style>
-                                    <div dangerouslySetInnerHTML={{ __html: lesson.content_text }} className="rich-text-content" />
-                                </>
+                                <LessonTextContent content={lesson.content_text} />
                             ) : (
                                 <div className="flex flex-col items-center justify-center py-20 text-muted-foreground border border-dashed border-border rounded-xl">
                                     <FileText className="h-20 w-20 opacity-20 mb-4" />
