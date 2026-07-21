@@ -1,16 +1,18 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { EmbeddedExam, PreviousResultView } from "@/components/EmbeddedExam"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Clock, FileQuestion, ListChecks, Trophy, Play, RotateCcw, ChevronRight, History } from "lucide-react"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { createClient } from "@/lib/supabase/client"
 import { useExamAccess } from "@/hooks/useExamAccess"
 import { ExamAccessChecker } from "@/components/ExamAccessChecker"
 import { Loader2 } from "lucide-react"
+import { ExamInstructionPage } from "@/components/exam/ExamInstructionPage"
+import { useCurrentUser } from "@/hooks/student/useCurrentUser"
 
 interface QuizPlayerProps {
     exam: {
@@ -28,7 +30,9 @@ interface QuizPlayerProps {
 }
 
 export function QuizPlayer({ exam, attempts, userId, questionsCount, maxAttempts = 1 }: QuizPlayerProps) {
-    const [view, setView] = useState<"landing" | "exam" | "result">("landing")
+    const queryClient = useQueryClient()
+    const playerRef = useRef<HTMLDivElement>(null)
+    const [view, setView] = useState<"landing" | "instruction" | "exam" | "result" | "review">("landing")
     const [selectedAttempt, setSelectedAttempt] = useState<any>(null)
 
     // ⚡ INSTANT CACHED ACCESS: Use React Query for access check
@@ -62,7 +66,8 @@ export function QuizPlayer({ exam, attempts, userId, questionsCount, maxAttempts
     const hasAttempted = completedAttempts.length > 0 || !!activeAttempt
 
     const handleStart = () => {
-        setView("exam")
+        queryClient.invalidateQueries({ queryKey: ["exam-session"] })
+        setView("instruction")
     }
 
     const handleViewResult = (attempt: any) => {
@@ -95,8 +100,62 @@ export function QuizPlayer({ exam, attempts, userId, questionsCount, maxAttempts
         )
     }
 
+    // ── Instruction Page (before exam) ──────────────────────────────────────────
+    if (view === "instruction") {
+        return (
+            <div ref={playerRef} className="w-full h-full bg-background flex flex-col">
+                <InstructionWrapper
+                    exam={exam}
+                    onReady={async () => {
+                        try {
+                            if (playerRef.current?.requestFullscreen) {
+                                await playerRef.current.requestFullscreen()
+                            }
+                        } catch (err) {
+                            console.warn("Fullscreen request failed:", err)
+                        }
+                        setView("exam")
+                    }}
+                    onBack={() => setView("landing")}
+                />
+            </div>
+        )
+    }
+
+    if (view === "review") {
+        return (
+            <div ref={playerRef} className="w-full h-full bg-background flex flex-col">
+                <EmbeddedExam 
+                    examId={exam.id} 
+                    onExit={() => {
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen()
+                        }
+                        setView("result")
+                    }} 
+                    isReviewMode={true} 
+                    reviewAttemptId={selectedAttempt?.id} 
+                />
+            </div>
+        )
+    }
+
     if (view === "exam") {
-        return <EmbeddedExam examId={exam.id} onExit={() => setView("landing")} isRetake={hasAttempted && !activeAttempt} />
+        return (
+            <div ref={playerRef} className="w-full h-full bg-background flex flex-col">
+                <EmbeddedExam 
+                    examId={exam.id} 
+                    onExit={() => {
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen()
+                        }
+                        setView("landing")
+                    }} 
+                    isRetake={hasAttempted && !activeAttempt} 
+                    retakeAttempt={completedAttempts.length}
+                />
+            </div>
+        )
     }
 
     if (view === "result") {
@@ -113,9 +172,10 @@ export function QuizPlayer({ exam, attempts, userId, questionsCount, maxAttempts
                     <PreviousResultView
                         examId={exam.id}
                         userId={userId}
-                        onRetake={() => setView("exam")}
+                        onRetake={() => setView("instruction")}
                         attemptId={selectedAttempt?.id}
                         initialResult={selectedAttempt?.result}
+                        onReviewExamMode={() => setView("review")}
                     />
                 </div>
             </div>
@@ -294,5 +354,27 @@ export function QuizPlayer({ exam, attempts, userId, questionsCount, maxAttempts
                 </Card>
             </div>
         </div>
+    )
+}
+
+// ── Wrapper to fetch student name for instruction page ────────────────────────
+function InstructionWrapper({
+    exam,
+    onReady,
+    onBack,
+}: {
+    exam: { title: string; duration_minutes: number }
+    onReady: () => void
+    onBack: () => void
+}) {
+    const { data: userProfile } = useCurrentUser()
+    return (
+        <ExamInstructionPage
+            examTitle={exam.title}
+            durationMinutes={exam.duration_minutes}
+            studentName={userProfile?.fullName || userProfile?.email?.split("@")[0] || "Student"}
+            onReady={onReady}
+            onBack={onBack}
+        />
     )
 }

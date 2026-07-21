@@ -244,8 +244,8 @@ export function MathPreviewRenderer({ content, className = "" }: MathPreviewRend
         const win = window as any;
         if (win.MathJax?.typesetPromise) {
             // Clear old typesetting first, then re-run
-            win.MathJax.typesetClear([containerRef.current]);
-            win.MathJax.typesetPromise([containerRef.current]).catch(() => {});
+            win.MathJax.typesetClear?.([containerRef.current]);
+            win.MathJax.typesetPromise?.([containerRef.current]).catch(() => {});
         }
     }, [htmlContent]);
 

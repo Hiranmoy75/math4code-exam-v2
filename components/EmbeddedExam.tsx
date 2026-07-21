@@ -13,7 +13,8 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import {
     Clock, CheckCircle2, Loader2, ArrowLeft, Flag, TrendingUp, Award, Target, BarChart3,
-    Menu, AlertTriangle, Save, ListChecks, Maximize, Minimize, PauseCircle, X, Calculator
+    Menu, AlertTriangle, Save, ListChecks, Maximize, Minimize, PauseCircle, X, Calculator,
+    ChevronLeft, ChevronRight
 } from "lucide-react"
 import { renderWithLatex } from "@/lib/renderWithLatex"
 import { useRouter } from "next/navigation"
@@ -31,6 +32,9 @@ interface EmbeddedExamProps {
     onExit?: () => void
     isRetake?: boolean
     onSuccessfulSubmit?: (attemptId: string) => void
+    isReviewMode?: boolean
+    reviewAttemptId?: string
+    retakeAttempt?: number
 }
 
 interface QuizResult {
@@ -223,14 +227,16 @@ export function PreviousResultView({
     onRetake,
     attemptId,
     initialResult,
-    onBack
+    onBack,
+    onReviewExamMode
 }: {
     examId: string,
     userId: string,
     onRetake: () => void,
     attemptId?: string,
     initialResult?: any,
-    onBack?: () => void
+    onBack?: () => void,
+    onReviewExamMode?: () => void
 }) {
     const [effectiveAttemptId, setEffectiveAttemptId] = useState<string | null>(attemptId || null)
     const [showAnalysis, setShowAnalysis] = useState(false)
@@ -468,6 +474,16 @@ export function PreviousResultView({
                             Review Questions
                         </Button>
                     )}
+                    {onReviewExamMode && (
+                        <Button
+                            onClick={onReviewExamMode}
+                            className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg hover:shadow-xl transition-all"
+                            size="lg"
+                        >
+                            <Maximize className="w-5 h-5 mr-2" />
+                            Review (Exam Mode)
+                        </Button>
+                    )}
                     <Button
                         onClick={onRetake}
                         className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg hover:shadow-xl transition-all"
@@ -531,7 +547,7 @@ export function PreviousResultView({
                                                 <div>
                                                     <h3 className="font-bold text-lg text-slate-800 dark:text-white">{section.title}</h3>
                                                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                                        {totalQuestions} Questions • {secResult?.obtained_marks || 0}/{secResult?.total_marks || 0} Marks
+                                                        {totalQuestions} Questions Ã¢â‚¬Â¢ {secResult?.obtained_marks || 0}/{secResult?.total_marks || 0} Marks
                                                     </p>
                                                 </div>
                                                 <div className={`px-3 py-1 rounded-full text-xs font-bold ${accuracy >= 80 ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' :
@@ -622,12 +638,22 @@ export function PreviousResultView({
     )
 }
 
-export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSubmit }: EmbeddedExamProps) {
+export function EmbeddedExam({
+    examId,
+    onExit,
+    isRetake = false,
+    onSuccessfulSubmit,
+    isReviewMode = false,
+    reviewAttemptId,
+    retakeAttempt: initialRetakeAttempt
+}: EmbeddedExamProps) {
     const queryClient = useQueryClient()
     const supabase = createClient()
     const router = useRouter()
     const examContainerRef = useRef<HTMLDivElement>(null)
-    const [isFullscreen, setIsFullscreen] = useState(false)
+    const [isFullscreen, setIsFullscreen] = useState(
+        typeof document !== "undefined" ? !!document.fullscreenElement : false
+    )
     // const [userId, setUserId] = useState<string | null>(null) // REMOVED: Derived from hook now
     const [responses, setResponses] = useState<Record<string, any>>({})
     const [marked, setMarked] = useState<Record<string, boolean>>({})
@@ -642,7 +668,9 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
     const [showSubmitDialog, setShowSubmitDialog] = useState(false)
     const [showResults, setShowResults] = useState(false)
     const [paletteOpenMobile, setPaletteOpenMobile] = useState(false)
-    const [retakeAttempt, setRetakeAttempt] = useState(isRetake ? 1 : 0)
+    const [retakeAttempt, setRetakeAttempt] = useState(
+        initialRetakeAttempt !== undefined ? initialRetakeAttempt : (isRetake ? 1 : 0)
+    )
     const [submittedAttemptId, setSubmittedAttemptId] = useState<string | null>(null)
     const [showPauseDialog, setShowPauseDialog] = useState(false)
     const [isPausing, setIsPausing] = useState(false)
@@ -654,13 +682,65 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
     const { data: userProfile, isLoading: isUserLoading } = useCurrentUser()
     const userId = userProfile?.id || null
 
+    const [isDark, setIsDark] = useState(false)
+    useEffect(() => {
+        setIsDark(document.documentElement.classList.contains("dark"))
+        const observer = new MutationObserver(() => {
+            setIsDark(document.documentElement.classList.contains("dark"))
+        })
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+        return () => observer.disconnect()
+    }, [])
+
+    const theme = {
+        bg: isDark ? "#0f172a" : "#ffffff",
+        text: isDark ? "#f8fafc" : "#1e293b",
+        border: isDark ? "#334155" : "#cbd5e1",
+        headerBg: isDark ? "#1e293b" : "#f0f0f0",
+        tabsBg: isDark ? "#0f172a" : "#e8e8e8",
+        tabActiveBg: "#007bff",
+        tabInactiveBg: isDark ? "#1e293b" : "#e8e8e8",
+        tabActiveText: "#ffffff",
+        tabInactiveText: isDark ? "#94a3b8" : "#495057",
+        leftPanelBg: isDark ? "#0f172a" : "#ffffff",
+        rightPanelBg: isDark ? "#1e293b" : "#ffffff",
+        topBarBg: isDark ? "#020617" : "#333333",
+    }
+
+
     useEffect(() => {
         if (!isUserLoading && !userId) {
             router.push("/auth/login")
         }
     }, [isUserLoading, userId, router])
 
-    const { data: sessionData, isLoading, error } = useExamSession(examId, userId, retakeAttempt, !showResults)
+    const { data: reviewResultData, isLoading: isReviewLoading } = useExamResult(
+        isReviewMode ? reviewAttemptId || "" : ""
+    )
+
+    const { data: activeSessionData, isLoading: isActiveLoading, error: activeError } = useExamSession(
+        examId,
+        userId,
+        retakeAttempt,
+        !showResults && !isReviewMode
+    )
+
+    const sessionData = React.useMemo(() => {
+        if (isReviewMode) {
+            if (!reviewResultData) return null
+            return {
+                exam: reviewResultData.attempt.exams,
+                sections: reviewResultData.structured,
+                attempt: reviewResultData.attempt,
+                previousResponses: reviewResultData.responseMap
+            }
+        }
+        return activeSessionData
+    }, [isReviewMode, reviewResultData, activeSessionData])
+
+    const isLoading = isReviewMode ? isReviewLoading : isActiveLoading
+    const error = isReviewMode ? null : activeError
+
     const { mutate: submitExam, isPending: isSubmitting } = useSubmitExam()
     const { mutate: saveAnswer, isPending: isSaving } = useSaveAnswer()
     const { mutate: updateTimer } = useUpdateTimer()
@@ -670,7 +750,7 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
         if (!sessionData) return
 
         // Safety: If already submitted, show results immediately
-        if (sessionData.attempt?.status === 'submitted') {
+        if (!isReviewMode && sessionData.attempt?.status === 'submitted') {
             setSubmittedAttemptId(sessionData.attempt.id)
             setShowResults(true)
             return
@@ -680,6 +760,12 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
             setResponses(sessionData.previousResponses)
             const newVisited: Record<string, boolean> = {}
             Object.keys(sessionData.previousResponses).forEach(k => newVisited[k] = true)
+            if (isReviewMode) {
+                const allQids = sessionData.sections.flatMap((s: any) => s.questions.map((q: any) => q.id))
+                allQids.forEach((qid: string) => {
+                    newVisited[qid] = true
+                })
+            }
             setVisited(newVisited)
         }
 
@@ -737,18 +823,9 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
             return
         }
 
-        // Try to auto-enter fullscreen (might be blocked by browser, which is fine)
-        if (examContainerRef.current && !document.fullscreenElement) {
-            toggleFullscreen().catch((err) => {
-                // Notify user if browser blocks auto-fullscreen
-                console.warn("Fullscreen blocked:", err);
-                toast.info("💡 Tip: Enable fullscreen for better exam experience", {
-                    duration: 3000,
-                });
-            })
-        }
 
-        // ✅ CLEANUP: Prevent memory leak
+
+        // Ã¢Å“â€¦ CLEANUP: Prevent memory leak
         return () => {
             setIsTimerActive(false);
         };
@@ -861,17 +938,28 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
     const allQuestions = sessionData?.sections.flatMap((s) => s.questions) || []
     const currentQuestion = allQuestions[activeQuestionIdx]
 
+    // Mark question as visited when it becomes active
+    useEffect(() => {
+        if (currentQuestion?.id) {
+            setVisited((v) => {
+                if (v[currentQuestion.id]) return v
+                return { ...v, [currentQuestion.id]: true }
+            })
+        }
+    }, [currentQuestion?.id])
+
+
     const isAnswered = useCallback((val: any) => {
         return val !== undefined && val !== null && val !== "" && !(Array.isArray(val) && val.length === 0)
     }, [])
 
     const getSectionAttemptCount = useCallback((sectionId: string) => {
-        const section = sessionData?.sections.find(s => s.id === sectionId)
+        const section = sessionData?.sections.find((s: any) => s.id === sectionId)
         if (!section) return 0
-        return section.questions.filter(q => isAnswered(responses[q.id])).length
+        return section.questions.filter((q: any) => isAnswered(responses[q.id])).length
     }, [sessionData, responses, isAnswered])
 
-    const currentSection = sessionData?.sections.find(s => s.id === currentQuestion?.section_id)
+    const currentSection = sessionData?.sections.find((s: any) => s.id === currentQuestion?.section_id)
 
     const handleSaveResponse = useCallback((qid: string, ans: any) => {
         // Max Attempts Enforcement
@@ -957,7 +1045,7 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
                     try {
                         const rewardRes = await awardCoins(userId, 'quiz_completion', examId, `Completed quiz: ${sessionData.exam.title}`, tenantId || undefined);
                         if (rewardRes.success && rewardRes.message) {
-                            toast.success(rewardRes.message, { icon: "🪙" });
+                            toast.success(rewardRes.message, { icon: "Ã°Å¸Âªâ„¢" });
                         }
                     } catch (error) {
                         // Silently fail - don't break submission if reward fails
@@ -1110,99 +1198,146 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
 
     if (!sessionData) return null
 
+    const currentSectionIndex = sessionData.sections.findIndex(s => s.id === currentSection?.id)
+    const currentSectionStartIdx = currentSectionIndex !== -1
+        ? sessionData.sections.slice(0, currentSectionIndex).reduce((sum, s) => sum + s.questions.length, 0)
+        : 0
+    const localActiveIdx = activeQuestionIdx - currentSectionStartIdx
+
+    const answeredCount = Object.values(responses).filter(
+        v => v !== null && v !== "" && !(Array.isArray(v) && v.length === 0)
+    ).length
+    const markedCount = Object.values(marked).filter(Boolean).length
+    const notVisitedCount = allQuestions.length - Object.keys(visited).length
+    const notAnsweredCount = allQuestions.length - answeredCount
+
     return (
-        <div ref={examContainerRef} className={`grid grid-cols-1 lg:grid-cols-[1fr_360px] bg-background text-foreground overflow-hidden ${isFullscreen ? "fixed inset-0 z-50 w-full h-[100dvh] rounded-none border-0" : "rounded-xl border border-border h-full"}`}>
-            {/* LEFT PANEL */}
-            <div className="flex flex-col min-h-0 p-3 md:p-6 relative bg-background">
-                {/* HEADER - Compact NTA Style */}
-                <div className="shrink-0 bg-card border border-border rounded-xl shadow-sm mb-4 overflow-hidden">
-                    {/* Top Row: Title + Timer + Actions */}
-                    <div className="flex items-center justify-between gap-2 px-3 md:px-4 py-2.5 bg-gradient-to-r from-primary/5 to-primary/10 border-b border-border">
-                        {/* Left: Title */}
-                        <div className="flex items-center gap-2 min-w-0 flex-1">
-                            <h2 className="text-sm md:text-base font-bold text-primary truncate">{sessionData.exam.title}</h2>
-                            {currentSection && (
-                                <div className="hidden sm:flex text-[10px] md:text-xs font-medium px-1.5 py-0.5 rounded bg-muted text-muted-foreground">
-                                    {getSectionAttemptCount(currentSection.id)}/{allQuestions.length}
-                                </div>
-                            )}
+        <div
+            ref={examContainerRef}
+            className={`flex flex-col overflow-hidden select-none ${isFullscreen
+                    ? "fixed inset-0 z-50 w-full h-[100dvh]"
+                    : "h-full w-full"
+                }`}
+            style={{
+                fontFamily: "'Segoe UI', Arial, sans-serif",
+                fontSize: "13px",
+                backgroundColor: theme.bg,
+                color: theme.text
+            }}
+        >
+            {/* ══ ROW 1: Dark Title Bar ══════════════════════════════════════ */}
+            <div className="shrink-0 flex items-center text-white px-3 py-1 gap-3 min-h-[32px]" style={{ backgroundColor: theme.topBarBg }}>
+                {/* Exam title - green text like official */}
+                <span className="text-sm font-semibold text-[#4ade80] truncate flex-1">
+                    {sessionData.exam.title}
+                </span>
+                {/* Right links */}
+                <div className="hidden md:flex items-center gap-3 text-xs shrink-0">
+                    <button className="flex items-center gap-1 text-orange-400 hover:text-orange-300">
+                        <span className="w-4 h-4 rounded-full bg-orange-400 text-black flex items-center justify-center text-[9px] font-bold">?</span>
+                        Useful Data
+                    </button>
+                    <button className="flex items-center gap-1 text-blue-400 hover:text-blue-300">
+                        <span className="w-4 h-4 rounded-full bg-blue-400 text-black flex items-center justify-center text-[9px] font-bold">i</span>
+                        Instructions
+                    </button>
+                    <button className="flex items-center gap-1 text-green-400 hover:text-green-300">
+                        <span className="w-4 h-4 rounded-full bg-green-400 text-black flex items-center justify-center text-[9px] font-bold">Q</span>
+                        Question Paper
+                    </button>
+                </div>
+                {/* Mobile menu */}
+                <button
+                    onClick={() => setPaletteOpenMobile(true)}
+                    className="md:hidden p-1 text-white"
+                >
+                    <Menu className="w-4 h-4" />
+                </button>
+            </div>
+
+            {/* ══ BODY: 2-Column Layout ═══════════════════════════════════ */}
+            <div className="flex flex-1 min-h-0 overflow-hidden" style={{ borderTop: `1px solid ${theme.border}` }}>
+
+                {/* ── LEFT COLUMN ──────────────────────────────────────────── */}
+                <div className="flex flex-col flex-1 min-w-0 overflow-hidden" style={{ borderRight: `1px solid ${theme.border}` }}>
+
+                    {/* Sub-header (exam chip + calc) */}
+                    <div className="shrink-0 flex items-center border-b min-h-[40px] px-1 gap-1" style={{ backgroundColor: theme.headerBg, borderBottomColor: theme.border }}>
+                        <button className="p-1 text-slate-500 hover:text-slate-700 shrink-0">
+                            <ChevronLeft className="w-3.5 h-3.5" style={{ color: theme.text }} />
+                        </button>
+                        <div className="flex items-center gap-1 text-white px-2.5 py-1 rounded text-xs font-medium max-w-[200px] truncate" style={{ backgroundColor: "#007bff" }}>
+                            <span className="truncate">{sessionData.exam.title}</span>
+                            <span className="w-4 h-4 rounded-full bg-white text-blue-600 flex items-center justify-center text-[9px] font-bold ml-1 shrink-0">i</span>
                         </div>
-                        {/* Right: Timer + Actions */}
-                        <div className="flex items-center gap-1 md:gap-1.5">
+                        <button className="p-1 text-slate-500 hover:text-slate-700 shrink-0">
+                            <ChevronRight className="w-3.5 h-3.5" style={{ color: theme.text }} />
+                        </button>
 
-
-
-
-                            <ExamTimer
-                                key={initialTime}
-                                initialSeconds={initialTime}
-                                isActive={isTimerActive}
-                                onTimeUp={handleAutoSubmit}
-                                timeRef={timeRef}
-                            />
-
+                        {/* Action buttons aligned to the right */}
+                        <div className="ml-auto flex items-center gap-1.5 pr-2">
                             {/* Calculator */}
                             <button
                                 onClick={() => setShowCalculator(!showCalculator)}
-                                className={`p-1.5 md:p-2 rounded-md transition-colors ${showCalculator ? "bg-emerald-600 text-white" : "bg-muted text-foreground"}`}
+                                className="p-1.5 rounded border transition-colors text-white"
+                                style={{
+                                    backgroundColor: showCalculator ? "#28a745" : "#c8860a",
+                                    borderColor: showCalculator ? "#218838" : "#a06a00"
+                                }}
                                 title="Calculator"
                             >
-                                <Calculator className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                <Calculator className="w-4 h-4" />
                             </button>
 
-                            <button
-                                onClick={() => {
-                                    if (validateMinimumAttempts()) {
-                                        setShowSubmitDialog(true)
-                                    } else {
-                                        setShowSubmitDialog(true)
-                                    }
-                                }}
-                                className="hidden sm:block bg-rose-600 hover:bg-rose-700 text-white px-3 md:px-4 py-1.5 md:py-2 rounded-md text-xs md:text-sm font-medium transition-colors shadow-sm"
-                            >
-                                Submit
-                            </button>
-                            {/* <button
-                                onClick={() => setShowPauseDialog(true)}
-                                className="flex items-center gap-2 bg-muted hover:bg-muted/80 text-muted-foreground px-3 md:px-4 py-1.5 md:py-2 rounded-md text-xs md:text-sm font-medium transition-colors shadow-sm"
-                            >
-                                <PauseCircle className="w-4 h-4" />
-                                <span className="hidden lg:inline">Pause & Exit</span>
-                            </button> */}
+                            {/* Fullscreen */}
                             <button
                                 onClick={toggleFullscreen}
-                                className="p-2 rounded-md bg-muted text-muted-foreground hover:bg-muted/80 transition-colors"
+                                className="p-1.5 hover:opacity-80"
+                                style={{ color: theme.text }}
                                 title={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
                             >
-                                {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+                                {isFullscreen ? <Minimize className="w-3.5 h-3.5" /> : <Maximize className="w-3.5 h-3.5" />}
                             </button>
 
-                            {/* Menu (Mobile) */}
-                            <button
-                                onClick={() => setPaletteOpenMobile(true)}
-                                className="lg:hidden p-1.5 md:p-2 rounded-md bg-muted text-foreground"
-                                title="Questions"
-                            >
-                                <Menu className="w-3.5 h-3.5 md:w-4 md:h-4" />
-                            </button>
-
-
-                            {/* Pause (Desktop) - Only if allowed */}
+                            {/* Pause */}
                             {sessionData?.exam?.allow_pause && (
                                 <button
                                     onClick={() => setShowPauseDialog(true)}
-                                    className="flex items-center justify-center p-1.5 md:p-2 rounded-md bg-amber-500 hover:bg-amber-600 text-white"
+                                    className="p-1.5 text-amber-600 hover:text-amber-700"
                                     title="Pause"
                                 >
-                                    <PauseCircle className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                                    <PauseCircle className="w-3.5 h-3.5" />
                                 </button>
                             )}
                         </div>
                     </div>
 
-                    {/* Section Tabs (if multiple sections) */}
-                    {sessionData.sections.length > 1 && (
-                        <div className="flex gap-1 px-2 md:px-3 py-1.5 overflow-x-auto bg-muted/20">
+                    {/* Sections / Timer bar */}
+                    <div className="shrink-0 flex items-center justify-between px-3 py-1 border-b min-h-[30px]" style={{ backgroundColor: theme.bg, borderBottomColor: theme.border }}>
+                        <span className="text-xs font-medium" style={{ color: theme.text }}>Sections</span>
+                        <div className="flex items-center gap-1 text-xs font-semibold">
+                            {isReviewMode ? (
+                                <span className="text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider text-[11px] bg-emerald-50 dark:bg-emerald-950/20 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-800">
+                                    Review Mode
+                                </span>
+                            ) : (
+                                <ExamTimer
+                                    key={initialTime}
+                                    initialSeconds={initialTime}
+                                    isActive={isTimerActive}
+                                    onTimeUp={handleAutoSubmit}
+                                    timeRef={timeRef}
+                                />
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Section Tabs */}
+                    <div className="shrink-0 flex items-center border-b min-h-[34px]" style={{ backgroundColor: theme.tabsBg, borderBottomColor: theme.border }}>
+                        <button className="px-1 py-1 border-r h-full flex items-center" style={{ borderColor: theme.border, color: theme.text }}>
+                            <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+                        <div className="flex flex-1 overflow-x-auto">
                             {sessionData.sections.map((s, i) => {
                                 const startIdx = sessionData.sections.slice(0, i).reduce((a, b) => a + b.questions.length, 0)
                                 const isActive = activeQuestionIdx >= startIdx && activeQuestionIdx < startIdx + s.questions.length
@@ -1210,122 +1345,166 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
                                     <button
                                         key={s.id}
                                         onClick={() => setActiveQuestionIdx(startIdx)}
-                                        className={`px-2.5 md:px-3 py-1 text-[10px] md:text-xs font-medium rounded whitespace-nowrap transition-all ${isActive
-                                            ? "bg-primary text-primary-foreground shadow-sm"
-                                            : "bg-background text-muted-foreground hover:bg-muted/50"
-                                            }`}
+                                        className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium whitespace-nowrap border-r transition-colors"
+                                        style={{
+                                            backgroundColor: isActive ? "#007bff" : theme.tabInactiveBg,
+                                            color: isActive ? "#ffffff" : theme.tabInactiveText,
+                                            borderColor: theme.border
+                                        }}
                                     >
                                         {s.title}
+                                        <span
+                                            className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-[8px] font-bold"
+                                            style={{
+                                                backgroundColor: isActive ? "#ffffff" : "#888888",
+                                                color: isActive ? "#007bff" : "#ffffff"
+                                            }}
+                                        >
+                                            i
+                                        </span>
                                     </button>
                                 )
                             })}
                         </div>
-                    )}
+                        <button className="px-1 py-1 border-l h-full flex items-center" style={{ borderColor: theme.border, color: theme.text }}>
+                            <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                    </div>
+
+                    {/* Question Area */}
+                    <QuestionDisplay
+                        question={currentQuestion}
+                        activeQuestionIdx={activeQuestionIdx}
+                        response={responses[currentQuestion?.id]}
+                        isMarked={marked[currentQuestion?.id] || false}
+                        onSave={handleSaveResponse}
+                        onMark={handleMark}
+                        onNext={() => {
+                            if (activeQuestionIdx < allQuestions.length - 1) setActiveQuestionIdx(i => i + 1)
+                        }}
+                        onPrev={() => {
+                            if (activeQuestionIdx > 0) setActiveQuestionIdx(i => i - 1)
+                        }}
+                        onClear={() => handleSaveResponse(currentQuestion.id, "")}
+                        onSubmit={isReviewMode ? () => onExit?.() : () => setShowSubmitDialog(true)}
+                        isFirst={activeQuestionIdx === 0}
+                        isLast={activeQuestionIdx === allQuestions.length - 1}
+                        isReviewMode={isReviewMode}
+                    />
                 </div>
 
-                {/* QUESTION CARD */}
-                <QuestionDisplay
-                    question={currentQuestion}
-                    activeQuestionIdx={activeQuestionIdx}
-                    response={responses[currentQuestion?.id]}
-                    isMarked={marked[currentQuestion?.id] || false}
-                    onSave={handleSaveResponse}
-                    onMark={handleMark}
-                    onNext={() => {
-                        if (activeQuestionIdx < allQuestions.length - 1) setActiveQuestionIdx(i => i + 1)
-                    }}
-                    onPrev={() => {
-                        if (activeQuestionIdx > 0) setActiveQuestionIdx(i => i - 1)
-                    }}
-                    onClear={() => handleSaveResponse(currentQuestion.id, "")}
-                    onSubmit={() => setShowSubmitDialog(true)}  // NEW: Pass submit handler
-                    isFirst={activeQuestionIdx === 0}
-                    isLast={activeQuestionIdx === allQuestions.length - 1}
+                {/* ── RIGHT COLUMN: Palette ────────────────────────────────── */}
+                <div className="hidden lg:flex flex-col w-[220px] xl:w-[240px] shrink-0 bg-white overflow-hidden">
+                    <QuestionPalette
+                        questions={currentSection?.questions || []}
+                        activeQuestionIdx={localActiveIdx}
+                        responses={responses}
+                        marked={marked}
+                        visited={visited}
+                        onNavigate={(idx) => setActiveQuestionIdx(currentSectionStartIdx + idx)}
+                        onSubmit={isReviewMode ? () => onExit?.() : () => setShowSubmitDialog(true)}
+                        sectionTitle={currentSection?.title}
+                        isMobileOpen={paletteOpenMobile}
+                        onMobileClose={() => setPaletteOpenMobile(false)}
+                        studentName={userProfile?.fullName || "Student"}
+                        isReviewMode={isReviewMode}
+                    />
+                </div>
+            </div>
+
+            {/* Mobile palette drawer */}
+            <div className="lg:hidden">
+                <QuestionPalette
+                    questions={currentSection?.questions || []}
+                    activeQuestionIdx={localActiveIdx}
+                    responses={responses}
+                    marked={marked}
+                    visited={visited}
+                    onNavigate={(idx) => setActiveQuestionIdx(currentSectionStartIdx + idx)}
+                    onSubmit={isReviewMode ? () => onExit?.() : () => setShowSubmitDialog(true)}
+                    sectionTitle={currentSection?.title}
+                    isMobileOpen={paletteOpenMobile}
+                    onMobileClose={() => setPaletteOpenMobile(false)}
+                    studentName={userProfile?.fullName || "Student"}
+                    isReviewMode={isReviewMode}
                 />
             </div>
 
-            {/* RIGHT PALETTE (Desktop & Mobile handled by component) */}
-            <QuestionPalette
-                questions={allQuestions}
-                activeQuestionIdx={activeQuestionIdx}
-                responses={responses}
-                marked={marked}
-                visited={visited}
-                onNavigate={(idx) => setActiveQuestionIdx(idx)}
-                onSubmit={() => setShowSubmitDialog(true)}
-                sectionTitle={currentSection?.title}
-                isMobileOpen={paletteOpenMobile}
-                onMobileClose={() => setPaletteOpenMobile(false)}
-            />
-
-            {/* SUBMIT CONFIRMATION DIALOG */}
+            {/* ══ SUBMIT DIALOG ═════════════════════════════════════════════ */}
             <AnimatePresence>
                 {showSubmitDialog && (
                     <>
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                             onClick={() => setShowSubmitDialog(false)}
                             className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
                         >
                             <motion.div
-                                initial={{ scale: 0.95, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0.95, opacity: 0 }}
+                                initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
                                 onClick={(e) => e.stopPropagation()}
-                                className="bg-card w-full max-w-md rounded-2xl border border-border shadow-2xl overflow-hidden"
+                                className="w-full max-w-md rounded border shadow-2xl overflow-hidden"
+                                style={{ backgroundColor: theme.bg, borderColor: theme.border, color: theme.text }}
                             >
-                                <div className="p-6 text-center">
-                                    <div className="w-16 h-16 bg-rose-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <AlertTriangle className="w-8 h-8 text-rose-500" />
-                                    </div>
-                                    <h3 className="text-xl font-bold text-foreground mb-2">Submit Exam?</h3>
-                                    <p className="text-muted-foreground mb-6">
-                                        Are you sure you want to submit? You won't be able to change your answers after this.
+                                <div className="px-4 py-2.5 text-white" style={{ backgroundColor: theme.topBarBg }}>
+                                    <h3 className="text-sm font-bold">Submit Examination</h3>
+                                </div>
+                                <div className="p-5">
+                                    <p className="text-sm mb-4" style={{ color: isDark ? "#94a3b8" : "#4b5563" }}>
+                                        Are you sure you want to submit? You cannot change answers after submission.
                                     </p>
-
-                                    <div className="bg-muted/50 rounded-lg p-4 mb-6 text-sm">
-                                        <div className="flex justify-between mb-2">
-                                            <span className="text-muted-foreground">Answered</span>
-                                            <span className="text-emerald-500 font-semibold">
-                                                {Object.values(responses).filter(v => v !== null && (Array.isArray(v) ? v.length > 0 : true)).length}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between mb-2">
-                                            <span className="text-muted-foreground">Marked for Review</span>
-                                            <span className="text-amber-500 font-semibold">
-                                                {Object.values(marked).filter(Boolean).length}
-                                            </span>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <span className="text-muted-foreground">Unanswered</span>
-                                            <span className="text-foreground font-semibold">
-                                                {allQuestions.length - Object.values(responses).filter(v => v !== null && (Array.isArray(v) ? v.length > 0 : true)).length}
-                                            </span>
-                                        </div>
+                                    <div className="border rounded mb-5 overflow-hidden" style={{ borderColor: theme.border }}>
+                                        <table className="w-full text-xs">
+                                            <thead>
+                                                <tr className="border-b" style={{ backgroundColor: theme.headerBg, borderColor: theme.border }}>
+                                                    <th className="text-left px-3 py-2 font-semibold" style={{ color: theme.text }}>Status</th>
+                                                    <th className="text-center px-3 py-2 font-semibold" style={{ color: theme.text }}>Count</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr className="border-b" style={{ borderColor: theme.border }}>
+                                                    <td className="px-3 py-2 flex items-center gap-2">
+                                                        <span className="w-4 h-4 rounded-full bg-[#28a745] inline-block" /> Answered
+                                                    </td>
+                                                    <td className="px-3 py-2 text-center font-bold text-green-600">{answeredCount}</td>
+                                                </tr>
+                                                <tr className="border-b" style={{ borderColor: theme.border }}>
+                                                    <td className="px-3 py-2 flex items-center gap-2">
+                                                        <span className="w-4 h-4 rounded-full bg-[#dc3545] inline-block" /> Not Answered
+                                                    </td>
+                                                    <td className="px-3 py-2 text-center font-bold text-rose-600">{notAnsweredCount}</td>
+                                                </tr>
+                                                <tr className="border-b" style={{ borderColor: theme.border }}>
+                                                    <td className="px-3 py-2 flex items-center gap-2">
+                                                        <span className="w-4 h-4 bg-slate-300 inline-block" style={{ borderRadius: "2px" }} /> Not Visited
+                                                    </td>
+                                                    <td className="px-3 py-2 text-center font-bold text-slate-600">{notVisitedCount}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td className="px-3 py-2 flex items-center gap-2">
+                                                        <span className="w-4 h-4 bg-[#7c4dff] inline-block" style={{ borderRadius: "50%" }} /> Marked for Review
+                                                    </td>
+                                                    <td className="px-3 py-2 text-center font-bold text-purple-600">{markedCount}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-
                                     <div className="flex gap-3">
                                         <button
                                             onClick={() => setShowSubmitDialog(false)}
-                                            className="flex-1 py-2.5 rounded-xl border border-border text-foreground hover:bg-muted font-medium transition-colors"
+                                            className="flex-1 py-2 border rounded text-sm font-medium transition-colors"
+                                            style={{ borderColor: theme.border, color: theme.text, backgroundColor: theme.bg }}
                                         >
                                             Cancel
                                         </button>
                                         <button
                                             onClick={performSubmit}
                                             disabled={isSubmitting}
-                                            className="flex-1 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-medium shadow-lg shadow-rose-900/20 transition-colors flex items-center justify-center gap-2"
+                                            className="flex-1 py-2 text-white text-sm font-bold rounded transition-colors flex items-center justify-center gap-2 disabled:opacity-60 hover:brightness-95"
+                                            style={{ backgroundColor: "#007bff" }}
                                         >
                                             {isSubmitting ? (
-                                                <>
-                                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                                    Submitting...
-                                                </>
-                                            ) : (
-                                                "Submit Now"
-                                            )}
+                                                <><Loader2 className="w-4 h-4 animate-spin" /> Submitting...</>
+                                            ) : "Submit Now"}
                                         </button>
                                     </div>
                                 </div>
@@ -1335,55 +1514,44 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
                 )}
             </AnimatePresence>
 
-            {/* PAUSE CONFIRMATION DIALOG */}
+            {/* ══ PAUSE DIALOG ══════════════════════════════════════════════ */}
             <AnimatePresence>
                 {showPauseDialog && (
                     <>
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                             onClick={() => setShowPauseDialog(false)}
                             className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4"
                         >
                             <motion.div
-                                initial={{ scale: 0.95, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                exit={{ scale: 0.95, opacity: 0 }}
+                                initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
                                 onClick={(e) => e.stopPropagation()}
-                                className="bg-card w-full max-w-md rounded-2xl border border-border shadow-2xl overflow-hidden"
+                                className="w-full max-w-sm rounded border shadow-2xl overflow-hidden"
+                                style={{ backgroundColor: theme.bg, borderColor: theme.border, color: theme.text }}
                             >
-                                <div className="p-6 text-center">
-                                    <div className="w-16 h-16 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <PauseCircle className="w-8 h-8 text-amber-500" />
-                                    </div>
-                                    <h3 className="text-xl font-bold text-foreground mb-2">Pause & Exit?</h3>
-                                    <p className="text-muted-foreground mb-6">
+                                <div className="px-4 py-2.5 text-white" style={{ backgroundColor: "#d97706" }}>
+                                    <h3 className="text-sm font-bold">Pause & Exit</h3>
+                                </div>
+                                <div className="p-5 text-center">
+                                    <p className="text-sm mb-5" style={{ color: isDark ? "#94a3b8" : "#4b5563" }}>
                                         Your progress will be saved and you can resume this exam later.
                                     </p>
-
                                     <div className="flex gap-3">
                                         <button
                                             onClick={() => setShowPauseDialog(false)}
-                                            className="flex-1 py-2.5 rounded-xl border border-border text-foreground hover:bg-muted font-medium transition-colors"
-                                        >
-                                            Cancel
-                                        </button>
+                                            className="flex-1 py-2 border rounded text-sm font-medium transition-colors"
+                                            style={{ borderColor: theme.border, color: theme.text, backgroundColor: theme.bg }}
+                                        >Cancel</button>
                                         <button
                                             onClick={confirmPauseAndExit}
                                             disabled={isPausing}
-                                            className="flex-1 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium shadow-lg shadow-amber-900/20 transition-colors flex items-center justify-center gap-2"
+                                            className="flex-1 py-2 text-white text-sm font-bold rounded transition-colors flex items-center justify-center gap-2 disabled:opacity-60 hover:brightness-95"
+                                            style={{ backgroundColor: "#d97706" }}
                                         >
                                             {isPausing ? (
-                                                <>
-                                                    <Loader2 className="w-4 h-4 animate-spin" />
-                                                    Saving...
-                                                </>
+                                                <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
                                             ) : (
-                                                <>
-                                                    <PauseCircle className="w-4 h-4" />
-                                                    Pause & Exit
-                                                </>
+                                                <><PauseCircle className="w-4 h-4" /> Pause & Exit</>
                                             )}
                                         </button>
                                     </div>
@@ -1394,13 +1562,51 @@ export function EmbeddedExam({ examId, onExit, isRetake = false, onSuccessfulSub
                 )}
             </AnimatePresence>
 
-            {/* SCIENTIFIC CALCULATOR */}
+            {/* â•â• SCIENTIFIC CALCULATOR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
             <AnimatePresence>
                 {showCalculator && (
                     <ScientificCalculator onClose={() => setShowCalculator(false)} />
                 )}
             </AnimatePresence>
+            {/* ── FULLSCREEN WARNING OVERLAY ────────────────────────────── */}
+            {!isReviewMode && !isFullscreen && !showResults && !showPauseDialog && (
+                <div className="fixed inset-0 z-[9999] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl max-w-md w-full p-6 text-center shadow-2xl space-y-6 animate-in fade-in zoom-in-95 duration-200">
+                        {/* Warning Icon */}
+                        <div className="w-16 h-16 bg-rose-100 dark:bg-rose-950/30 rounded-full flex items-center justify-center mx-auto text-rose-600 dark:text-rose-400 animate-bounce">
+                            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+
+                        <div className="space-y-2">
+                            <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                                Fullscreen Mode Required
+                            </h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">
+                                You have exited fullscreen mode. For security and anti-cheating compliance, you must remain in fullscreen mode during the exam.
+                            </p>
+                        </div>
+
+                        <div className="flex flex-col gap-2 pt-2">
+                            <button
+                                onClick={toggleFullscreen}
+                                className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg shadow-blue-500/20 active:scale-[0.98] transition-all text-sm"
+                            >
+                                Return to Fullscreen
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setShowSubmitDialog(true)
+                                }}
+                                className="w-full py-2.5 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:text-rose-600 dark:hover:text-rose-400 rounded-xl font-medium transition-all text-xs"
+                            >
+                                Submit &amp; Exit Exam
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
-
