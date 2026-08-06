@@ -61,6 +61,7 @@ export function LessonEditor({ lesson, course, onUpdate, onDelete }: LessonEdito
     const [contentText, setContentText] = useState(lesson.content_text || "");
     const [isSaving, setIsSaving] = useState(false);
     const [pdfFile, setPdfFile] = useState<File | null>(null);
+    const [pdfMode, setPdfMode] = useState<"upload" | "link">(lesson.content_url && !lesson.content_url.includes("supabase") ? "link" : "upload");
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
     const [showExamSettings, setShowExamSettings] = useState(false);
     const [availableExams, setAvailableExams] = useState<any[]>([]);
@@ -119,8 +120,8 @@ export function LessonEditor({ lesson, course, onUpdate, onDelete }: LessonEdito
         try {
             let finalContentUrl = contentUrl;
 
-            // Handle PDF upload if new file selected
-            if (lesson.content_type === "pdf" && pdfFile) {
+            // Handle PDF upload if new file selected (upload mode)
+            if (lesson.content_type === "pdf" && pdfMode === "upload" && pdfFile) {
                 const fileName = `course-content/${Date.now()}-${pdfFile.name.replace(/\s+/g, "_")}`;
                 const { error: uploadError } = await supabase.storage
                     .from("uploads")
@@ -130,6 +131,11 @@ export function LessonEditor({ lesson, course, onUpdate, onDelete }: LessonEdito
 
                 const { data } = supabase.storage.from("uploads").getPublicUrl(fileName);
                 finalContentUrl = data.publicUrl;
+            }
+
+            // Handle PDF link mode — convert Google Drive share link to embed link if needed
+            if (lesson.content_type === "pdf" && pdfMode === "link") {
+                finalContentUrl = convertGoogleDriveLink(contentUrl);
             }
 
             // Convert video URL to embed format
@@ -399,42 +405,91 @@ export function LessonEditor({ lesson, course, onUpdate, onDelete }: LessonEdito
 
 
                     {lesson.content_type === "pdf" && (
-                        <>
-                            <div className="space-y-2">
-                                <Label className="dark:text-slate-300">Upload New PDF (Optional)</Label>
-                                <Input
-                                    type="file"
-                                    accept=".pdf"
-                                    onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
-                                    className="dark:bg-slate-900 dark:border-slate-700 dark:text-white"
-                                />
+                        <Tabs value={pdfMode} onValueChange={(v) => setPdfMode(v as "upload" | "link")} className="w-full">
+                            <TabsList className="grid w-full grid-cols-2 mb-4">
+                                <TabsTrigger value="upload" className="flex items-center gap-2">
+                                    <File className="h-4 w-4" />
+                                    Upload PDF
+                                </TabsTrigger>
+                                <TabsTrigger value="link" className="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                    Link (Google Drive / Other)
+                                </TabsTrigger>
+                            </TabsList>
+
+                            {/* Upload PDF Tab */}
+                            <TabsContent value="upload" className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label className="dark:text-slate-300">Upload New PDF (Optional)</Label>
+                                    <Input
+                                        type="file"
+                                        accept=".pdf"
+                                        onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
+                                        className="dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+                                    />
+                                    {contentUrl && !pdfFile && (
+                                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                                            Current file: <a href={contentUrl} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">View PDF</a>
+                                        </p>
+                                    )}
+                                    <div className="flex items-center space-x-2 pt-2">
+                                        <Switch
+                                            id="is-downloadable"
+                                            checked={lesson.is_downloadable ?? true}
+                                            onCheckedChange={(checked) => onUpdate({ ...lesson, is_downloadable: checked })}
+                                        />
+                                        <Label htmlFor="is-downloadable" className="dark:text-slate-300">Allow Download</Label>
+                                    </div>
+                                </div>
+
                                 {contentUrl && !pdfFile && (
-                                    <p className="text-xs text-slate-500 dark:text-slate-400">
-                                        Current file: <a href={contentUrl} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline dark:text-blue-400">View PDF</a>
-                                    </p>
+                                    <div className="space-y-2">
+                                        <Label className="dark:text-slate-300">Preview</Label>
+                                        <div className="aspect-video bg-slate-100 dark:bg-slate-900 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800">
+                                            <iframe src={contentUrl} className="w-full h-full" />
+                                        </div>
+                                    </div>
                                 )}
-                                <div className="flex items-center space-x-2 pt-2">
+                            </TabsContent>
+
+                            {/* Link Tab */}
+                            <TabsContent value="link" className="space-y-4">
+                                <div className="space-y-2">
+                                    <Label className="dark:text-slate-300">PDF Link</Label>
+                                    <Input
+                                        value={contentUrl}
+                                        onChange={(e) => setContentUrl(e.target.value)}
+                                        placeholder="https://drive.google.com/file/d/... or any direct PDF URL"
+                                        className="dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+                                    />
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                                        💡 Google Drive share link automatically converted to embeddable preview. You can also paste any direct PDF URL.
+                                    </p>
+                                </div>
+
+                                <div className="flex items-center space-x-2">
                                     <Switch
-                                        id="is-downloadable"
+                                        id="is-downloadable-link"
                                         checked={lesson.is_downloadable ?? true}
                                         onCheckedChange={(checked) => onUpdate({ ...lesson, is_downloadable: checked })}
                                     />
-                                    <Label htmlFor="is-downloadable" className="dark:text-slate-300">Allow Download</Label>
+                                    <Label htmlFor="is-downloadable-link" className="dark:text-slate-300">Allow Download</Label>
                                 </div>
-                            </div>
 
-                            {contentUrl && (
-                                <div className="space-y-2">
-                                    <Label className="dark:text-slate-300">Preview</Label>
-                                    <div className="aspect-video bg-slate-100 dark:bg-slate-900 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800">
-                                        <iframe
-                                            src={contentUrl}
-                                            className="w-full h-full"
-                                        />
+                                {contentUrl && (
+                                    <div className="space-y-2">
+                                        <Label className="dark:text-slate-300">Preview</Label>
+                                        <div className="aspect-video bg-slate-100 dark:bg-slate-900 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-800">
+                                            <iframe
+                                                src={convertGoogleDriveLink(contentUrl)}
+                                                className="w-full h-full"
+                                                allow="autoplay"
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-                        </>
+                                )}
+                            </TabsContent>
+                        </Tabs>
                     )}
 
                     {lesson.content_type === "text" && (
@@ -662,5 +717,27 @@ function convertToEmbedUrl(url: string): string {
         return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
     }
 
+    return url;
+}
+
+// Helper function to convert Google Drive share/view links to embeddable preview URLs
+function convertGoogleDriveLink(url: string): string {
+    if (!url) return "";
+
+    // Match Google Drive file share link: https://drive.google.com/file/d/FILE_ID/view?...
+    const driveFileRegex = /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/;
+    const driveFileMatch = url.match(driveFileRegex);
+    if (driveFileMatch) {
+        return `https://drive.google.com/file/d/${driveFileMatch[1]}/preview`;
+    }
+
+    // Match Google Drive open link: https://drive.google.com/open?id=FILE_ID
+    const driveOpenRegex = /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/;
+    const driveOpenMatch = url.match(driveOpenRegex);
+    if (driveOpenMatch) {
+        return `https://drive.google.com/file/d/${driveOpenMatch[1]}/preview`;
+    }
+
+    // Already an embed/preview link — return as-is
     return url;
 }

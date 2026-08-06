@@ -24,6 +24,8 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
     const [selectedType, setSelectedType] = useState<string | null>(null);
     const [title, setTitle] = useState("");
     const [pdfFile, setPdfFile] = useState<File | null>(null);
+    const [pdfMode, setPdfMode] = useState<"upload" | "link">("upload");
+    const [pdfLink, setPdfLink] = useState("");
     const [selectedExamId, setSelectedExamId] = useState<string>("");
     const [availableExams, setAvailableExams] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -130,7 +132,7 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
             let contentUrl = "";
 
             // For video lessons, leave content_url empty - will be added via upload
-            if (selectedType === "pdf" && pdfFile) {
+            if (selectedType === "pdf" && pdfMode === "upload" && pdfFile) {
                 const fileName = `course-content/${Date.now()}-${pdfFile.name.replace(/\s+/g, "_")}`;
                 const { error: uploadError } = await supabase.storage
                     .from("uploads")
@@ -140,6 +142,11 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
 
                 const { data } = supabase.storage.from("uploads").getPublicUrl(fileName);
                 contentUrl = data.publicUrl;
+            }
+
+            // For PDF link mode — convert Google Drive share link if needed
+            if (selectedType === "pdf" && pdfMode === "link" && pdfLink) {
+                contentUrl = convertGoogleDriveLink(pdfLink);
             }
 
             const lessonData: any = {
@@ -211,6 +218,8 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
         setMeetingDate("");
         setMeetingPlatform("google_meet");
         setIsFreePreview(false);
+        setPdfMode("upload");
+        setPdfLink("");
     };
 
     return (
@@ -330,15 +339,64 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
                         )}
 
                         {selectedType === "pdf" && (
-                            <div className="space-y-2">
-                                <Label className="dark:text-slate-300">Upload PDF File</Label>
-                                <Input
-                                    type="file"
-                                    accept=".pdf"
-                                    onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
-                                    required
-                                    className="dark:bg-slate-900 dark:border-slate-700 dark:text-white"
-                                />
+                            <div className="space-y-4">
+                                {/* Two option buttons */}
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => setPdfMode("upload")}
+                                        className={`flex flex-col items-center gap-2 p-4 border-2 rounded-lg transition-all ${
+                                            pdfMode === "upload"
+                                                ? "border-blue-500 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300"
+                                                : "border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 dark:text-slate-300"
+                                        }`}
+                                    >
+                                        <File className="h-6 w-6" />
+                                        <span className="text-sm font-semibold">Upload PDF</span>
+                                        <span className="text-xs text-slate-500 dark:text-slate-400 text-center">Upload from your computer</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setPdfMode("link")}
+                                        className={`flex flex-col items-center gap-2 p-4 border-2 rounded-lg transition-all ${
+                                            pdfMode === "link"
+                                                ? "border-blue-500 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-300"
+                                                : "border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-600 dark:text-slate-300"
+                                        }`}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                        <span className="text-sm font-semibold">Paste Link</span>
+                                        <span className="text-xs text-slate-500 dark:text-slate-400 text-center">Google Drive or any URL</span>
+                                    </button>
+                                </div>
+
+                                {/* Upload mode */}
+                                {pdfMode === "upload" && (
+                                    <div className="space-y-1">
+                                        <Label className="dark:text-slate-300">Select PDF File</Label>
+                                        <Input
+                                            type="file"
+                                            accept=".pdf"
+                                            onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
+                                            className="dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+                                        />
+                                        <p className="text-xs text-slate-500 dark:text-slate-400">Upload a PDF file from your device</p>
+                                    </div>
+                                )}
+
+                                {/* Link mode */}
+                                {pdfMode === "link" && (
+                                    <div className="space-y-1">
+                                        <Label className="dark:text-slate-300">PDF Link</Label>
+                                        <Input
+                                            value={pdfLink}
+                                            onChange={(e) => setPdfLink(e.target.value)}
+                                            placeholder="https://drive.google.com/file/d/... or any direct PDF URL"
+                                            className="dark:bg-slate-900 dark:border-slate-700 dark:text-white"
+                                        />
+                                        <p className="text-xs text-slate-500 dark:text-slate-400">💡 Google Drive share links are automatically converted to embeddable previews</p>
+                                    </div>
+                                )}
                             </div>
                         )}
 
@@ -393,4 +451,25 @@ export function AddContentModal({ moduleId, lessonCount, onAdd, onSuccess }: Add
             </DialogContent>
         </Dialog >
     );
+}
+
+// Helper: convert Google Drive share/view links to embeddable preview URLs
+function convertGoogleDriveLink(url: string): string {
+    if (!url) return "";
+
+    // https://drive.google.com/file/d/FILE_ID/view?...
+    const driveFileRegex = /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/;
+    const driveFileMatch = url.match(driveFileRegex);
+    if (driveFileMatch) {
+        return `https://drive.google.com/file/d/${driveFileMatch[1]}/preview`;
+    }
+
+    // https://drive.google.com/open?id=FILE_ID
+    const driveOpenRegex = /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/;
+    const driveOpenMatch = url.match(driveOpenRegex);
+    if (driveOpenMatch) {
+        return `https://drive.google.com/file/d/${driveOpenMatch[1]}/preview`;
+    }
+
+    return url;
 }
