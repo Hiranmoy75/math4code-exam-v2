@@ -10,18 +10,18 @@ interface MathPreviewRendererProps {
 
 // ─── Custom Block Definitions ────────────────────────────────────────────────
 const BLOCKS: Record<string, { label: string; icon: string; className: string }> = {
-    definition:  { label: "Definition",  icon: "📘", className: "math-block-definition" },
-    theorem:     { label: "Theorem",     icon: "📐", className: "math-block-theorem" },
-    lemma:       { label: "Lemma",       icon: "🔹", className: "math-block-lemma" },
-    corollary:   { label: "Corollary",   icon: "🔸", className: "math-block-corollary" },
+    definition: { label: "Definition", icon: "📘", className: "math-block-definition" },
+    theorem: { label: "Theorem", icon: "📐", className: "math-block-theorem" },
+    lemma: { label: "Lemma", icon: "🔹", className: "math-block-lemma" },
+    corollary: { label: "Corollary", icon: "🔸", className: "math-block-corollary" },
     proposition: { label: "Proposition", icon: "💡", className: "math-block-proposition" },
-    proof:       { label: "Proof",       icon: "✍️", className: "math-block-proof" },
-    example:     { label: "Example",     icon: "✏️", className: "math-block-example" },
-    question:    { label: "Question",    icon: "❓", className: "math-block-question" },
-    answer:      { label: "Answer",      icon: "✅", className: "math-block-answer" },
-    note:        { label: "Note",        icon: "📝", className: "math-block-note" },
-    warning:     { label: "Warning",     icon: "⚠️", className: "math-block-warning" },
-    remark:      { label: "Remark",      icon: "💬", className: "math-block-remark" },
+    proof: { label: "Proof", icon: "✍️", className: "math-block-proof" },
+    example: { label: "Example", icon: "✏️", className: "math-block-example" },
+    question: { label: "Question", icon: "❓", className: "math-block-question" },
+    answer: { label: "Answer", icon: "✅", className: "math-block-answer" },
+    note: { label: "Note", icon: "📝", className: "math-block-note" },
+    warning: { label: "Warning", icon: "⚠️", className: "math-block-warning" },
+    remark: { label: "Remark", icon: "💬", className: "math-block-remark" },
 };
 
 // ─── Math-safe inline markdown ────────────────────────────────────────────────
@@ -245,7 +245,7 @@ export function MathPreviewRenderer({ content, className = "" }: MathPreviewRend
         if (win.MathJax?.typesetPromise) {
             // Clear old typesetting first, then re-run
             win.MathJax.typesetClear?.([containerRef.current]);
-            win.MathJax.typesetPromise?.([containerRef.current]).catch(() => {});
+            win.MathJax.typesetPromise?.([containerRef.current]).catch(() => { });
         }
     }, [htmlContent]);
 
